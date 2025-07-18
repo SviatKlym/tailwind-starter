@@ -1,0 +1,45 @@
+{
+  "name": "my-tailwind-starter/example-block",
+  "title": "Example Block",
+  "description": "An example block with separate JSX files",
+  "category": "tailwind-starter-interactive",
+  "icon": "smiley",
+  "keywords": ["example", "demo", "starter"],
+  "supports": {
+    "html": false,
+    "align": ["wide", "full"],
+    "anchor": true,
+    "customClassName": true
+  },
+  "attributes": {
+    "title": {
+      "type": "string",
+      "default": "Example Block Title"
+    },
+    "content": {
+      "type": "string",
+      "default": "This is example content for the block."
+    },
+    "buttonText": {
+      "type": "string",
+      "default": "Click Me"
+    },
+    "buttonUrl": {
+      "type": "string",
+      "default": ""
+    },
+    "backgroundColor": {
+      "type": "string",
+      "default": "bg-white"
+    },
+    "textColor": {
+      "type": "string",
+      "default": "text-gray-900"
+    }
+  },
+  "textdomain": "my-tailwind-starter",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./editor.css",
+  "style": "file:./style.css",
+  "viewScript": "file:./view.js"
+}

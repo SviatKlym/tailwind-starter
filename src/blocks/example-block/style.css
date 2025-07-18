@@ -1,0 +1,41 @@
+/* Frontend styles for Example Block */
+.wp-block-my-tailwind-starter-example-block {
+  margin: 2rem 0;
+}
+
+.wp-block-my-tailwind-starter-example-block .example-block {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.wp-block-my-tailwind-starter-example-block .example-block:hover {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  transform: translateY(-2px);
+}
+
+.wp-block-my-tailwind-starter-example-block .example-block h2 {
+  margin-top: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+}
+
+.wp-block-my-tailwind-starter-example-block .example-block p {
+  font-size: 1.125rem;
+  line-height: 1.75;
+  margin-bottom: 1.5rem;
+}
+
+.wp-block-my-tailwind-starter-example-block .example-block a {
+  text-decoration: none;
+  cursor: pointer;
+  user-select: none;
+}
+
+.wp-block-my-tailwind-starter-example-block .example-block a:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}

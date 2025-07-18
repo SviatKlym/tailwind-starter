@@ -1,0 +1,59 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "my-tailwind-starter/sample-block",
+  "version": "1.0.0",
+  "title": "Sample Block",
+  "category": "tailwind-starter-content",
+  "icon": "heart",
+  "description": "A sample block with Tailwind CSS styling",
+  "keywords": ["sample", "tailwind", "custom"],
+  "supports": {
+    "html": false,
+    "anchor": true,
+    "customClassName": true,
+    "spacing": {
+      "padding": true,
+      "margin": true
+    },
+    "color": {
+      "background": true,
+      "text": true,
+      "link": true
+    },
+    "typography": {
+      "fontSize": true,
+      "lineHeight": true
+    }
+  },
+  "attributes": {
+    "title": {
+      "type": "string",
+      "default": "Hello World"
+    },
+    "content": {
+      "type": "string",
+      "default": "This is a sample block with Tailwind CSS styling."
+    },
+    "buttonText": {
+      "type": "string",
+      "default": "Learn More"
+    },
+    "buttonUrl": {
+      "type": "string",
+      "default": ""
+    },
+    "backgroundColor": {
+      "type": "string",
+      "default": "bg-white"
+    },
+    "textColor": {
+      "type": "string",
+      "default": "text-gray-900"
+    }
+  },
+  "textdomain": "my-tailwind-starter",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./editor.css",
+  "style": "file:./style.css"
+}
