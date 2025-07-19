@@ -24,7 +24,7 @@ registerBlockType('tailwind-starter/hero-block', {
       buttonUrl, 
       backgroundImage, 
       overlayOpacity, 
-      textAlignment
+      textAlignment 
     } = attributes
     
     const blockProps = useBlockProps()
@@ -46,7 +46,7 @@ registerBlockType('tailwind-starter/hero-block', {
     return (
       <>
         <InspectorControls>
-          <PanelBody title={__('Hero Settings', 'tailwind-starter')} initialOpen={true}>
+          <PanelBody title={__('Hero Settings', 'tailwind-starter')}>
             <TextControl
               label={__('Button URL', 'tailwind-starter')}
               value={buttonUrl}
@@ -145,7 +145,7 @@ registerBlockType('tailwind-starter/hero-block', {
       buttonUrl, 
       backgroundImage, 
       overlayOpacity, 
-      textAlignment
+      textAlignment 
     } = attributes
     
     const blockProps = useBlockProps.save()

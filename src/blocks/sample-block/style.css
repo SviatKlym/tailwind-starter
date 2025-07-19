@@ -1,15 +1,15 @@
-.wp-block-my-tailwind-starter-sample-block .card {
+.wp-block-tailwind-starter-sample-block .card {
   @apply p-8 rounded-lg shadow-lg border border-gray-200;
 }
 
-.wp-block-my-tailwind-starter-sample-block .btn-primary {
+.wp-block-tailwind-starter-sample-block .btn-primary {
   @apply inline-flex items-center px-6 py-3 text-base font-medium text-white bg-primary-600 border border-transparent rounded-md hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors duration-200;
 }
 
-.wp-block-my-tailwind-starter-sample-block .btn-primary:hover {
+.wp-block-tailwind-starter-sample-block .btn-primary:hover {
   @apply bg-primary-700;
 }
 
-.wp-block-my-tailwind-starter-sample-block .btn-primary:focus {
+.wp-block-tailwind-starter-sample-block .btn-primary:focus {
   @apply ring-2 ring-offset-2 ring-primary-500;
 }

@@ -1,0 +1,132 @@
+/* Import visual controls CSS */
+@import '../../../src/visual-controls.css';
+
+/* Editor styles for Ultimate Visual Block */
+.wp-block-tailwind-starter-visual-block {
+  position: relative;
+}
+
+.visual-block {
+  position: relative;
+  min-height: 140px;
+  transition: all 0.3s ease;
+}
+
+.visual-block:hover {
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+  transform: translateY(-1px);
+}
+
+/* Enhanced RichText styling in editor */
+.visual-block [contenteditable="true"] {
+  outline: none !important;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+  padding: 2px;
+}
+
+.visual-block [contenteditable="true"]:focus {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%);
+  box-shadow: inset 0 0 0 2px rgba(99, 102, 241, 0.2);
+  transform: scale(1.01);
+}
+
+.visual-block [contenteditable="true"]:empty:before {
+  color: #9ca3af;
+  font-style: italic;
+}
+
+/* Enhanced device indicator */
+.device-indicator {
+  animation: slideInBounce 0.5s ease;
+  backdrop-filter: blur(10px);
+}
+
+@keyframes slideInBounce {
+  0% { 
+    opacity: 0; 
+    transform: translateX(20px) scale(0.8) rotate(10deg); 
+  }
+  60% { 
+    transform: translateX(-5px) scale(1.05) rotate(-2deg); 
+  }
+  100% { 
+    opacity: 1; 
+    transform: translateX(0) scale(1) rotate(0deg); 
+  }
+}
+
+/* Enhanced spacing for editor */
+.visual-block h2 {
+  margin-bottom: 0.75rem !important;
+}
+
+.visual-block p {
+  margin-bottom: 1rem !important;
+}
+
+/* Better button styling in editor */
+.visual-block [role="button"] {
+  pointer-events: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.visual-block [role="button"]:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: all 0.6s;
+}
+
+.visual-block:hover [role="button"]:before {
+  left: 100%;
+}
+
+/* Enhanced editor selection indicator */
+.wp-block-tailwind-starter-visual-block .block-editor-block-list__block {
+  position: relative;
+}
+
+.wp-block-tailwind-starter-visual-block .block-editor-block-list__block:before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  border: 2px dashed transparent;
+  border-radius: 8px;
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+
+.wp-block-tailwind-starter-visual-block .block-editor-block-list__block.is-selected:before {
+  border-color: #6366f1;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%);
+}
+
+/* Loading animation for class changes */
+.visual-block.loading {
+  position: relative;
+}
+
+.visual-block.loading:after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.1), transparent);
+  animation: loading 1s infinite;
+}
+
+@keyframes loading {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}

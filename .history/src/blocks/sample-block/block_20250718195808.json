@@ -4,7 +4,7 @@
   "name": "tailwind-starter/sample-block",
   "version": "1.0.0",
   "title": "Sample Block",
-  "category": "tailwind-starter",
+  "category": "tailwind-starter-content",
   "icon": "heart",
   "description": "A sample block with Tailwind CSS styling",
   "keywords": ["sample", "tailwind", "custom"],

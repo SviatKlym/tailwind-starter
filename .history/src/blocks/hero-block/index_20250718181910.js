@@ -15,7 +15,7 @@ import {
 } from '@wordpress/components'
 import { __ } from '@wordpress/i18n'
 
-registerBlockType('tailwind-starter/hero-block', {
+registerBlockType('my-tailwind-starter/hero-block', {
   edit: ({ attributes, setAttributes }) => {
     const { 
       title, 
@@ -24,7 +24,7 @@ registerBlockType('tailwind-starter/hero-block', {
       buttonUrl, 
       backgroundImage, 
       overlayOpacity, 
-      textAlignment
+      textAlignment 
     } = attributes
     
     const blockProps = useBlockProps()
@@ -46,22 +46,22 @@ registerBlockType('tailwind-starter/hero-block', {
     return (
       <>
         <InspectorControls>
-          <PanelBody title={__('Hero Settings', 'tailwind-starter')} initialOpen={true}>
+          <PanelBody title={__('Hero Settings', 'my-tailwind-starter')}>
             <TextControl
-              label={__('Button URL', 'tailwind-starter')}
+              label={__('Button URL', 'my-tailwind-starter')}
               value={buttonUrl}
               onChange={(value) => setAttributes({ buttonUrl: value })}
             />
             
             <SelectControl
-              label={__('Text Alignment', 'tailwind-starter')}
+              label={__('Text Alignment', 'my-tailwind-starter')}
               value={textAlignment}
               options={alignmentOptions}
               onChange={(value) => setAttributes({ textAlignment: value })}
             />
 
             <RangeControl
-              label={__('Overlay Opacity', 'tailwind-starter')}
+              label={__('Overlay Opacity', 'my-tailwind-starter')}
               value={overlayOpacity}
               onChange={(value) => setAttributes({ overlayOpacity: value })}
               min={0}
@@ -80,7 +80,7 @@ registerBlockType('tailwind-starter/hero-block', {
                     variant="secondary"
                     style={{ marginTop: '10px' }}
                   >
-                    {backgroundImage ? __('Replace Background Image', 'tailwind-starter') : __('Select Background Image', 'tailwind-starter')}
+                    {backgroundImage ? __('Replace Background Image', 'my-tailwind-starter') : __('Select Background Image', 'my-tailwind-starter')}
                   </Button>
                 )}
               />
@@ -93,7 +93,7 @@ registerBlockType('tailwind-starter/hero-block', {
                 isDestructive
                 style={{ marginTop: '10px' }}
               >
-                {__('Remove Background Image', 'tailwind-starter')}
+                {__('Remove Background Image', 'my-tailwind-starter')}
               </Button>
             )}
           </PanelBody>
@@ -113,21 +113,21 @@ registerBlockType('tailwind-starter/hero-block', {
                 tagName="h1"
                 value={title}
                 onChange={(value) => setAttributes({ title: value })}
-                placeholder={__('Enter hero title...', 'tailwind-starter')}
+                placeholder={__('Enter hero title...', 'my-tailwind-starter')}
                 className="text-4xl md:text-6xl font-bold text-white mb-6"
               />
               <RichText
                 tagName="p"
                 value={subtitle}
                 onChange={(value) => setAttributes({ subtitle: value })}
-                placeholder={__('Enter subtitle...', 'tailwind-starter')}
+                placeholder={__('Enter subtitle...', 'my-tailwind-starter')}
                 className="text-xl md:text-2xl text-gray-200 mb-8 leading-relaxed"
               />
               <RichText
                 tagName="span"
                 value={buttonText}
                 onChange={(value) => setAttributes({ buttonText: value })}
-                placeholder={__('Button text...', 'tailwind-starter')}
+                placeholder={__('Button text...', 'my-tailwind-starter')}
                 className="btn-hero"
               />
             </div>
@@ -145,7 +145,7 @@ registerBlockType('tailwind-starter/hero-block', {
       buttonUrl, 
       backgroundImage, 
       overlayOpacity, 
-      textAlignment
+      textAlignment 
     } = attributes
     
     const blockProps = useBlockProps.save()

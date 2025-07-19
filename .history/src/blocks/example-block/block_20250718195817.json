@@ -1,5 +1,5 @@
 {
-  "name": "my-tailwind-starter/example-block",
+  "name": "tailwind-starter/example-block",
   "title": "Example Block",
   "description": "An example block with separate JSX files",
   "category": "tailwind-starter-interactive",
@@ -37,7 +37,7 @@
       "default": "text-gray-900"
     }
   },
-  "textdomain": "my-tailwind-starter",
+  "textdomain": "tailwind-starter",
   "editorScript": "file:./index.js",
   "editorStyle": "file:./editor.css",
   "style": "file:./style.css",

@@ -1,0 +1,34 @@
+/* Editor-specific styles for Example Block */
+.wp-block-tailwind-starter-example-block {
+  margin: 1rem 0;
+}
+
+.wp-block-tailwind-starter-example-block .example-block {
+  border: 2px dashed #e5e7eb;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.wp-block-tailwind-starter-example-block .example-block:hover {
+  border-color: #3b82f6;
+}
+
+.wp-block-tailwind-starter-example-block .example-block h2[contenteditable="true"]:empty::before {
+  content: "Enter your title...";
+  color: #9ca3af;
+  font-style: italic;
+}
+
+.wp-block-tailwind-starter-example-block .example-block p[contenteditable="true"]:empty::before {
+  content: "Enter your content...";
+  color: #9ca3af;
+  font-style: italic;
+}
+
+.wp-block-tailwind-starter-example-block .example-block span[contenteditable="true"]:empty::before {
+  content: "Button text...";
+  color: #9ca3af;
+  font-style: italic;
+}

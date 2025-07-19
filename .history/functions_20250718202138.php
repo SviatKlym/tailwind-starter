@@ -89,13 +89,13 @@ function my_tailwind_starter_enqueue_assets() {
     if (wp_get_environment_type() === 'development') {
         // Development: use Vite dev server
         wp_enqueue_style(
-            'my-tailwind-starter-dev',
+            'tailwind-starter-dev',
             'http://localhost:5173/src/style.css',
             [],
             '1.0.0'
         );
         wp_enqueue_script(
-            'my-tailwind-starter-vite',
+            'tailwind-starter-vite',
             'http://localhost:5173/@vite/client',
             [],
             '1.0.0',
@@ -105,7 +105,7 @@ function my_tailwind_starter_enqueue_assets() {
         // Production: use built assets
         $css_file = get_template_directory() . '/build/style.css';
         wp_enqueue_style(
-            'my-tailwind-starter-style',
+            'tailwind-starter-style',
             get_template_directory_uri() . '/build/style.css',
             [],
             file_exists($css_file) ? filemtime($css_file) : '1.0.0'
@@ -145,7 +145,7 @@ function debug_registered_blocks() {
     if (WP_DEBUG) {
         $registered_blocks = WP_Block_Type_Registry::get_instance()->get_all_registered();
         $our_blocks = array_filter($registered_blocks, function($name) {
-            return strpos($name, 'my-tailwind-starter/') === 0;
+            return strpos($name, 'tailwind-starter/') === 0;
         }, ARRAY_FILTER_USE_KEY);
         
         error_log('Our registered blocks: ' . json_encode(array_keys($our_blocks)));
@@ -253,7 +253,7 @@ function my_tailwind_starter_register_block_patterns() {
                 'title' => __('Hero with CTA', 'tailwind-starter'),
                 'description' => __('A hero section with call-to-action button', 'tailwind-starter'),
                 'categories' => ['tailwind-starter'],
-                'content' => '<!-- wp:my-tailwind-starter/hero-block --><!-- /wp:my-tailwind-starter/hero-block -->',
+                'content' => '<!-- wp:tailwind-starter/hero-block --><!-- /wp:tailwind-starter/hero-block -->',
             ]
         );
     }

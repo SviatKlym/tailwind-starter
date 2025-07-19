@@ -4,7 +4,7 @@ import { useBlockProps, RichText, InspectorControls } from '@wordpress/block-edi
 import { PanelBody, TextControl, SelectControl } from '@wordpress/components'
 import { __ } from '@wordpress/i18n'
 
-registerBlockType('tailwind-starter/sample-block', {
+registerBlockType('my-tailwind-starter/sample-block', {
   edit: ({ attributes, setAttributes }) => {
     const { title, content, buttonText, buttonUrl, backgroundColor, textColor } = attributes
     const blockProps = useBlockProps()
@@ -26,20 +26,20 @@ registerBlockType('tailwind-starter/sample-block', {
     return (
       <>
         <InspectorControls>
-          <PanelBody title={__('Block Settings', 'tailwind-starter')}>
+          <PanelBody title={__('Block Settings', 'my-tailwind-starter')}>
             <TextControl
-              label={__('Button URL', 'tailwind-starter')}
+              label={__('Button URL', 'my-tailwind-starter')}
               value={buttonUrl}
               onChange={(value) => setAttributes({ buttonUrl: value })}
             />
             <SelectControl
-              label={__('Background Color', 'tailwind-starter')}
+              label={__('Background Color', 'my-tailwind-starter')}
               value={backgroundColor}
               options={backgroundOptions}
               onChange={(value) => setAttributes({ backgroundColor: value })}
             />
             <SelectControl
-              label={__('Text Color', 'tailwind-starter')}
+              label={__('Text Color', 'my-tailwind-starter')}
               value={textColor}
               options={textColorOptions}
               onChange={(value) => setAttributes({ textColor: value })}
@@ -53,21 +53,21 @@ registerBlockType('tailwind-starter/sample-block', {
               tagName="h2"
               value={title}
               onChange={(value) => setAttributes({ title: value })}
-              placeholder={__('Enter title...', 'tailwind-starter')}
+              placeholder={__('Enter title...', 'my-tailwind-starter')}
               className="text-2xl font-bold mb-4"
             />
             <RichText
               tagName="p"
               value={content}
               onChange={(value) => setAttributes({ content: value })}
-              placeholder={__('Enter content...', 'tailwind-starter')}
+              placeholder={__('Enter content...', 'my-tailwind-starter')}
               className="text-lg mb-6 leading-relaxed"
             />
             <RichText
               tagName="span"
               value={buttonText}
               onChange={(value) => setAttributes({ buttonText: value })}
-              placeholder={__('Button text...', 'tailwind-starter')}
+              placeholder={__('Button text...', 'my-tailwind-starter')}
               className="btn-primary"
             />
           </div>

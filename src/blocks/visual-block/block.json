@@ -1,0 +1,53 @@
+{
+  "name": "tailwind-starter/visual-block",
+  "title": "Tailwind Visual Builder",
+  "description": "Professional visual builder with complete Tailwind CSS controls for non-technical users",
+  "category": "tailwind-starter",
+  "icon": "admin-customizer",
+  "keywords": ["tailwind", "visual", "builder", "responsive", "design"],
+  "supports": {
+    "html": false,
+    "align": ["wide", "full"],
+    "anchor": true,
+    "customClassName": true
+  },
+  "attributes": {
+    "title": {
+      "type": "string",
+      "default": "Your Awesome Title"
+    },
+    "content": {
+      "type": "string", 
+      "default": "Create beautiful, responsive designs with visual controls. No coding required - just point, click, and style!"
+    },
+    "buttonText": {
+      "type": "string",
+      "default": "Get Started"
+    },
+    "buttonUrl": {
+      "type": "string", 
+      "default": ""
+    },
+    "settings": {
+      "type": "object",
+      "default": {
+        "spacing": {
+          "base": { "top": 4, "right": 4, "bottom": 4, "left": 4 }
+        },
+        "typography": {
+          "base": { "fontSize": "text-base", "fontWeight": "font-normal", "textAlign": "text-left" }
+        },
+        "backgroundColor": "bg-white",
+        "textColor": "text-gray-900"
+      }
+    },
+    "activeDevice": {
+      "type": "string",
+      "default": "base"
+    }
+  },
+  "textdomain": "tailwind-starter",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./editor.css",
+  "style": "file:./style.css"
+}

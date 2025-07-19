@@ -1,13 +1,13 @@
 {
   "$schema": "https://schemas.wp.org/trunk/block.json",
   "apiVersion": 3,
-  "name": "tailwind-starter/sample-block",
+  "name": "tailwind-starter/hero-block",
   "version": "1.0.0",
-  "title": "Sample Block",
+  "title": "Hero Block",
   "category": "tailwind-starter",
-  "icon": "heart",
-  "description": "A sample block with Tailwind CSS styling",
-  "keywords": ["sample", "tailwind", "custom"],
+  "icon": "cover-image",
+  "description": "A hero section with background image, title, subtitle, and CTA button",
+  "keywords": ["hero", "banner", "header", "cta"],
   "supports": {
     "html": false,
     "anchor": true,
@@ -29,27 +29,31 @@
   "attributes": {
     "title": {
       "type": "string",
-      "default": "Hello World"
+      "default": "Welcome to Our Amazing Site"
     },
-    "content": {
+    "subtitle": {
       "type": "string",
-      "default": "This is a sample block with Tailwind CSS styling."
+      "default": "Discover amazing features and beautiful design with our modern WordPress theme"
     },
     "buttonText": {
       "type": "string",
-      "default": "Learn More"
+      "default": "Get Started"
     },
     "buttonUrl": {
       "type": "string",
       "default": ""
     },
-    "backgroundColor": {
-      "type": "string",
-      "default": "bg-white"
+    "backgroundImage": {
+      "type": "object",
+      "default": null
     },
-    "textColor": {
+    "overlayOpacity": {
+      "type": "number",
+      "default": 0.5
+    },
+    "textAlignment": {
       "type": "string",
-      "default": "text-gray-900"
+      "default": "center"
     }
   },
   "textdomain": "tailwind-starter",
