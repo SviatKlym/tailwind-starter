@@ -70,3 +70,29 @@ function my_tailwind_starter_register_block_patterns() {
     }
 }
 add_action('init', 'my_tailwind_starter_register_block_patterns');
+
+// Enqueue editor styles including visual controls CSS
+function my_tailwind_starter_editor_assets() {
+    // Enqueue main Tailwind CSS for editor
+    $css_file = get_template_directory() . '/build/main.css';
+    if (file_exists($css_file)) {
+        wp_enqueue_style(
+            'tailwind-starter-editor-style',
+            get_template_directory_uri() . '/build/main.css',
+            [],
+            filemtime($css_file)
+        );
+    }
+    
+    // Enqueue the visual controls CSS for dynamic classes in editor
+    $visual_controls_css = get_template_directory() . '/src/visual-controls.css';
+    if (file_exists($visual_controls_css)) {
+        wp_enqueue_style(
+            'tailwind-starter-visual-controls-editor',
+            get_template_directory_uri() . '/src/visual-controls.css',
+            ['tailwind-starter-editor-style'],
+            filemtime($visual_controls_css)
+        );
+    }
+}
+add_action('enqueue_block_editor_assets', 'my_tailwind_starter_editor_assets');

@@ -1,5 +1,48 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+  content: [
+    './**/*.php',
+    './src/**/*.js',
+    './src/**/*.jsx',
+    './build/**/*.js',
+    './inc/**/*.php',
+    './template-parts/**/*.php',
+    // Include our visual controls CSS to ensure all classes are available
+    './src/visual-controls.css'
+  ],
+  safelist: [
+    // Ensure dynamic classes are never purged
+    {
+      pattern: /^(bg|text|border)-(slate|gray|zinc|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose)-(50|100|200|300|400|500|600|700|800|900|950)$/,
+    },
+    {
+      pattern: /^(p|m|pt|pr|pb|pl|mt|mr|mb|ml)-(0|1|2|3|4|5|6|8|10|12|16|20|24|32|40|48|56|64)$/,
+    },
+    {
+      pattern: /^text-(xs|sm|base|lg|xl|2xl|3xl|4xl|5xl|6xl|7xl|8xl|9xl)$/,
+    },
+    {
+      pattern: /^font-(thin|extralight|light|normal|medium|semibold|bold|extrabold|black)$/,
+    },
+    {
+      pattern: /^text-(left|center|right|justify)$/,
+    },
+    {
+      pattern: /^(sm|md|lg|xl|2xl):(bg|text|border)-(slate|gray|zinc|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose)-(50|100|200|300|400|500|600|700|800|900|950)$/,
+    },
+    {
+      pattern: /^(sm|md|lg|xl|2xl):(p|m|pt|pr|pb|pl|mt|mr|mb|ml)-(0|1|2|3|4|5|6|8|10|12|16|20|24|32|40|48|56|64)$/,
+    },
+    {
+      pattern: /^(sm|md|lg|xl|2xl):text-(xs|sm|base|lg|xl|2xl|3xl|4xl|5xl|6xl|7xl|8xl|9xl)$/,
+    },
+    {
+      pattern: /^(sm|md|lg|xl|2xl):font-(thin|extralight|light|normal|medium|semibold|bold|extrabold|black)$/,
+    },
+    {
+      pattern: /^(sm|md|lg|xl|2xl):text-(left|center|right|justify)$/,
+    }
+  ],
   theme: {
     extend: {
       colors: {

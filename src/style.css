@@ -1,8 +1,10 @@
 @import "tailwindcss";
 
-/* Configure Tailwind to scan PHP files */
+/* Configure Tailwind to scan all relevant files */
 @source "../*.php";
 @source "../src/blocks/**/*.php";
+@source "../src/blocks/**/*.js";
+@source "../src/utils/**/*.js";
 @source "../template-parts/**/*.php";
 @source "../inc/**/*.php";
 
