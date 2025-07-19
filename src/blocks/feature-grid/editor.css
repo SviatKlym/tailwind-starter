@@ -1,0 +1,68 @@
+/* Feature Grid Editor Styles */
+.wp-block-tailwind-starter-feature-grid {
+  border: 2px dashed #e2e8f0;
+  border-radius: 8px;
+  margin: 1rem 0;
+}
+
+.wp-block-tailwind-starter-feature-grid:hover {
+  border-color: #3b82f6;
+}
+
+/* Editor-specific feature item styling */
+.wp-block-tailwind-starter-feature-grid .relative.group {
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  position: relative;
+}
+
+.wp-block-tailwind-starter-feature-grid .relative.group:hover {
+  border-color: #3b82f6;
+}
+
+/* Editor controls styling */
+.wp-block-tailwind-starter-feature-grid .components-text-control__input {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 8px;
+  width: 100%;
+}
+
+.wp-block-tailwind-starter-feature-grid .components-textarea-control__input {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 8px;
+  width: 100%;
+  min-height: 80px;
+}
+
+/* Icon editing area */
+.wp-block-tailwind-starter-feature-grid .bg-gray-50.rounded {
+  border: 1px dashed #d1d5db;
+}
+
+/* Delete button styling */
+.wp-block-tailwind-starter-feature-grid .components-button.is-destructive {
+  background: #fee2e2;
+  color: #dc2626;
+  border-radius: 4px;
+  padding: 4px;
+}
+
+.wp-block-tailwind-starter-feature-grid .components-button.is-destructive:hover {
+  background: #fecaca;
+}
+
+/* Add button styling */
+.wp-block-tailwind-starter-feature-grid .components-button.is-primary {
+  margin-top: 1rem;
+}
+
+/* Placeholder styling */
+.wp-block-tailwind-starter-feature-grid .components-placeholder {
+  background: #f9fafb;
+  border: 2px dashed #d1d5db;
+  border-radius: 8px;
+  padding: 2rem;
+  text-align: center;
+}

@@ -96,3 +96,5 @@ function my_tailwind_starter_editor_assets() {
     }
 }
 add_action('enqueue_block_editor_assets', 'my_tailwind_starter_editor_assets');
+
+// AssetController handles block registration automatically
