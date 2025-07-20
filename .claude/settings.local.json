@@ -15,7 +15,12 @@
       "Bash(npx vite:*)",
       "Bash(grep:*)",
       "WebFetch(domain:gutenberg.10up.com)",
-      "Bash(rg:*)"
+      "Bash(rg:*)",
+      "WebFetch(domain:uptimerobot.com)",
+      "WebFetch(domain:geotargetly.com)",
+      "WebFetch(domain:touchstay.com)",
+      "WebFetch(domain:www.deadlinefunnel.com)",
+      "WebFetch(domain:www.warmupinbox.com)"
     ],
     "deny": []
   }

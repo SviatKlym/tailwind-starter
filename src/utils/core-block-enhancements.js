@@ -45,16 +45,59 @@ function addVisualAttributes(settings, name) {
         type: 'object',
         default: {
           spacing: {
-            base: { top: 0, right: 0, bottom: 0, left: 0 }
+            base: { top: 0, right: 0, bottom: 0, left: 0 },
+            sm: { top: 0, right: 0, bottom: 0, left: 0 },
+            md: { top: 0, right: 0, bottom: 0, left: 0 },
+            lg: { top: 0, right: 0, bottom: 0, left: 0 },
+            xl: { top: 0, right: 0, bottom: 0, left: 0 }
           },
           typography: {
-            base: { fontSize: '', fontWeight: '', textAlign: '' }
+            base: { fontSize: '', fontWeight: '', textAlign: '' },
+            sm: { fontSize: '', fontWeight: '', textAlign: '' },
+            md: { fontSize: '', fontWeight: '', textAlign: '' },
+            lg: { fontSize: '', fontWeight: '', textAlign: '' },
+            xl: { fontSize: '', fontWeight: '', textAlign: '' }
           },
           layout: {
             base: { 
               width: '', 
               height: '',
-              customWidth: '',
+              customMaxWidth: '',
+              customMinWidth: '',
+              customHeight: '',
+              customMaxHeight: '',
+              customMinHeight: ''
+            },
+            sm: { 
+              width: '', 
+              height: '',
+              customMaxWidth: '',
+              customMinWidth: '',
+              customHeight: '',
+              customMaxHeight: '',
+              customMinHeight: ''
+            },
+            md: { 
+              width: '', 
+              height: '',
+              customMaxWidth: '',
+              customMinWidth: '',
+              customHeight: '',
+              customMaxHeight: '',
+              customMinHeight: ''
+            },
+            lg: { 
+              width: '', 
+              height: '',
+              customMaxWidth: '',
+              customMinWidth: '',
+              customHeight: '',
+              customMaxHeight: '',
+              customMinHeight: ''
+            },
+            xl: { 
+              width: '', 
+              height: '',
               customMaxWidth: '',
               customMinWidth: '',
               customHeight: '',

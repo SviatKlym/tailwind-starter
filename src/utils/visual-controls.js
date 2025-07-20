@@ -565,7 +565,7 @@ export const UltimateColorPicker = ({
 
 // Enhanced Typography Control
 export const UltimateTypographyControl = ({ value = {}, onChange, device = 'base' }) => {
-  const currentTypo = value[device] || {}
+  const currentTypo = value[device] || { fontSize: '', fontWeight: '', textAlign: '' }
 
   const fontSizes = [
     { name: 'XS', class: 'text-xs', preview: '12px' },
@@ -672,7 +672,16 @@ export const UltimateTypographyControl = ({ value = {}, onChange, device = 'base
 
 // Ultimate Layout Control
 export const UltimateLayoutControl = ({ value = {}, onChange, device = 'base' }) => {
-  const deviceLayout = value[device] || {}
+  // Ensure device layout exists with default values
+  const deviceLayout = value[device] || {
+    width: '',
+    height: '',
+    customMaxWidth: '',
+    customMinWidth: '',
+    customHeight: '',
+    customMaxHeight: '',
+    customMinHeight: ''
+  }
   
   const quickWidthOptions = [
     { name: '25%', class: 'w-1/4' },
@@ -700,13 +709,15 @@ export const UltimateLayoutControl = ({ value = {}, onChange, device = 'base' })
   ]
   
   const updateLayout = (property, newValue) => {
-    onChange({
+    const newLayoutValue = {
       ...value, 
       [device]: {
         ...deviceLayout,
         [property]: newValue
       }
-    })
+    }
+    
+    onChange(newLayoutValue)
   }
   
   // Helper function to generate custom class
@@ -741,19 +752,6 @@ export const UltimateLayoutControl = ({ value = {}, onChange, device = 'base' })
           </button>
         ))}
       </div>
-      
-      {/* Custom Width Input */}
-      <Text size="12px" weight="600" style={{ margin: '16px 0 8px 0', display: 'block', color: '#374151' }}>
-        Custom Width
-      </Text>
-      <TextControl
-        placeholder="e.g. 600px, 70vw, 20rem"
-        value={deviceLayout.customWidth || ''}
-        onChange={(customValue) => {
-          updateLayout('customWidth', customValue)
-        }}
-        help="Enter custom values like 600px, 70vw, 20rem"
-      />
       
       {/* Max Width - Custom Only */}
       <Text size="12px" weight="600" style={{ margin: '16px 0 8px 0', display: 'block', color: '#374151' }}>
@@ -1036,7 +1034,6 @@ export const generateInlineStyles = (settings, device = 'base') => {
   if (settings.layout?.[device]) {
     const layout = settings.layout[device]
     
-    if (layout.customWidth) styles.width = layout.customWidth
     if (layout.customMaxWidth) styles.maxWidth = layout.customMaxWidth
     if (layout.customMinWidth) styles.minWidth = layout.customMinWidth
     if (layout.customHeight) styles.height = layout.customHeight
