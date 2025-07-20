@@ -12,6 +12,9 @@ require_once get_template_directory() . '/inc/assets.php';
 // Block Management
 require_once get_template_directory() . '/inc/blocks.php';
 
+// Core Block Enhancements
+require_once get_template_directory() . '/inc/core-block-enhancements.php';
+
 // Image Sizes
 require_once get_template_directory() . '/inc/image-sizes.php';
 

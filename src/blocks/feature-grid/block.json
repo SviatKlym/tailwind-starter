@@ -71,6 +71,23 @@
     "padding": {
       "type": "string",
       "default": "large"
+    },
+    "settings": {
+      "type": "object",
+      "default": {
+        "spacing": {
+          "base": { "top": 6, "right": 6, "bottom": 6, "left": 6 }
+        },
+        "typography": {
+          "base": { "fontSize": "text-lg", "fontWeight": "font-medium", "textAlign": "text-center" }
+        },
+        "backgroundColor": "bg-white",
+        "textColor": "text-gray-900"
+      }
+    },
+    "activeDevice": {
+      "type": "string",
+      "default": "base"
     }
   },
   "example": {

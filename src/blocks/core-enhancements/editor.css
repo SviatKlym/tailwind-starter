@@ -1,0 +1,13 @@
+/**
+ * Core Block Enhancements Editor Styles
+ * 
+ * This file imports the core block enhancement styles for the editor.
+ */
+
+/* Import visual controls CSS */
+@import "../../visual-controls.css";
+
+/* Hide the core-enhancements block from the inserter (it should never be inserted) */
+.block-editor-inserter__results .editor-block-list-item-tailwind-starter-core-enhancements {
+  display: none !important;
+}

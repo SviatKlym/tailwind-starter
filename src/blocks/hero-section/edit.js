@@ -1,3 +1,4 @@
+import React from 'react'
 import { 
   useBlockProps, 
   RichText, 
@@ -15,6 +16,12 @@ import {
   __experimentalVStack as VStack
 } from '@wordpress/components'
 import { __ } from '@wordpress/i18n'
+import { 
+  UltimateDeviceSelector,
+  UltimateControlTabs,
+  generateTailwindClasses,
+  generateAllClasses
+} from '../../utils/visual-controls.js'
 
 export default function Edit({ attributes, setAttributes }) {
   const {
@@ -31,11 +38,68 @@ export default function Edit({ attributes, setAttributes }) {
     showTrustBar,
     trustLogos,
     trustText,
-    padding
+    padding,
+    settings,
+    activeDevice
   } = attributes
 
+  // Enhanced preset styles for hero sections
+  const presets = {
+    classic: {
+      spacing: { base: { top: 8, right: 4, bottom: 8, left: 4 } },
+      typography: { base: { fontSize: 'text-2xl', fontWeight: 'font-bold', textAlign: 'text-center' } },
+      backgroundColor: 'bg-white',
+      textColor: 'text-gray-900'
+    },
+    modern: {
+      spacing: { base: { top: 12, right: 6, bottom: 12, left: 6 } },
+      typography: { base: { fontSize: 'text-3xl', fontWeight: 'font-bold', textAlign: 'text-center' } },
+      backgroundColor: 'bg-blue-600',
+      textColor: 'text-white'
+    },
+    minimal: {
+      spacing: { base: { top: 6, right: 4, bottom: 6, left: 4 } },
+      typography: { base: { fontSize: 'text-2xl', fontWeight: 'font-normal', textAlign: 'text-left' } },
+      backgroundColor: 'bg-gray-50',
+      textColor: 'text-gray-900'
+    },
+    bold: {
+      spacing: { base: { top: 16, right: 8, bottom: 16, left: 8 } },
+      typography: { base: { fontSize: 'text-4xl', fontWeight: 'font-bold', textAlign: 'text-center' } },
+      backgroundColor: 'bg-black',
+      textColor: 'text-white'
+    },
+    gradient: {
+      spacing: { base: { top: 12, right: 6, bottom: 12, left: 6 } },
+      typography: { base: { fontSize: 'text-3xl', fontWeight: 'font-bold', textAlign: 'text-center' } },
+      backgroundColor: 'bg-gradient-to-r from-purple-600 to-blue-600',
+      textColor: 'text-white'
+    },
+    soft: {
+      spacing: { base: { top: 8, right: 6, bottom: 8, left: 6 } },
+      typography: { base: { fontSize: 'text-2xl', fontWeight: 'font-medium', textAlign: 'text-center' } },
+      backgroundColor: 'bg-blue-50',
+      textColor: 'text-blue-900'
+    }
+  }
+
+  const handlePresetApply = (presetName) => {
+    const preset = presets[presetName]
+    if (preset) {
+      setAttributes({ settings: preset })
+    }
+  }
+
+  // Generate classes for all devices
+  const allClasses = generateAllClasses(settings)
+
+  // Generate preview classes (just base for editor)
+  const previewClasses = generateTailwindClasses(settings, 'base')
+
   const blockProps = useBlockProps({
-    className: `hero-section hero-section--${layout} ${backgroundColor} ${textColor}`
+    className: `hero-section hero-section--${layout} ${backgroundColor} ${textColor} ${previewClasses}`,
+    'data-classes': previewClasses,
+    'data-all-classes': allClasses
   })
 
   const layoutOptions = [
@@ -236,7 +300,51 @@ export default function Edit({ attributes, setAttributes }) {
   return (
     <>
       <InspectorControls>
-        <PanelBody title={__('Layout Settings', 'tailwind-starter')} initialOpen={true}>
+        {/* Device Selector */}
+        <PanelBody title={__('📱 Responsive Design', 'tailwind-starter')} initialOpen={true}>
+          <UltimateDeviceSelector
+            activeDevice={activeDevice}
+            onChange={(device) => setAttributes({ activeDevice: device })}
+          />
+          <div style={{ 
+            background: '#f0f9ff', 
+            border: '1px solid #bae6fd', 
+            borderRadius: '8px', 
+            padding: '12px', 
+            margin: '12px 0',
+            fontSize: '12px',
+            color: '#1e40af'
+          }}>
+            <strong>💡 Pro Tip:</strong> Start with "All" devices for your base design, then customize for mobile/tablet as needed!
+          </div>
+        </PanelBody>
+
+        {/* Ultimate Visual Controls */}
+        <PanelBody title={__('🎨 Visual Design Studio', 'tailwind-starter')} initialOpen={true}>
+          <UltimateControlTabs
+            spacing={settings.spacing || {}}
+            onSpacingChange={(spacing) => setAttributes({
+              settings: { ...settings, spacing }
+            })}
+            background={settings.backgroundColor}
+            onBackgroundChange={(backgroundColor) => setAttributes({
+              settings: { ...settings, backgroundColor }
+            })}
+            textColor={settings.textColor}
+            onTextColorChange={(textColor) => setAttributes({
+              settings: { ...settings, textColor }
+            })}
+            typography={settings.typography || {}}
+            onTypographyChange={(typography) => setAttributes({
+              settings: { ...settings, typography }
+            })}
+            device={activeDevice}
+            presets={presets}
+            onPresetApply={handlePresetApply}
+          />
+        </PanelBody>
+
+        <PanelBody title={__('Layout Settings', 'tailwind-starter')} initialOpen={false}>
           <SelectControl
             label={__('Layout Type', 'tailwind-starter')}
             value={layout}
@@ -365,10 +473,53 @@ export default function Edit({ attributes, setAttributes }) {
             />
           )}
         </PanelBody>
+
+        {/* Advanced Info */}
+        <PanelBody title={__('🚀 Advanced', 'tailwind-starter')} initialOpen={false}>
+          <div style={{
+            background: '#f0f9ff',
+            border: '1px solid #bae6fd',
+            borderRadius: '6px',
+            padding: '12px',
+            fontSize: '12px'
+          }}>
+            <strong>💎 Generated Classes:</strong>
+            <br />
+            <code style={{ wordBreak: 'break-all', fontSize: '10px' }}>
+              {allClasses || 'No custom styles yet'}
+            </code>
+          </div>
+        </PanelBody>
       </InspectorControls>
 
       <div {...blockProps}>
-        {renderLayout()}
+        <div 
+          className={`hero-section-container transition-all duration-300 ${previewClasses}`}
+          style={{ 
+            position: 'relative',
+            border: '2px dashed #e5e7eb',
+            borderRadius: '8px'
+          }}
+        >
+          {/* Device indicator */}
+          <div style={{
+            position: 'absolute',
+            top: '6px',
+            right: '6px',
+            background: 'rgba(59, 130, 246, 0.9)',
+            color: 'white',
+            padding: '2px 6px',
+            borderRadius: '10px',
+            fontSize: '9px',
+            fontWeight: '600',
+            pointerEvents: 'none',
+            zIndex: 10
+          }}>
+            {activeDevice === 'base' ? '🖥️ ALL' : `📱 ${activeDevice.toUpperCase()}`}
+          </div>
+          
+          {renderLayout()}
+        </div>
       </div>
     </>
   )

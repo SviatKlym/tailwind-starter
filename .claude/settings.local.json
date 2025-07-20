@@ -13,7 +13,9 @@
       "Bash(cp:*)",
       "Bash(ls:*)",
       "Bash(npx vite:*)",
-      "Bash(grep:*)"
+      "Bash(grep:*)",
+      "WebFetch(domain:gutenberg.10up.com)",
+      "Bash(rg:*)"
     ],
     "deny": []
   }

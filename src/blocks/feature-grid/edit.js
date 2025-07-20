@@ -1,3 +1,4 @@
+import React from 'react'
 import { 
   useBlockProps, 
   RichText, 
@@ -15,6 +16,12 @@ import {
 } from '@wordpress/components'
 import { __ } from '@wordpress/i18n'
 import { plus, trash } from '@wordpress/icons'
+import { 
+  UltimateDeviceSelector,
+  UltimateControlTabs,
+  generateTailwindClasses,
+  generateAllClasses
+} from '../../utils/visual-controls.js'
 
 export default function Edit({ attributes, setAttributes }) {
   const {
@@ -27,11 +34,68 @@ export default function Edit({ attributes, setAttributes }) {
     sectionTitle,
     sectionSubtitle,
     showSection,
-    padding
+    padding,
+    settings,
+    activeDevice
   } = attributes
 
+  // Enhanced preset styles for feature grids
+  const presets = {
+    modern: {
+      spacing: { base: { top: 6, right: 6, bottom: 6, left: 6 } },
+      typography: { base: { fontSize: 'text-lg', fontWeight: 'font-medium', textAlign: 'text-center' } },
+      backgroundColor: 'bg-white',
+      textColor: 'text-gray-900'
+    },
+    card: {
+      spacing: { base: { top: 8, right: 6, bottom: 8, left: 6 } },
+      typography: { base: { fontSize: 'text-base', fontWeight: 'font-normal', textAlign: 'text-center' } },
+      backgroundColor: 'bg-gray-50',
+      textColor: 'text-gray-800'
+    },
+    highlight: {
+      spacing: { base: { top: 8, right: 8, bottom: 8, left: 8 } },
+      typography: { base: { fontSize: 'text-lg', fontWeight: 'font-semibold', textAlign: 'text-center' } },
+      backgroundColor: 'bg-blue-50',
+      textColor: 'text-blue-900'
+    },
+    minimal: {
+      spacing: { base: { top: 4, right: 4, bottom: 4, left: 4 } },
+      typography: { base: { fontSize: 'text-sm', fontWeight: 'font-normal', textAlign: 'text-left' } },
+      backgroundColor: 'bg-white',
+      textColor: 'text-gray-700'
+    },
+    bold: {
+      spacing: { base: { top: 10, right: 8, bottom: 10, left: 8 } },
+      typography: { base: { fontSize: 'text-xl', fontWeight: 'font-bold', textAlign: 'text-center' } },
+      backgroundColor: 'bg-gray-900',
+      textColor: 'text-white'
+    },
+    soft: {
+      spacing: { base: { top: 6, right: 6, bottom: 6, left: 6 } },
+      typography: { base: { fontSize: 'text-base', fontWeight: 'font-medium', textAlign: 'text-center' } },
+      backgroundColor: 'bg-green-50',
+      textColor: 'text-green-900'
+    }
+  }
+
+  const handlePresetApply = (presetName) => {
+    const preset = presets[presetName]
+    if (preset) {
+      setAttributes({ settings: preset })
+    }
+  }
+
+  // Generate classes for all devices
+  const allClasses = generateAllClasses(settings)
+
+  // Generate preview classes (just base for editor)
+  const previewClasses = generateTailwindClasses(settings, 'base')
+
   const blockProps = useBlockProps({
-    className: `feature-grid ${backgroundColor}`
+    className: `feature-grid ${backgroundColor} ${previewClasses}`,
+    'data-classes': previewClasses,
+    'data-all-classes': allClasses
   })
 
   const columnOptions = [
@@ -211,7 +275,51 @@ export default function Edit({ attributes, setAttributes }) {
   return (
     <>
       <InspectorControls>
-        <PanelBody title={__('Layout Settings', 'tailwind-starter')} initialOpen={true}>
+        {/* Device Selector */}
+        <PanelBody title={__('📱 Responsive Design', 'tailwind-starter')} initialOpen={true}>
+          <UltimateDeviceSelector
+            activeDevice={activeDevice}
+            onChange={(device) => setAttributes({ activeDevice: device })}
+          />
+          <div style={{ 
+            background: '#f0f9ff', 
+            border: '1px solid #bae6fd', 
+            borderRadius: '8px', 
+            padding: '12px', 
+            margin: '12px 0',
+            fontSize: '12px',
+            color: '#1e40af'
+          }}>
+            <strong>💡 Pro Tip:</strong> Start with "All" devices for your base design, then customize for mobile/tablet as needed!
+          </div>
+        </PanelBody>
+
+        {/* Ultimate Visual Controls */}
+        <PanelBody title={__('🎨 Visual Design Studio', 'tailwind-starter')} initialOpen={true}>
+          <UltimateControlTabs
+            spacing={settings.spacing || {}}
+            onSpacingChange={(spacing) => setAttributes({
+              settings: { ...settings, spacing }
+            })}
+            background={settings.backgroundColor}
+            onBackgroundChange={(backgroundColor) => setAttributes({
+              settings: { ...settings, backgroundColor }
+            })}
+            textColor={settings.textColor}
+            onTextColorChange={(textColor) => setAttributes({
+              settings: { ...settings, textColor }
+            })}
+            typography={settings.typography || {}}
+            onTypographyChange={(typography) => setAttributes({
+              settings: { ...settings, typography }
+            })}
+            device={activeDevice}
+            presets={presets}
+            onPresetApply={handlePresetApply}
+          />
+        </PanelBody>
+
+        <PanelBody title={__('Layout Settings', 'tailwind-starter')} initialOpen={false}>
           <VStack spacing={4}>
             <RangeControl
               label={__('Columns', 'tailwind-starter')}
@@ -298,10 +406,51 @@ export default function Edit({ attributes, setAttributes }) {
             {__('Click on features below to edit them, or use the controls above to change the layout.', 'tailwind-starter')}
           </p>
         </PanelBody>
+
+        {/* Advanced Info */}
+        <PanelBody title={__('🚀 Advanced', 'tailwind-starter')} initialOpen={false}>
+          <div style={{
+            background: '#f0f9ff',
+            border: '1px solid #bae6fd',
+            borderRadius: '6px',
+            padding: '12px',
+            fontSize: '12px'
+          }}>
+            <strong>💎 Generated Classes:</strong>
+            <br />
+            <code style={{ wordBreak: 'break-all', fontSize: '10px' }}>
+              {allClasses || 'No custom styles yet'}
+            </code>
+          </div>
+        </PanelBody>
       </InspectorControls>
 
       <div {...blockProps}>
-        <div className={`${getPaddingClass(padding)}`}>
+        <div 
+          className={`feature-grid-container transition-all duration-300 ${previewClasses} ${getPaddingClass(padding)}`}
+          style={{ 
+            position: 'relative',
+            border: '2px dashed #e5e7eb',
+            borderRadius: '8px'
+          }}
+        >
+          {/* Device indicator */}
+          <div style={{
+            position: 'absolute',
+            top: '6px',
+            right: '6px',
+            background: 'rgba(59, 130, 246, 0.9)',
+            color: 'white',
+            padding: '2px 6px',
+            borderRadius: '10px',
+            fontSize: '9px',
+            fontWeight: '600',
+            pointerEvents: 'none',
+            zIndex: 10
+          }}>
+            {activeDevice === 'base' ? '🖥️ ALL' : `📱 ${activeDevice.toUpperCase()}`}
+          </div>
+          
           <div className="container mx-auto px-4">
             {showSection && (
               <div className="text-center mb-12">

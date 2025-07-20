@@ -79,6 +79,23 @@
         "top": "large",
         "bottom": "large"
       }
+    },
+    "settings": {
+      "type": "object",
+      "default": {
+        "spacing": {
+          "base": { "top": 8, "right": 4, "bottom": 8, "left": 4 }
+        },
+        "typography": {
+          "base": { "fontSize": "text-2xl", "fontWeight": "font-bold", "textAlign": "text-center" }
+        },
+        "backgroundColor": "bg-white",
+        "textColor": "text-gray-900"
+      }
+    },
+    "activeDevice": {
+      "type": "string",
+      "default": "base"
     }
   },
   "example": {
