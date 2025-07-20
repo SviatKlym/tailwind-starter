@@ -52,11 +52,26 @@ function addVisualAttributes(settings, name) {
             xl: { top: 0, right: 0, bottom: 0, left: 0 }
           },
           typography: {
-            base: { fontSize: '', fontWeight: '', textAlign: '' },
-            sm: { fontSize: '', fontWeight: '', textAlign: '' },
-            md: { fontSize: '', fontWeight: '', textAlign: '' },
-            lg: { fontSize: '', fontWeight: '', textAlign: '' },
-            xl: { fontSize: '', fontWeight: '', textAlign: '' }
+            base: { 
+              fontSize: '', fontWeight: '', textAlign: '', 
+              lineHeight: '', letterSpacing: '', textTransform: '', fontSmoothing: '' 
+            },
+            sm: { 
+              fontSize: '', fontWeight: '', textAlign: '', 
+              lineHeight: '', letterSpacing: '', textTransform: '', fontSmoothing: '' 
+            },
+            md: { 
+              fontSize: '', fontWeight: '', textAlign: '', 
+              lineHeight: '', letterSpacing: '', textTransform: '', fontSmoothing: '' 
+            },
+            lg: { 
+              fontSize: '', fontWeight: '', textAlign: '', 
+              lineHeight: '', letterSpacing: '', textTransform: '', fontSmoothing: '' 
+            },
+            xl: { 
+              fontSize: '', fontWeight: '', textAlign: '', 
+              lineHeight: '', letterSpacing: '', textTransform: '', fontSmoothing: '' 
+            }
           },
           layout: {
             base: { 
@@ -69,7 +84,9 @@ function addVisualAttributes(settings, name) {
               customMinHeight: '',
               gap: '',
               justifyContent: '',
-              alignItems: ''
+              alignItems: '',
+              position: '',
+              zIndex: ''
             },
             sm: { 
               width: '', 
@@ -81,7 +98,9 @@ function addVisualAttributes(settings, name) {
               customMinHeight: '',
               gap: '',
               justifyContent: '',
-              alignItems: ''
+              alignItems: '',
+              position: '',
+              zIndex: ''
             },
             md: { 
               width: '', 
@@ -93,7 +112,9 @@ function addVisualAttributes(settings, name) {
               customMinHeight: '',
               gap: '',
               justifyContent: '',
-              alignItems: ''
+              alignItems: '',
+              position: '',
+              zIndex: ''
             },
             lg: { 
               width: '', 
@@ -105,7 +126,9 @@ function addVisualAttributes(settings, name) {
               customMinHeight: '',
               gap: '',
               justifyContent: '',
-              alignItems: ''
+              alignItems: '',
+              position: '',
+              zIndex: ''
             },
             xl: { 
               width: '', 
@@ -117,7 +140,9 @@ function addVisualAttributes(settings, name) {
               customMinHeight: '',
               gap: '',
               justifyContent: '',
-              alignItems: ''
+              alignItems: '',
+              position: '',
+              zIndex: ''
             }
           },
           effects: {
@@ -165,6 +190,43 @@ function addVisualAttributes(settings, name) {
               borderColor: '',
               hoverScale: '',
               hoverShadow: ''
+            }
+          },
+          gradients: {
+            base: {
+              type: '',
+              direction: '',
+              fromColor: '',
+              toColor: '',
+              opacity: ''
+            },
+            sm: {
+              type: '',
+              direction: '',
+              fromColor: '',
+              toColor: '',
+              opacity: ''
+            },
+            md: {
+              type: '',
+              direction: '',
+              fromColor: '',
+              toColor: '',
+              opacity: ''
+            },
+            lg: {
+              type: '',
+              direction: '',
+              fromColor: '',
+              toColor: '',
+              opacity: ''
+            },
+            xl: {
+              type: '',
+              direction: '',
+              fromColor: '',
+              toColor: '',
+              opacity: ''
             }
           },
           backgroundColor: '',
@@ -267,6 +329,10 @@ const withVisualControls = createHigherOrderComponent((BlockEdit) => {
             effects: visualSettings.effects || {},
             onEffectsChange: (effects) => setAttributes({
               visualSettings: { ...visualSettings, effects }
+            }),
+            gradients: visualSettings.gradients || {},
+            onGradientsChange: (gradients) => setAttributes({
+              visualSettings: { ...visualSettings, gradients }
             }),
             device: activeDevice,
             presets: presets,

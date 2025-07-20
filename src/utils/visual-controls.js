@@ -584,7 +584,15 @@ export const UltimateColorPicker = ({
 
 // Enhanced Typography Control
 export const UltimateTypographyControl = ({ value = {}, onChange, device = 'base' }) => {
-  const currentTypo = value[device] || { fontSize: '', fontWeight: '', textAlign: '' }
+  const currentTypo = value[device] || { 
+    fontSize: '', 
+    fontWeight: '', 
+    textAlign: '',
+    lineHeight: '',
+    letterSpacing: '',
+    textTransform: '',
+    fontSmoothing: ''
+  }
 
   const fontSizes = [
     { name: 'XS', class: 'text-xs', preview: '12px' },
@@ -609,6 +617,36 @@ export const UltimateTypographyControl = ({ value = {}, onChange, device = 'base
     { name: 'Left', class: 'text-left', icon: '⬅️' },
     { name: 'Center', class: 'text-center', icon: '↔️' },
     { name: 'Right', class: 'text-right', icon: '➡️' }
+  ]
+
+  const lineHeights = [
+    { name: 'Tight', class: 'leading-tight' },
+    { name: 'Snug', class: 'leading-snug' },
+    { name: 'Normal', class: 'leading-normal' },
+    { name: 'Relaxed', class: 'leading-relaxed' },
+    { name: 'Loose', class: 'leading-loose' }
+  ]
+
+  const letterSpacings = [
+    { name: 'Tighter', class: 'tracking-tighter' },
+    { name: 'Tight', class: 'tracking-tight' },
+    { name: 'Normal', class: 'tracking-normal' },
+    { name: 'Wide', class: 'tracking-wide' },
+    { name: 'Wider', class: 'tracking-wider' },
+    { name: 'Widest', class: 'tracking-widest' }
+  ]
+
+  const textTransforms = [
+    { name: 'None', class: 'normal-case' },
+    { name: 'Uppercase', class: 'uppercase' },
+    { name: 'Lowercase', class: 'lowercase' },
+    { name: 'Capitalize', class: 'capitalize' }
+  ]
+
+  const fontSmoothings = [
+    { name: 'Default', class: '' },
+    { name: 'Antialiased', class: 'antialiased' },
+    { name: 'Subpixel', class: 'subpixel-antialiased' }
   ]
 
   const updateTypography = (property, newValue) => {
@@ -682,6 +720,70 @@ export const UltimateTypographyControl = ({ value = {}, onChange, device = 'base
             onClick={() => updateTypography('textAlign', align.class)}
           >
             {align.icon}
+          </button>
+        ))}
+      </div>
+
+      {/* Line Height */}
+      <Text size="12px" weight="600" style={{ margin: '16px 0 8px 0', display: 'block', color: '#374151' }}>
+        Line Height
+      </Text>
+      <div className="enhanced-button-grid">
+        {lineHeights.map(height => (
+          <button
+            key={height.class}
+            className={`enhanced-style-button ${currentTypo.lineHeight === height.class ? 'selected' : ''}`}
+            onClick={() => updateTypography('lineHeight', height.class)}
+          >
+            {height.name}
+          </button>
+        ))}
+      </div>
+
+      {/* Letter Spacing */}
+      <Text size="12px" weight="600" style={{ margin: '16px 0 8px 0', display: 'block', color: '#374151' }}>
+        Letter Spacing
+      </Text>
+      <div className="enhanced-button-grid">
+        {letterSpacings.map(spacing => (
+          <button
+            key={spacing.class}
+            className={`enhanced-style-button ${currentTypo.letterSpacing === spacing.class ? 'selected' : ''}`}
+            onClick={() => updateTypography('letterSpacing', spacing.class)}
+          >
+            {spacing.name}
+          </button>
+        ))}
+      </div>
+
+      {/* Text Transform */}
+      <Text size="12px" weight="600" style={{ margin: '16px 0 8px 0', display: 'block', color: '#374151' }}>
+        Text Transform
+      </Text>
+      <div className="enhanced-button-grid">
+        {textTransforms.map(transform => (
+          <button
+            key={transform.class}
+            className={`enhanced-style-button ${currentTypo.textTransform === transform.class ? 'selected' : ''}`}
+            onClick={() => updateTypography('textTransform', transform.class)}
+          >
+            {transform.name}
+          </button>
+        ))}
+      </div>
+
+      {/* Font Smoothing */}
+      <Text size="12px" weight="600" style={{ margin: '16px 0 8px 0', display: 'block', color: '#374151' }}>
+        Font Smoothing
+      </Text>
+      <div className="enhanced-button-grid">
+        {fontSmoothings.map(smoothing => (
+          <button
+            key={smoothing.class}
+            className={`enhanced-style-button ${currentTypo.fontSmoothing === smoothing.class ? 'selected' : ''}`}
+            onClick={() => updateTypography('fontSmoothing', smoothing.class)}
+          >
+            {smoothing.name}
           </button>
         ))}
       </div>
@@ -839,6 +941,162 @@ export const UltimateEffectsControl = ({ value = {}, onChange, device = 'base' }
   )
 }
 
+// Ultimate Colors Control - Background, Text, Gradients
+export const UltimateColorsControl = ({ 
+  background, 
+  onBackgroundChange, 
+  textColor, 
+  onTextColorChange,
+  gradients,
+  onGradientsChange,
+  device = 'base' 
+}) => {
+  const deviceGradients = gradients[device] || {
+    type: '',
+    direction: '',
+    fromColor: '',
+    toColor: '',
+    opacity: ''
+  }
+
+  const gradientTypes = [
+    { name: 'None', class: '' },
+    { name: 'Linear', class: 'bg-gradient-to-r' },
+    { name: 'To Bottom', class: 'bg-gradient-to-b' },
+    { name: 'To Top Right', class: 'bg-gradient-to-tr' },
+    { name: 'To Bottom Right', class: 'bg-gradient-to-br' },
+    { name: 'Radial', class: 'bg-gradient-radial' }
+  ]
+
+  const gradientColors = [
+    { name: 'Blue', from: 'from-blue-400', to: 'to-blue-600', preview: 'linear-gradient(to right, #60a5fa, #2563eb)' },
+    { name: 'Purple', from: 'from-purple-400', to: 'to-purple-600', preview: 'linear-gradient(to right, #c084fc, #9333ea)' },
+    { name: 'Green', from: 'from-green-400', to: 'to-green-600', preview: 'linear-gradient(to right, #4ade80, #16a34a)' },
+    { name: 'Pink', from: 'from-pink-400', to: 'to-pink-600', preview: 'linear-gradient(to right, #f472b6, #dc2626)' },
+    { name: 'Orange', from: 'from-orange-400', to: 'to-orange-600', preview: 'linear-gradient(to right, #fb923c, #ea580c)' },
+    { name: 'Teal', from: 'from-teal-400', to: 'to-teal-600', preview: 'linear-gradient(to right, #2dd4bf, #0d9488)' }
+  ]
+
+  const opacityOptions = [
+    { name: '100%', class: 'opacity-100' },
+    { name: '90%', class: 'opacity-90' },
+    { name: '80%', class: 'opacity-80' },
+    { name: '70%', class: 'opacity-70' },
+    { name: '50%', class: 'opacity-50' },
+    { name: '30%', class: 'opacity-30' }
+  ]
+
+  const updateGradients = (property, newValue) => {
+    const newGradientsValue = {
+      ...gradients,
+      [device]: {
+        ...deviceGradients,
+        [property]: newValue
+      }
+    }
+    onGradientsChange(newGradientsValue)
+  }
+
+  return (
+    <div className="animate-slide-in">
+      {/* Background Colors */}
+      <div className="section-header">
+        <span className="section-header-icon">🎨</span>
+        {__('Background Colors', 'tailwind-starter')}
+      </div>
+      
+      <UltimateColorPicker
+        label={__('Solid Background Color', 'tailwind-starter')}
+        value={background}
+        onChange={onBackgroundChange}
+        type="background"
+      />
+
+      {/* Gradient Backgrounds */}
+      <div className="section-header" style={{ marginTop: '32px' }}>
+        <span className="section-header-icon">🌈</span>
+        {__('Gradient Backgrounds', 'tailwind-starter')}
+      </div>
+
+      <Text size="12px" weight="600" style={{ margin: '12px 0 8px 0', display: 'block', color: '#374151' }}>
+        Gradient Type
+      </Text>
+      <div className="enhanced-button-grid">
+        {gradientTypes.map(option => (
+          <button
+            key={option.class}
+            className={`enhanced-style-button ${deviceGradients.type === option.class ? 'selected' : ''}`}
+            onClick={() => updateGradients('type', option.class)}
+          >
+            {option.name}
+          </button>
+        ))}
+      </div>
+
+      {deviceGradients.type && (
+        <>
+          <Text size="12px" weight="600" style={{ margin: '16px 0 8px 0', display: 'block', color: '#374151' }}>
+            Gradient Colors
+          </Text>
+          <div className="enhanced-button-grid">
+            {gradientColors.map(option => (
+              <button
+                key={option.name}
+                className={`enhanced-style-button ${deviceGradients.fromColor === option.from ? 'selected' : ''}`}
+                onClick={() => {
+                  updateGradients('fromColor', option.from)
+                  updateGradients('toColor', option.to)
+                }}
+                style={{ 
+                  background: option.preview,
+                  color: 'white',
+                  border: 'none'
+                }}
+              >
+                {option.name}
+              </button>
+            ))}
+          </div>
+        </>
+      )}
+
+      {/* Opacity Controls */}
+      <div className="section-header" style={{ marginTop: '32px' }}>
+        <span className="section-header-icon">👻</span>
+        {__('Opacity', 'tailwind-starter')}
+      </div>
+
+      <Text size="12px" weight="600" style={{ margin: '12px 0 8px 0', display: 'block', color: '#374151' }}>
+        Background Opacity
+      </Text>
+      <div className="enhanced-button-grid">
+        {opacityOptions.map(option => (
+          <button
+            key={option.class}
+            className={`enhanced-style-button ${deviceGradients.opacity === option.class ? 'selected' : ''}`}
+            onClick={() => updateGradients('opacity', option.class)}
+          >
+            {option.name}
+          </button>
+        ))}
+      </div>
+
+      {/* Text Colors */}
+      <div className="section-header" style={{ marginTop: '32px' }}>
+        <span className="section-header-icon">✏️</span>
+        {__('Text Colors', 'tailwind-starter')}
+      </div>
+      
+      <UltimateColorPicker
+        label={__('Text Color', 'tailwind-starter')}
+        value={textColor}
+        onChange={onTextColorChange}
+        type="text"
+      />
+    </div>
+  )
+}
+
 // Ultimate Layout Control
 export const UltimateLayoutControl = ({ value = {}, onChange, device = 'base' }) => {
   // Ensure device layout exists with default values
@@ -852,7 +1110,9 @@ export const UltimateLayoutControl = ({ value = {}, onChange, device = 'base' })
     customMinHeight: '',
     gap: '',
     justifyContent: '',
-    alignItems: ''
+    alignItems: '',
+    position: '',
+    zIndex: ''
   }
   
   const quickWidthOptions = [
@@ -897,6 +1157,24 @@ export const UltimateLayoutControl = ({ value = {}, onChange, device = 'base' })
     { name: 'End', class: 'items-end' },
     { name: 'Stretch', class: 'items-stretch' },
     { name: 'Baseline', class: 'items-baseline' }
+  ]
+
+  const positionOptions = [
+    { name: 'Static', class: 'static' },
+    { name: 'Relative', class: 'relative' },
+    { name: 'Absolute', class: 'absolute' },
+    { name: 'Fixed', class: 'fixed' },
+    { name: 'Sticky', class: 'sticky' }
+  ]
+
+  const zIndexOptions = [
+    { name: 'Auto', class: 'z-auto' },
+    { name: '0', class: 'z-0' },
+    { name: '10', class: 'z-10' },
+    { name: '20', class: 'z-20' },
+    { name: '30', class: 'z-30' },
+    { name: '40', class: 'z-40' },
+    { name: '50', class: 'z-50' }
   ]
   
   const maxWidthOptions = [
@@ -1093,6 +1371,44 @@ export const UltimateLayoutControl = ({ value = {}, onChange, device = 'base' })
           </button>
         ))}
       </div>
+
+      {/* Position Controls Section */}
+      <div className="section-header" style={{ marginTop: '32px' }}>
+        <span className="section-header-icon">📍</span>
+        {__('Position & Z-Index', 'tailwind-starter')}
+      </div>
+
+      {/* Position Type */}
+      <Text size="12px" weight="600" style={{ margin: '12px 0 8px 0', display: 'block', color: '#374151' }}>
+        Position Type
+      </Text>
+      <div className="enhanced-button-grid">
+        {positionOptions.map(option => (
+          <button
+            key={option.class}
+            className={`enhanced-style-button ${deviceLayout.position === option.class ? 'selected' : ''}`}
+            onClick={() => updateLayout('position', option.class)}
+          >
+            {option.name}
+          </button>
+        ))}
+      </div>
+
+      {/* Z-Index */}
+      <Text size="12px" weight="600" style={{ margin: '16px 0 8px 0', display: 'block', color: '#374151' }}>
+        Z-Index (Layer stacking)
+      </Text>
+      <div className="enhanced-button-grid">
+        {zIndexOptions.map(option => (
+          <button
+            key={option.class}
+            className={`enhanced-style-button ${deviceLayout.zIndex === option.class ? 'selected' : ''}`}
+            onClick={() => updateLayout('zIndex', option.class)}
+          >
+            {option.name}
+          </button>
+        ))}
+      </div>
     </div>
   )
 }
@@ -1105,6 +1421,8 @@ export const UltimateControlTabs = ({
   onBackgroundChange,
   textColor,
   onTextColorChange,
+  gradients,
+  onGradientsChange,
   typography,
   onTypographyChange,
   layout,
@@ -1217,20 +1535,15 @@ export const UltimateControlTabs = ({
             
             case 'colors':
               return (
-                <div>
-                  <UltimateColorPicker
-                    label={__('Background Color', 'tailwind-starter')}
-                    value={background}
-                    onChange={onBackgroundChange}
-                    type="background"
-                  />
-                  <UltimateColorPicker
-                    label={__('Text Color', 'tailwind-starter')}
-                    value={textColor}
-                    onChange={onTextColorChange}
-                    type="text"
-                  />
-                </div>
+                <UltimateColorsControl
+                  background={background}
+                  onBackgroundChange={onBackgroundChange}
+                  textColor={textColor}
+                  onTextColorChange={onTextColorChange}
+                  gradients={gradients}
+                  onGradientsChange={onGradientsChange}
+                  device={device}
+                />
               )
             
             case 'typography':
@@ -1280,6 +1593,10 @@ export const generateTailwindClasses = (settings, device = 'base') => {
     if (typo.fontSize) classes.push(`${prefix}${typo.fontSize}`)
     if (typo.fontWeight) classes.push(`${prefix}${typo.fontWeight}`)
     if (typo.textAlign) classes.push(`${prefix}${typo.textAlign}`)
+    if (typo.lineHeight) classes.push(`${prefix}${typo.lineHeight}`)
+    if (typo.letterSpacing) classes.push(`${prefix}${typo.letterSpacing}`)
+    if (typo.textTransform) classes.push(`${prefix}${typo.textTransform}`)
+    if (typo.fontSmoothing) classes.push(`${prefix}${typo.fontSmoothing}`)
   }
   
   if (settings.layout?.[device]) {
@@ -1293,6 +1610,10 @@ export const generateTailwindClasses = (settings, device = 'base') => {
     if (layout.gap) classes.push(`${prefix}${layout.gap}`)
     if (layout.justifyContent) classes.push(`${prefix}${layout.justifyContent}`)
     if (layout.alignItems) classes.push(`${prefix}${layout.alignItems}`)
+    
+    // Add position classes
+    if (layout.position) classes.push(`${prefix}${layout.position}`)
+    if (layout.zIndex) classes.push(`${prefix}${layout.zIndex}`)
   }
 
   if (settings.effects?.[device]) {
@@ -1313,6 +1634,16 @@ export const generateTailwindClasses = (settings, device = 'base') => {
     }
   }
   
+  if (settings.gradients?.[device]) {
+    const gradients = settings.gradients[device]
+    
+    // Add gradient classes
+    if (gradients.type) classes.push(`${prefix}${gradients.type}`)
+    if (gradients.fromColor) classes.push(`${prefix}${gradients.fromColor}`)
+    if (gradients.toColor) classes.push(`${prefix}${gradients.toColor}`)
+    if (gradients.opacity) classes.push(`${prefix}${gradients.opacity}`)
+  }
+
   if (device === 'base') {
     if (settings.backgroundColor) classes.push(settings.backgroundColor)
     if (settings.textColor) classes.push(settings.textColor)
