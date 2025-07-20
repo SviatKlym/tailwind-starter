@@ -8,7 +8,8 @@ import {
   UltimateDeviceSelector,
   UltimateControlTabs,
   generateTailwindClasses,
-  generateAllClasses
+  generateAllClasses,
+  generateAllInlineStyles
 } from './visual-controls.js'
 import { getBlockPresets } from './block-specific-controls.js'
 
@@ -48,6 +49,18 @@ function addVisualAttributes(settings, name) {
           },
           typography: {
             base: { fontSize: '', fontWeight: '', textAlign: '' }
+          },
+          layout: {
+            base: { 
+              width: '', 
+              height: '',
+              customWidth: '',
+              customMaxWidth: '',
+              customMinWidth: '',
+              customHeight: '',
+              customMaxHeight: '',
+              customMinHeight: ''
+            }
           },
           backgroundColor: '',
           textColor: ''
@@ -89,6 +102,7 @@ const withVisualControls = createHigherOrderComponent((BlockEdit) => {
 
     // Generate classes for all devices
     const allClasses = generateAllClasses(visualSettings)
+    const inlineStyles = generateAllInlineStyles(visualSettings)
 
     // Generate preview classes (just base for editor)
     const previewClasses = generateTailwindClasses(visualSettings, 'base')
@@ -141,6 +155,10 @@ const withVisualControls = createHigherOrderComponent((BlockEdit) => {
             onTypographyChange: (typography) => setAttributes({
               visualSettings: { ...visualSettings, typography }
             }),
+            layout: visualSettings.layout || {},
+            onLayoutChange: (layout) => setAttributes({
+              visualSettings: { ...visualSettings, layout }
+            }),
             device: activeDevice,
             presets: presets,
             onPresetApply: handlePresetApply
@@ -156,11 +174,23 @@ const withVisualControls = createHigherOrderComponent((BlockEdit) => {
               marginTop: '16px'
             }
           },
-            createElement('strong', null, '🔧 Generated Classes: '),
+            createElement('strong', null, '🔧 Generated Output: '),
             createElement('br'),
-            createElement('code', {
-              style: { wordBreak: 'break-all', fontSize: '10px', color: '#6b7280' }
-            }, allClasses || 'No styles applied')
+            allClasses && createElement('div', { style: { marginBottom: '8px' } },
+              createElement('strong', { style: { fontSize: '10px', color: '#374151' } }, 'Classes: '),
+              createElement('code', {
+                style: { wordBreak: 'break-all', fontSize: '10px', color: '#6b7280' }
+              }, allClasses)
+            ),
+            Object.keys(inlineStyles).length > 0 && createElement('div', null,
+              createElement('strong', { style: { fontSize: '10px', color: '#374151' } }, 'Inline Styles: '),
+              createElement('code', {
+                style: { wordBreak: 'break-all', fontSize: '10px', color: '#6b7280' }
+              }, JSON.stringify(inlineStyles, null, 2))
+            ),
+            !allClasses && Object.keys(inlineStyles).length === 0 && createElement('code', {
+              style: { fontSize: '10px', color: '#6b7280' }
+            }, 'No styles applied')
           )
         )
       )
@@ -169,7 +199,7 @@ const withVisualControls = createHigherOrderComponent((BlockEdit) => {
 }, 'withVisualControls')
 
 /**
- * Add visual classes to the block wrapper
+ * Add visual classes and inline styles to the block wrapper
  */
 function addVisualClasses(BlockListBlock) {
   return (props) => {
@@ -181,21 +211,23 @@ function addVisualClasses(BlockListBlock) {
 
     const { visualSettings = {} } = attributes
     const allClasses = generateAllClasses(visualSettings)
+    const inlineStyles = generateAllInlineStyles(visualSettings)
     
-    if (allClasses) {
-      const newProps = {
-        ...props,
-        className: `${props.className || ''} ${allClasses}`.trim()
+    const newProps = {
+      ...props,
+      className: `${props.className || ''} ${allClasses || ''}`.trim(),
+      style: {
+        ...(props.style || {}),
+        ...inlineStyles
       }
-      return createElement(BlockListBlock, newProps)
     }
     
-    return createElement(BlockListBlock, props)
+    return createElement(BlockListBlock, newProps)
   }
 }
 
 /**
- * Add visual classes to saved content
+ * Add visual classes and inline styles to saved content
  */
 function addVisualClassesToSave(element, blockType, attributes) {
   if (!ENHANCED_BLOCKS.includes(blockType.name)) {
@@ -204,16 +236,21 @@ function addVisualClassesToSave(element, blockType, attributes) {
 
   const { visualSettings = {} } = attributes
   const allClasses = generateAllClasses(visualSettings)
+  const inlineStyles = generateAllInlineStyles(visualSettings)
   
-  if (allClasses && element && element.props) {
+  if ((allClasses || Object.keys(inlineStyles).length > 0) && element && element.props) {
     const existingClassName = element.props.className || ''
-    const newClassName = `${existingClassName} ${allClasses}`.trim()
+    const newClassName = `${existingClassName} ${allClasses || ''}`.trim()
     
     return {
       ...element,
       props: {
         ...element.props,
-        className: newClassName
+        className: newClassName,
+        style: {
+          ...(element.props.style || {}),
+          ...inlineStyles
+        }
       }
     }
   }

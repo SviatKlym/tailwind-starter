@@ -8,6 +8,7 @@ import {
   SelectControl,
   TabPanel,
   Tooltip,
+  TextControl,
   __experimentalHStack as HStack,
   __experimentalVStack as VStack,
   __experimentalText as Text,
@@ -80,7 +81,7 @@ const ultimateControlsCSS = `
 
 .ultimate-control-tabs .components-tab-panel__tabs {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: 4px;
   margin-bottom: 20px;
   background: #f8fafc;
@@ -669,6 +670,181 @@ export const UltimateTypographyControl = ({ value = {}, onChange, device = 'base
   )
 }
 
+// Ultimate Layout Control
+export const UltimateLayoutControl = ({ value = {}, onChange, device = 'base' }) => {
+  const deviceLayout = value[device] || {}
+  
+  const quickWidthOptions = [
+    { name: '25%', class: 'w-1/4' },
+    { name: '33%', class: 'w-1/3' },
+    { name: '50%', class: 'w-1/2' },
+    { name: '75%', class: 'w-3/4' },
+    { name: '100%', class: 'w-full' },
+    { name: 'Auto', class: 'w-auto' }
+  ]
+  
+  const quickHeightOptions = [
+    { name: 'Auto', class: 'h-auto' },
+    { name: 'Full', class: 'h-full' },
+    { name: 'Screen', class: 'h-screen' },
+    { name: 'Fit', class: 'h-fit' }
+  ]
+  
+  const maxWidthOptions = [
+    { name: 'None', class: 'max-w-none' },
+    { name: 'SM', class: 'max-w-sm' },
+    { name: 'MD', class: 'max-w-md' },
+    { name: 'LG', class: 'max-w-lg' },
+    { name: 'XL', class: 'max-w-xl' },
+    { name: '4XL', class: 'max-w-4xl' }
+  ]
+  
+  const updateLayout = (property, newValue) => {
+    onChange({
+      ...value, 
+      [device]: {
+        ...deviceLayout,
+        [property]: newValue
+      }
+    })
+  }
+  
+  // Helper function to generate custom class
+  const generateCustomClass = (prefix, value) => {
+    if (!value) return ''
+    // Check if it's already a Tailwind class (starts with prefix-)
+    if (value.startsWith(`${prefix}-`)) return value
+    // Generate arbitrary value class: w-[600px], h-[70vh], etc.
+    return `${prefix}-[${value}]`
+  }
+  
+  return (
+    <div className="animate-slide-in">
+      {/* Width Section */}
+      <div className="section-header">
+        <span className="section-header-icon">📐</span>
+        {__('Width', 'tailwind-starter')}
+      </div>
+      
+      {/* Quick Width Options */}
+      <Text size="12px" weight="600" style={{ margin: '12px 0 8px 0', display: 'block', color: '#374151' }}>
+        Quick Options
+      </Text>
+      <div className="enhanced-button-grid">
+        {quickWidthOptions.map(option => (
+          <button
+            key={option.class}
+            className={`enhanced-style-button ${deviceLayout.width === option.class ? 'selected' : ''}`}
+            onClick={() => updateLayout('width', option.class)}
+          >
+            {option.name}
+          </button>
+        ))}
+      </div>
+      
+      {/* Custom Width Input */}
+      <Text size="12px" weight="600" style={{ margin: '16px 0 8px 0', display: 'block', color: '#374151' }}>
+        Custom Width
+      </Text>
+      <TextControl
+        placeholder="e.g. 600px, 70vw, 20rem"
+        value={deviceLayout.customWidth || ''}
+        onChange={(customValue) => {
+          updateLayout('customWidth', customValue)
+        }}
+        help="Enter custom values like 600px, 70vw, 20rem"
+      />
+      
+      {/* Max Width - Custom Only */}
+      <Text size="12px" weight="600" style={{ margin: '16px 0 8px 0', display: 'block', color: '#374151' }}>
+        Max Width
+      </Text>
+      <TextControl
+        placeholder="e.g. 800px, 90vw"
+        value={deviceLayout.customMaxWidth || ''}
+        onChange={(customValue) => {
+          updateLayout('customMaxWidth', customValue)
+        }}
+        help="Custom max-width"
+      />
+      
+      {/* Min Width - Custom Only */}
+      <Text size="12px" weight="600" style={{ margin: '16px 0 8px 0', display: 'block', color: '#374151' }}>
+        Min Width
+      </Text>
+      <TextControl
+        placeholder="e.g. 200px, 20vw"
+        value={deviceLayout.customMinWidth || ''}
+        onChange={(customValue) => {
+          updateLayout('customMinWidth', customValue)
+        }}
+        help="Custom min-width"
+      />
+      
+      {/* Height Section */}
+      <div className="section-header" style={{ marginTop: '32px' }}>
+        <span className="section-header-icon">📏</span>
+        {__('Height', 'tailwind-starter')}
+      </div>
+      
+      {/* Quick Height Options */}
+      <Text size="12px" weight="600" style={{ margin: '12px 0 8px 0', display: 'block', color: '#374151' }}>
+        Quick Options
+      </Text>
+      <div className="enhanced-button-grid">
+        {quickHeightOptions.map(option => (
+          <button
+            key={option.class}
+            className={`enhanced-style-button ${deviceLayout.height === option.class ? 'selected' : ''}`}
+            onClick={() => updateLayout('height', option.class)}
+          >
+            {option.name}
+          </button>
+        ))}
+      </div>
+      
+      {/* Custom Height Input */}
+      <Text size="12px" weight="600" style={{ margin: '16px 0 8px 0', display: 'block', color: '#374151' }}>
+        Custom Height
+      </Text>
+      <TextControl
+        placeholder="e.g. 400px, 70vh, 25rem"
+        value={deviceLayout.customHeight || ''}
+        onChange={(customValue) => {
+          updateLayout('customHeight', customValue)
+        }}
+        help="Enter custom values like 400px, 70vh, 25rem"
+      />
+      
+      {/* Max Height - Custom Only */}
+      <Text size="12px" weight="600" style={{ margin: '16px 0 8px 0', display: 'block', color: '#374151' }}>
+        Max Height
+      </Text>
+      <TextControl
+        placeholder="e.g. 500px, 80vh"
+        value={deviceLayout.customMaxHeight || ''}
+        onChange={(customValue) => {
+          updateLayout('customMaxHeight', customValue)
+        }}
+        help="Custom max-height"
+      />
+      
+      {/* Min Height - Custom Only */}
+      <Text size="12px" weight="600" style={{ margin: '16px 0 8px 0', display: 'block', color: '#374151' }}>
+        Min Height
+      </Text>
+      <TextControl
+        placeholder="e.g. 200px, 50vh"
+        value={deviceLayout.customMinHeight || ''}
+        onChange={(customValue) => {
+          updateLayout('customMinHeight', customValue)
+        }}
+        help="Custom min-height"
+      />
+    </div>
+  )
+}
+
 // Ultimate Control Tabs
 export const UltimateControlTabs = ({ 
   spacing, 
@@ -679,6 +855,8 @@ export const UltimateControlTabs = ({
   onTextColorChange,
   typography,
   onTypographyChange,
+  layout,
+  onLayoutChange,
   device,
   presets,
   onPresetApply
@@ -695,6 +873,12 @@ export const UltimateControlTabs = ({
       title: '📏',
       label: 'Space',
       className: 'tab-spacing'
+    },
+    {
+      name: 'layout',
+      title: '📐',
+      label: 'Layout',
+      className: 'tab-layout'
     },
     {
       name: 'colors',
@@ -762,6 +946,15 @@ export const UltimateControlTabs = ({
                 />
               )
             
+            case 'layout':
+              return (
+                <UltimateLayoutControl
+                  value={layout}
+                  onChange={onLayoutChange}
+                  device={device}
+                />
+              )
+            
             case 'colors':
               return (
                 <div>
@@ -820,12 +1013,52 @@ export const generateTailwindClasses = (settings, device = 'base') => {
     if (typo.textAlign) classes.push(`${prefix}${typo.textAlign}`)
   }
   
+  if (settings.layout?.[device]) {
+    const layout = settings.layout[device]
+    
+    // Only add Tailwind classes for quick options (width and height)
+    if (layout.width) classes.push(`${prefix}${layout.width}`)
+    if (layout.height) classes.push(`${prefix}${layout.height}`)
+  }
+  
   if (device === 'base') {
     if (settings.backgroundColor) classes.push(settings.backgroundColor)
     if (settings.textColor) classes.push(settings.textColor)
   }
   
   return classes.filter(Boolean).join(' ')
+}
+
+// Generate inline styles for custom values
+export const generateInlineStyles = (settings, device = 'base') => {
+  const styles = {}
+  
+  if (settings.layout?.[device]) {
+    const layout = settings.layout[device]
+    
+    if (layout.customWidth) styles.width = layout.customWidth
+    if (layout.customMaxWidth) styles.maxWidth = layout.customMaxWidth
+    if (layout.customMinWidth) styles.minWidth = layout.customMinWidth
+    if (layout.customHeight) styles.height = layout.customHeight
+    if (layout.customMaxHeight) styles.maxHeight = layout.customMaxHeight
+    if (layout.customMinHeight) styles.minHeight = layout.customMinHeight
+  }
+  
+  return styles
+}
+
+// Generate all inline styles for all devices
+export const generateAllInlineStyles = (settings) => {
+  const allStyles = {}
+  
+  // Base styles
+  const baseStyles = generateInlineStyles(settings, 'base')
+  Object.assign(allStyles, baseStyles)
+  
+  // Responsive styles can be handled via CSS custom properties or media queries
+  // For now, we'll just use base styles as inline styles work best for base responsive level
+  
+  return allStyles
 }
 
 export const generateAllClasses = (settings) => {
