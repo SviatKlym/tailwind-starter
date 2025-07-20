@@ -66,7 +66,10 @@ function addVisualAttributes(settings, name) {
               customMinWidth: '',
               customHeight: '',
               customMaxHeight: '',
-              customMinHeight: ''
+              customMinHeight: '',
+              gap: '',
+              justifyContent: '',
+              alignItems: ''
             },
             sm: { 
               width: '', 
@@ -75,7 +78,10 @@ function addVisualAttributes(settings, name) {
               customMinWidth: '',
               customHeight: '',
               customMaxHeight: '',
-              customMinHeight: ''
+              customMinHeight: '',
+              gap: '',
+              justifyContent: '',
+              alignItems: ''
             },
             md: { 
               width: '', 
@@ -84,7 +90,10 @@ function addVisualAttributes(settings, name) {
               customMinWidth: '',
               customHeight: '',
               customMaxHeight: '',
-              customMinHeight: ''
+              customMinHeight: '',
+              gap: '',
+              justifyContent: '',
+              alignItems: ''
             },
             lg: { 
               width: '', 
@@ -93,7 +102,10 @@ function addVisualAttributes(settings, name) {
               customMinWidth: '',
               customHeight: '',
               customMaxHeight: '',
-              customMinHeight: ''
+              customMinHeight: '',
+              gap: '',
+              justifyContent: '',
+              alignItems: ''
             },
             xl: { 
               width: '', 
@@ -102,7 +114,57 @@ function addVisualAttributes(settings, name) {
               customMinWidth: '',
               customHeight: '',
               customMaxHeight: '',
-              customMinHeight: ''
+              customMinHeight: '',
+              gap: '',
+              justifyContent: '',
+              alignItems: ''
+            }
+          },
+          effects: {
+            base: {
+              shadow: '',
+              borderRadius: '',
+              borderWidth: '',
+              borderStyle: '',
+              borderColor: '',
+              hoverScale: '',
+              hoverShadow: ''
+            },
+            sm: {
+              shadow: '',
+              borderRadius: '',
+              borderWidth: '',
+              borderStyle: '',
+              borderColor: '',
+              hoverScale: '',
+              hoverShadow: ''
+            },
+            md: {
+              shadow: '',
+              borderRadius: '',
+              borderWidth: '',
+              borderStyle: '',
+              borderColor: '',
+              hoverScale: '',
+              hoverShadow: ''
+            },
+            lg: {
+              shadow: '',
+              borderRadius: '',
+              borderWidth: '',
+              borderStyle: '',
+              borderColor: '',
+              hoverScale: '',
+              hoverShadow: ''
+            },
+            xl: {
+              shadow: '',
+              borderRadius: '',
+              borderWidth: '',
+              borderStyle: '',
+              borderColor: '',
+              hoverScale: '',
+              hoverShadow: ''
             }
           },
           backgroundColor: '',
@@ -201,6 +263,10 @@ const withVisualControls = createHigherOrderComponent((BlockEdit) => {
             layout: visualSettings.layout || {},
             onLayoutChange: (layout) => setAttributes({
               visualSettings: { ...visualSettings, layout }
+            }),
+            effects: visualSettings.effects || {},
+            onEffectsChange: (effects) => setAttributes({
+              visualSettings: { ...visualSettings, effects }
             }),
             device: activeDevice,
             presets: presets,

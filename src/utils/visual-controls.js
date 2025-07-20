@@ -79,9 +79,28 @@ const ultimateControlsCSS = `
   margin: 16px 0;
 }
 
+/* Transition utilities for hover effects */
+.transition-all {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+.hover\\:scale-95:hover {
+  transform: scale(0.95);
+}
+
+.hover\\:scale-105:hover {
+  transform: scale(1.05);
+}
+
+.hover\\:scale-110:hover {
+  transform: scale(1.1);
+}
+
 .ultimate-control-tabs .components-tab-panel__tabs {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(6, 1fr);
   gap: 4px;
   margin-bottom: 20px;
   background: #f8fafc;
@@ -670,6 +689,156 @@ export const UltimateTypographyControl = ({ value = {}, onChange, device = 'base
   )
 }
 
+// Ultimate Effects Control - Shadows, Borders, Hover Effects
+export const UltimateEffectsControl = ({ value = {}, onChange, device = 'base' }) => {
+  const deviceEffects = value[device] || {
+    shadow: '',
+    borderRadius: '',
+    borderWidth: '',
+    borderStyle: '',
+    borderColor: '',
+    hoverScale: '',
+    hoverShadow: ''
+  }
+
+  const shadowOptions = [
+    { name: 'None', class: '', preview: 'No shadow' },
+    { name: 'SM', class: 'shadow-sm', preview: '0 1px 2px rgba(0,0,0,0.05)' },
+    { name: 'Base', class: 'shadow', preview: '0 1px 3px rgba(0,0,0,0.1)' },
+    { name: 'MD', class: 'shadow-md', preview: '0 4px 6px rgba(0,0,0,0.1)' },
+    { name: 'LG', class: 'shadow-lg', preview: '0 10px 15px rgba(0,0,0,0.1)' },
+    { name: 'XL', class: 'shadow-xl', preview: '0 20px 25px rgba(0,0,0,0.1)' },
+    { name: '2XL', class: 'shadow-2xl', preview: '0 25px 50px rgba(0,0,0,0.25)' }
+  ]
+
+  const borderRadiusOptions = [
+    { name: 'None', class: 'rounded-none' },
+    { name: 'SM', class: 'rounded-sm' },
+    { name: 'Base', class: 'rounded' },
+    { name: 'MD', class: 'rounded-md' },
+    { name: 'LG', class: 'rounded-lg' },
+    { name: 'XL', class: 'rounded-xl' },
+    { name: '2XL', class: 'rounded-2xl' },
+    { name: '3XL', class: 'rounded-3xl' },
+    { name: 'Full', class: 'rounded-full' }
+  ]
+
+  const borderWidthOptions = [
+    { name: '0', class: 'border-0' },
+    { name: '1', class: 'border' },
+    { name: '2', class: 'border-2' },
+    { name: '4', class: 'border-4' },
+    { name: '8', class: 'border-8' }
+  ]
+
+  const hoverScaleOptions = [
+    { name: 'None', class: '' },
+    { name: '95%', class: 'hover:scale-95' },
+    { name: '105%', class: 'hover:scale-105' },
+    { name: '110%', class: 'hover:scale-110' }
+  ]
+
+  const updateEffects = (property, newValue) => {
+    const newEffectsValue = {
+      ...value,
+      [device]: {
+        ...deviceEffects,
+        [property]: newValue
+      }
+    }
+    onChange(newEffectsValue)
+  }
+
+  return (
+    <div className="animate-slide-in">
+      {/* Box Shadow Section */}
+      <div className="section-header">
+        <span className="section-header-icon">🌫️</span>
+        {__('Box Shadow', 'tailwind-starter')}
+      </div>
+      
+      <Text size="12px" weight="600" style={{ margin: '12px 0 8px 0', display: 'block', color: '#374151' }}>
+        Shadow Intensity
+      </Text>
+      <div className="enhanced-button-grid">
+        {shadowOptions.map(option => (
+          <button
+            key={option.class}
+            className={`enhanced-style-button ${deviceEffects.shadow === option.class ? 'selected' : ''}`}
+            onClick={() => updateEffects('shadow', option.class)}
+            title={option.preview}
+          >
+            {option.name}
+          </button>
+        ))}
+      </div>
+
+      {/* Border Radius Section */}
+      <div className="section-header" style={{ marginTop: '32px' }}>
+        <span className="section-header-icon">🔘</span>
+        {__('Border Radius', 'tailwind-starter')}
+      </div>
+      
+      <Text size="12px" weight="600" style={{ margin: '12px 0 8px 0', display: 'block', color: '#374151' }}>
+        Corner Rounding
+      </Text>
+      <div className="enhanced-button-grid">
+        {borderRadiusOptions.map(option => (
+          <button
+            key={option.class}
+            className={`enhanced-style-button ${deviceEffects.borderRadius === option.class ? 'selected' : ''}`}
+            onClick={() => updateEffects('borderRadius', option.class)}
+          >
+            {option.name}
+          </button>
+        ))}
+      </div>
+
+      {/* Border Width Section */}
+      <div className="section-header" style={{ marginTop: '32px' }}>
+        <span className="section-header-icon">📏</span>
+        {__('Border', 'tailwind-starter')}
+      </div>
+      
+      <Text size="12px" weight="600" style={{ margin: '12px 0 8px 0', display: 'block', color: '#374151' }}>
+        Border Width
+      </Text>
+      <div className="enhanced-button-grid">
+        {borderWidthOptions.map(option => (
+          <button
+            key={option.class}
+            className={`enhanced-style-button ${deviceEffects.borderWidth === option.class ? 'selected' : ''}`}
+            onClick={() => updateEffects('borderWidth', option.class)}
+          >
+            {option.name}
+          </button>
+        ))}
+      </div>
+
+      {/* Hover Effects Section */}
+      <div className="section-header" style={{ marginTop: '32px' }}>
+        <span className="section-header-icon">🎯</span>
+        {__('Hover Effects', 'tailwind-starter')}
+      </div>
+      
+      <Text size="12px" weight="600" style={{ margin: '12px 0 8px 0', display: 'block', color: '#374151' }}>
+        Hover Scale
+      </Text>
+      <div className="enhanced-button-grid">
+        {hoverScaleOptions.map(option => (
+          <button
+            key={option.class}
+            className={`enhanced-style-button ${deviceEffects.hoverScale === option.class ? 'selected' : ''}`}
+            onClick={() => updateEffects('hoverScale', option.class)}
+          >
+            {option.name}
+          </button>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 // Ultimate Layout Control
 export const UltimateLayoutControl = ({ value = {}, onChange, device = 'base' }) => {
   // Ensure device layout exists with default values
@@ -680,7 +849,10 @@ export const UltimateLayoutControl = ({ value = {}, onChange, device = 'base' })
     customMinWidth: '',
     customHeight: '',
     customMaxHeight: '',
-    customMinHeight: ''
+    customMinHeight: '',
+    gap: '',
+    justifyContent: '',
+    alignItems: ''
   }
   
   const quickWidthOptions = [
@@ -697,6 +869,34 @@ export const UltimateLayoutControl = ({ value = {}, onChange, device = 'base' })
     { name: 'Full', class: 'h-full' },
     { name: 'Screen', class: 'h-screen' },
     { name: 'Fit', class: 'h-fit' }
+  ]
+
+  const gapOptions = [
+    { name: '0', class: 'gap-0' },
+    { name: '1', class: 'gap-1' },
+    { name: '2', class: 'gap-2' },
+    { name: '4', class: 'gap-4' },
+    { name: '6', class: 'gap-6' },
+    { name: '8', class: 'gap-8' },
+    { name: '12', class: 'gap-12' },
+    { name: '16', class: 'gap-16' }
+  ]
+
+  const justifyOptions = [
+    { name: 'Start', class: 'justify-start' },
+    { name: 'Center', class: 'justify-center' },
+    { name: 'End', class: 'justify-end' },
+    { name: 'Between', class: 'justify-between' },
+    { name: 'Around', class: 'justify-around' },
+    { name: 'Evenly', class: 'justify-evenly' }
+  ]
+
+  const alignOptions = [
+    { name: 'Start', class: 'items-start' },
+    { name: 'Center', class: 'items-center' },
+    { name: 'End', class: 'items-end' },
+    { name: 'Stretch', class: 'items-stretch' },
+    { name: 'Baseline', class: 'items-baseline' }
   ]
   
   const maxWidthOptions = [
@@ -839,6 +1039,60 @@ export const UltimateLayoutControl = ({ value = {}, onChange, device = 'base' })
         }}
         help="Custom min-height"
       />
+
+      {/* Flexbox Controls Section */}
+      <div className="section-header" style={{ marginTop: '32px' }}>
+        <span className="section-header-icon">📦</span>
+        {__('Flexbox & Grid', 'tailwind-starter')}
+      </div>
+
+      {/* Gap Controls */}
+      <Text size="12px" weight="600" style={{ margin: '12px 0 8px 0', display: 'block', color: '#374151' }}>
+        Gap (Spacing between items)
+      </Text>
+      <div className="enhanced-button-grid">
+        {gapOptions.map(option => (
+          <button
+            key={option.class}
+            className={`enhanced-style-button ${deviceLayout.gap === option.class ? 'selected' : ''}`}
+            onClick={() => updateLayout('gap', option.class)}
+          >
+            {option.name}
+          </button>
+        ))}
+      </div>
+
+      {/* Justify Content */}
+      <Text size="12px" weight="600" style={{ margin: '16px 0 8px 0', display: 'block', color: '#374151' }}>
+        Justify Content (Horizontal alignment)
+      </Text>
+      <div className="enhanced-button-grid">
+        {justifyOptions.map(option => (
+          <button
+            key={option.class}
+            className={`enhanced-style-button ${deviceLayout.justifyContent === option.class ? 'selected' : ''}`}
+            onClick={() => updateLayout('justifyContent', option.class)}
+          >
+            {option.name}
+          </button>
+        ))}
+      </div>
+
+      {/* Align Items */}
+      <Text size="12px" weight="600" style={{ margin: '16px 0 8px 0', display: 'block', color: '#374151' }}>
+        Align Items (Vertical alignment)
+      </Text>
+      <div className="enhanced-button-grid">
+        {alignOptions.map(option => (
+          <button
+            key={option.class}
+            className={`enhanced-style-button ${deviceLayout.alignItems === option.class ? 'selected' : ''}`}
+            onClick={() => updateLayout('alignItems', option.class)}
+          >
+            {option.name}
+          </button>
+        ))}
+      </div>
     </div>
   )
 }
@@ -855,6 +1109,8 @@ export const UltimateControlTabs = ({
   onTypographyChange,
   layout,
   onLayoutChange,
+  effects,
+  onEffectsChange,
   device,
   presets,
   onPresetApply
@@ -889,6 +1145,12 @@ export const UltimateControlTabs = ({
       title: '✏️',
       label: 'Type',
       className: 'tab-typography'
+    },
+    {
+      name: 'effects',
+      title: '✨',
+      label: 'Effects',
+      className: 'tab-effects'
     }
   ]
 
@@ -979,6 +1241,15 @@ export const UltimateControlTabs = ({
                   device={device}
                 />
               )
+
+            case 'effects':
+              return (
+                <UltimateEffectsControl
+                  value={effects}
+                  onChange={onEffectsChange}
+                  device={device}
+                />
+              )
               
             default:
               return null
@@ -1014,9 +1285,32 @@ export const generateTailwindClasses = (settings, device = 'base') => {
   if (settings.layout?.[device]) {
     const layout = settings.layout[device]
     
-    // Only add Tailwind classes for quick options (width and height)
+    // Add Tailwind classes for layout
     if (layout.width) classes.push(`${prefix}${layout.width}`)
     if (layout.height) classes.push(`${prefix}${layout.height}`)
+    
+    // Add flexbox classes
+    if (layout.gap) classes.push(`${prefix}${layout.gap}`)
+    if (layout.justifyContent) classes.push(`${prefix}${layout.justifyContent}`)
+    if (layout.alignItems) classes.push(`${prefix}${layout.alignItems}`)
+  }
+
+  if (settings.effects?.[device]) {
+    const effects = settings.effects[device]
+    
+    // Add effect classes
+    if (effects.shadow) classes.push(`${prefix}${effects.shadow}`)
+    if (effects.borderRadius) classes.push(`${prefix}${effects.borderRadius}`)
+    if (effects.borderWidth) classes.push(`${prefix}${effects.borderWidth}`)
+    if (effects.borderStyle) classes.push(`${prefix}${effects.borderStyle}`)
+    if (effects.borderColor) classes.push(`${prefix}${effects.borderColor}`)
+    
+    // Add hover effects and transition
+    if (effects.hoverScale || effects.hoverShadow) {
+      classes.push(`${prefix}transition-all`)
+      if (effects.hoverScale) classes.push(`${prefix}${effects.hoverScale}`)
+      if (effects.hoverShadow) classes.push(`${prefix}${effects.hoverShadow}`)
+    }
   }
   
   if (device === 'base') {
