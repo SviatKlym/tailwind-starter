@@ -453,7 +453,7 @@ export const UltimateDeviceSelector = ({ activeDevice, onChange }) => {
   )
 }
 
-// Enhanced Spacing Control
+// Enhanced Spacing Control with Class Display
 export const UltimateSpacingControl = ({ value = {}, onChange, device = 'base' }) => {
   const spacingValues = [0, 1, 2, 4, 6, 8, 12, 16, 20, 24, 32, 40]
   const currentSpacing = value[device] || { top: 0, right: 0, bottom: 0, left: 0 }
@@ -469,11 +469,48 @@ export const UltimateSpacingControl = ({ value = {}, onChange, device = 'base' }
     onChange(newValue)
   }
 
+  const getTailwindClass = (side, index) => {
+    const prefix = device !== 'base' ? `${device}:` : ''
+    const sidePrefix = {
+      top: 'pt',
+      right: 'pr', 
+      bottom: 'pb',
+      left: 'pl'
+    }
+    const value = spacingValues[index]
+    return value === 0 ? '' : `${prefix}${sidePrefix[side]}-${value}`
+  }
+
+  const resetSpacing = () => {
+    const resetValue = {
+      ...value,
+      [device]: { top: 0, right: 0, bottom: 0, left: 0 }
+    }
+    onChange(resetValue)
+  }
+
   return (
     <div className="animate-slide-in">
       <div className="section-header">
         <span className="section-header-icon">📏</span>
         {__('Spacing (Padding)', 'tailwind-starter')}
+        <button 
+          className="reset-button"
+          onClick={resetSpacing}
+          title="Reset padding values"
+          style={{
+            marginLeft: 'auto',
+            padding: '4px 8px',
+            fontSize: '11px',
+            backgroundColor: '#ef4444',
+            color: 'white',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer'
+          }}
+        >
+          🔄 Reset
+        </button>
       </div>
       <div className="spacing-grid">
         {['top', 'right', 'bottom', 'left'].map(side => (
@@ -488,7 +525,94 @@ export const UltimateSpacingControl = ({ value = {}, onChange, device = 'base' }
               withInputField={false}
             />
             <div className="spacing-value-display">
-              {spacingValues[currentSpacing[side]]}px
+              <div className="spacing-pixels">{spacingValues[currentSpacing[side]]}px</div>
+              <div className="spacing-class">
+                {getTailwindClass(side, currentSpacing[side]) || 'none'}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+// Enhanced Margin Control with Class Display
+export const UltimateMarginControl = ({ value = {}, onChange, device = 'base' }) => {
+  const spacingValues = [0, 1, 2, 4, 6, 8, 12, 16, 20, 24, 32, 40]
+  const currentMargin = value[device] || { top: 0, right: 0, bottom: 0, left: 0 }
+
+  const updateMargin = (side, index) => {
+    const newValue = {
+      ...value,
+      [device]: {
+        ...currentMargin,
+        [side]: index
+      }
+    }
+    onChange(newValue)
+  }
+
+  const getTailwindClass = (side, index) => {
+    const prefix = device !== 'base' ? `${device}:` : ''
+    const sidePrefix = {
+      top: 'mt',
+      right: 'mr', 
+      bottom: 'mb',
+      left: 'ml'
+    }
+    const value = spacingValues[index]
+    return value === 0 ? '' : `${prefix}${sidePrefix[side]}-${value}`
+  }
+
+  const resetMargin = () => {
+    const resetValue = {
+      ...value,
+      [device]: { top: 0, right: 0, bottom: 0, left: 0 }
+    }
+    onChange(resetValue)
+  }
+
+  return (
+    <div className="animate-slide-in">
+      <div className="section-header">
+        <span className="section-header-icon">📐</span>
+        {__('Spacing (Margin)', 'tailwind-starter')}
+        <button 
+          className="reset-button"
+          onClick={resetMargin}
+          title="Reset margin values"
+          style={{
+            marginLeft: 'auto',
+            padding: '4px 8px',
+            fontSize: '11px',
+            backgroundColor: '#ef4444',
+            color: 'white',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer'
+          }}
+        >
+          🔄 Reset
+        </button>
+      </div>
+      <div className="spacing-grid">
+        {['top', 'right', 'bottom', 'left'].map(side => (
+          <div key={side} className="spacing-control-item">
+            <label>{side.charAt(0).toUpperCase() + side.slice(1)}</label>
+            <RangeControl
+              value={currentMargin[side]}
+              onChange={(newValue) => updateMargin(side, newValue)}
+              min={0}
+              max={spacingValues.length - 1}
+              step={1}
+              withInputField={false}
+            />
+            <div className="spacing-value-display">
+              <div className="spacing-pixels">{spacingValues[currentMargin[side]]}px</div>
+              <div className="spacing-class">
+                {getTailwindClass(side, currentMargin[side]) || 'none'}
+              </div>
             </div>
           </div>
         ))}
@@ -546,14 +670,14 @@ export const UltimateColorPicker = ({
     }
   }
 
-  const prefix = type === 'background' ? 'bg' : 'text'
+  const prefix = type === 'background' ? 'bg' : type === 'border' ? 'border' : 'text'
   const currentValue = value?.replace(`${prefix}-`, '') || ''
 
   return (
     <div className="color-palette-section animate-slide-in">
       <div className="section-header">
         <span className="section-header-icon">
-          {type === 'background' ? '🎨' : '✏️'}
+          {type === 'background' ? '🎨' : type === 'border' ? '🔲' : '✏️'}
         </span>
         {label}
       </div>
@@ -659,11 +783,44 @@ export const UltimateTypographyControl = ({ value = {}, onChange, device = 'base
     })
   }
 
+  const resetTypography = () => {
+    const resetValue = {
+      ...value,
+      [device]: { 
+        fontSize: '', 
+        fontWeight: '', 
+        textAlign: '',
+        lineHeight: '',
+        letterSpacing: '',
+        textTransform: '',
+        fontSmoothing: ''
+      }
+    }
+    onChange(resetValue)
+  }
+
   return (
     <div className="animate-slide-in">
       <div className="section-header">
         <span className="section-header-icon">✏️</span>
         {__('Typography', 'tailwind-starter')}
+        <button 
+          className="reset-button"
+          onClick={resetTypography}
+          title="Reset typography values"
+          style={{
+            marginLeft: 'auto',
+            padding: '4px 8px',
+            fontSize: '11px',
+            backgroundColor: '#ef4444',
+            color: 'white',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer'
+          }}
+        >
+          🔄 Reset
+        </button>
       </div>
       
       <div 
@@ -800,7 +957,14 @@ export const UltimateEffectsControl = ({ value = {}, onChange, device = 'base' }
     borderStyle: '',
     borderColor: '',
     hoverScale: '',
-    hoverShadow: ''
+    hoverShadow: '',
+    hoverOpacity: '',
+    hoverRotate: '',
+    hoverBgColor: '',
+    entranceAnimation: '',
+    scrollAnimation: '',
+    transitionDuration: '',
+    transitionEasing: ''
   }
 
   const shadowOptions = [
@@ -835,9 +999,88 @@ export const UltimateEffectsControl = ({ value = {}, onChange, device = 'base' }
 
   const hoverScaleOptions = [
     { name: 'None', class: '' },
+    { name: '90%', class: 'hover:scale-90' },
     { name: '95%', class: 'hover:scale-95' },
     { name: '105%', class: 'hover:scale-105' },
-    { name: '110%', class: 'hover:scale-110' }
+    { name: '110%', class: 'hover:scale-110' },
+    { name: '125%', class: 'hover:scale-125' },
+    { name: '150%', class: 'hover:scale-150' }
+  ]
+
+  const hoverShadowOptions = [
+    { name: 'None', class: '' },
+    { name: 'SM', class: 'hover:shadow-sm' },
+    { name: 'MD', class: 'hover:shadow-md' },
+    { name: 'LG', class: 'hover:shadow-lg' },
+    { name: 'XL', class: 'hover:shadow-xl' },
+    { name: '2XL', class: 'hover:shadow-2xl' }
+  ]
+
+  const hoverOpacityOptions = [
+    { name: 'None', class: '' },
+    { name: '75%', class: 'hover:opacity-75' },
+    { name: '80%', class: 'hover:opacity-80' },
+    { name: '90%', class: 'hover:opacity-90' },
+    { name: '95%', class: 'hover:opacity-95' }
+  ]
+
+  const borderStyleOptions = [
+    { name: 'Solid', class: 'border-solid' },
+    { name: 'Dashed', class: 'border-dashed' },
+    { name: 'Dotted', class: 'border-dotted' },
+    { name: 'Double', class: 'border-double' },
+    { name: 'None', class: 'border-none' }
+  ]
+
+  const entranceAnimationOptions = [
+    { name: 'None', class: '' },
+    { name: 'Spin', class: 'animate-spin' },
+    { name: 'Ping', class: 'animate-ping' },
+    { name: 'Pulse', class: 'animate-pulse' },
+    { name: 'Bounce', class: 'animate-bounce' }
+  ]
+
+  const scrollAnimationOptions = [
+    { name: 'None', class: '' },
+    { name: 'Pulse on Scroll', class: 'animate-pulse' },
+    { name: 'Bounce on Scroll', class: 'animate-bounce' },
+    { name: 'Ping on Scroll', class: 'animate-ping' }
+  ]
+
+  const transitionDurationOptions = [
+    { name: 'Fast', class: 'duration-75' },
+    { name: 'Normal', class: 'duration-150' },
+    { name: 'Slow', class: 'duration-300' },
+    { name: 'Slower', class: 'duration-500' },
+    { name: 'Slowest', class: 'duration-700' }
+  ]
+
+  const transitionEasingOptions = [
+    { name: 'Linear', class: 'ease-linear' },
+    { name: 'Ease In', class: 'ease-in' },
+    { name: 'Ease Out', class: 'ease-out' },
+    { name: 'Ease In Out', class: 'ease-in-out' }
+  ]
+
+  const hoverRotateOptions = [
+    { name: 'None', class: '' },
+    { name: '1°', class: 'hover:rotate-1' },
+    { name: '3°', class: 'hover:rotate-3' },
+    { name: '6°', class: 'hover:rotate-6' },
+    { name: '12°', class: 'hover:rotate-12' },
+    { name: '-3°', class: 'hover:-rotate-3' },
+    { name: '-6°', class: 'hover:-rotate-6' }
+  ]
+
+  const hoverBgColorOptions = [
+    { name: 'None', class: '' },
+    { name: 'Blue', class: 'hover:bg-blue-500' },
+    { name: 'Green', class: 'hover:bg-green-500' },
+    { name: 'Purple', class: 'hover:bg-purple-500' },
+    { name: 'Red', class: 'hover:bg-red-500' },
+    { name: 'Gray', class: 'hover:bg-gray-500' },
+    { name: 'White', class: 'hover:bg-white' },
+    { name: 'Black', class: 'hover:bg-black' }
   ]
 
   const updateEffects = (property, newValue) => {
@@ -851,8 +1094,54 @@ export const UltimateEffectsControl = ({ value = {}, onChange, device = 'base' }
     onChange(newEffectsValue)
   }
 
+  const resetEffects = () => {
+    const resetValue = {
+      ...value,
+      [device]: {
+        shadow: '',
+        borderRadius: '',
+        borderWidth: '',
+        borderStyle: '',
+        borderColor: '',
+        hoverScale: '',
+        hoverShadow: '',
+        hoverOpacity: '',
+        hoverRotate: '',
+        hoverBgColor: '',
+        entranceAnimation: '',
+        scrollAnimation: '',
+        transitionDuration: '',
+        transitionEasing: ''
+      }
+    }
+    onChange(resetValue)
+  }
+
   return (
     <div className="animate-slide-in">
+      {/* Effects Reset Button */}
+      <div className="section-header" style={{ marginBottom: '16px' }}>
+        <span className="section-header-icon">✨</span>
+        {__('Effects & Animations', 'tailwind-starter')}
+        <button 
+          className="reset-button"
+          onClick={resetEffects}
+          title="Reset all effects values"
+          style={{
+            marginLeft: 'auto',
+            padding: '4px 8px',
+            fontSize: '11px',
+            backgroundColor: '#ef4444',
+            color: 'white',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer'
+          }}
+        >
+          🔄 Reset
+        </button>
+      </div>
+
       {/* Box Shadow Section */}
       <div className="section-header">
         <span className="section-header-icon">🌫️</span>
@@ -917,6 +1206,31 @@ export const UltimateEffectsControl = ({ value = {}, onChange, device = 'base' }
         ))}
       </div>
 
+      <Text size="12px" weight="600" style={{ margin: '16px 0 8px 0', display: 'block', color: '#374151' }}>
+        Border Style
+      </Text>
+      <div className="enhanced-button-grid">
+        {borderStyleOptions.map(option => (
+          <button
+            key={option.class}
+            className={`enhanced-style-button ${deviceEffects.borderStyle === option.class ? 'selected' : ''}`}
+            onClick={() => updateEffects('borderStyle', option.class)}
+          >
+            {option.name}
+          </button>
+        ))}
+      </div>
+
+      <Text size="12px" weight="600" style={{ margin: '16px 0 8px 0', display: 'block', color: '#374151' }}>
+        Border Color
+      </Text>
+      <UltimateColorPicker
+        label="Border Color"
+        value={deviceEffects.borderColor}
+        onChange={(newColor) => updateEffects('borderColor', newColor)}
+        type="border"
+      />
+
       {/* Hover Effects Section */}
       <div className="section-header" style={{ marginTop: '32px' }}>
         <span className="section-header-icon">🎯</span>
@@ -932,6 +1246,137 @@ export const UltimateEffectsControl = ({ value = {}, onChange, device = 'base' }
             key={option.class}
             className={`enhanced-style-button ${deviceEffects.hoverScale === option.class ? 'selected' : ''}`}
             onClick={() => updateEffects('hoverScale', option.class)}
+          >
+            {option.name}
+          </button>
+        ))}
+      </div>
+
+      <Text size="12px" weight="600" style={{ margin: '16px 0 8px 0', display: 'block', color: '#374151' }}>
+        Hover Shadow
+      </Text>
+      <div className="enhanced-button-grid">
+        {hoverShadowOptions.map(option => (
+          <button
+            key={option.class}
+            className={`enhanced-style-button ${deviceEffects.hoverShadow === option.class ? 'selected' : ''}`}
+            onClick={() => updateEffects('hoverShadow', option.class)}
+          >
+            {option.name}
+          </button>
+        ))}
+      </div>
+
+      <Text size="12px" weight="600" style={{ margin: '16px 0 8px 0', display: 'block', color: '#374151' }}>
+        Hover Opacity
+      </Text>
+      <div className="enhanced-button-grid">
+        {hoverOpacityOptions.map(option => (
+          <button
+            key={option.class}
+            className={`enhanced-style-button ${deviceEffects.hoverOpacity === option.class ? 'selected' : ''}`}
+            onClick={() => updateEffects('hoverOpacity', option.class)}
+          >
+            {option.name}
+          </button>
+        ))}
+      </div>
+
+      <Text size="12px" weight="600" style={{ margin: '16px 0 8px 0', display: 'block', color: '#374151' }}>
+        Hover Rotation
+      </Text>
+      <div className="enhanced-button-grid">
+        {hoverRotateOptions.map(option => (
+          <button
+            key={option.class}
+            className={`enhanced-style-button ${deviceEffects.hoverRotate === option.class ? 'selected' : ''}`}
+            onClick={() => updateEffects('hoverRotate', option.class)}
+          >
+            {option.name}
+          </button>
+        ))}
+      </div>
+
+      <Text size="12px" weight="600" style={{ margin: '16px 0 8px 0', display: 'block', color: '#374151' }}>
+        Hover Background Color
+      </Text>
+      <div className="enhanced-button-grid">
+        {hoverBgColorOptions.map(option => (
+          <button
+            key={option.class}
+            className={`enhanced-style-button ${deviceEffects.hoverBgColor === option.class ? 'selected' : ''}`}
+            onClick={() => updateEffects('hoverBgColor', option.class)}
+            style={option.name !== 'None' ? { 
+              backgroundColor: option.name === 'Black' ? '#000' : option.name === 'White' ? '#fff' : undefined,
+              color: option.name === 'Black' ? '#fff' : option.name === 'White' ? '#000' : undefined,
+              border: option.name === 'White' ? '1px solid #ccc' : undefined
+            } : {}}
+          >
+            {option.name}
+          </button>
+        ))}
+      </div>
+
+      {/* Animation & Transitions Section */}
+      <div className="section-header" style={{ marginTop: '32px' }}>
+        <span className="section-header-icon">✨</span>
+        {__('Animations & Transitions', 'tailwind-starter')}
+      </div>
+
+      <Text size="12px" weight="600" style={{ margin: '12px 0 8px 0', display: 'block', color: '#374151' }}>
+        Entrance Animation
+      </Text>
+      <div className="enhanced-button-grid">
+        {entranceAnimationOptions.map(option => (
+          <button
+            key={option.class}
+            className={`enhanced-style-button ${deviceEffects.entranceAnimation === option.class ? 'selected' : ''}`}
+            onClick={() => updateEffects('entranceAnimation', option.class)}
+          >
+            {option.name}
+          </button>
+        ))}
+      </div>
+
+      <Text size="12px" weight="600" style={{ margin: '16px 0 8px 0', display: 'block', color: '#374151' }}>
+        Scroll Animation
+      </Text>
+      <div className="enhanced-button-grid">
+        {scrollAnimationOptions.map(option => (
+          <button
+            key={option.class}
+            className={`enhanced-style-button ${deviceEffects.scrollAnimation === option.class ? 'selected' : ''}`}
+            onClick={() => updateEffects('scrollAnimation', option.class)}
+          >
+            {option.name}
+          </button>
+        ))}
+      </div>
+
+      <Text size="12px" weight="600" style={{ margin: '16px 0 8px 0', display: 'block', color: '#374151' }}>
+        Transition Duration
+      </Text>
+      <div className="enhanced-button-grid">
+        {transitionDurationOptions.map(option => (
+          <button
+            key={option.class}
+            className={`enhanced-style-button ${deviceEffects.transitionDuration === option.class ? 'selected' : ''}`}
+            onClick={() => updateEffects('transitionDuration', option.class)}
+          >
+            {option.name}
+          </button>
+        ))}
+      </div>
+
+      <Text size="12px" weight="600" style={{ margin: '16px 0 8px 0', display: 'block', color: '#374151' }}>
+        Transition Easing
+      </Text>
+      <div className="enhanced-button-grid">
+        {transitionEasingOptions.map(option => (
+          <button
+            key={option.class}
+            className={`enhanced-style-button ${deviceEffects.transitionEasing === option.class ? 'selected' : ''}`}
+            onClick={() => updateEffects('transitionEasing', option.class)}
           >
             {option.name}
           </button>
@@ -997,8 +1442,50 @@ export const UltimateColorsControl = ({
     onGradientsChange(newGradientsValue)
   }
 
+  const resetColors = () => {
+    // Reset gradients for this device
+    const resetGradientsValue = {
+      ...gradients,
+      [device]: {
+        type: '',
+        direction: '',
+        fromColor: '',
+        toColor: '',
+        opacity: ''
+      }
+    }
+    onGradientsChange(resetGradientsValue)
+    
+    // Reset background and text colors
+    onBackgroundChange('')
+    onTextColorChange('')
+  }
+
   return (
     <div className="animate-slide-in">
+      {/* Colors Reset Button */}
+      <div className="section-header" style={{ marginBottom: '16px' }}>
+        <span className="section-header-icon">🎨</span>
+        {__('Colors & Gradients', 'tailwind-starter')}
+        <button 
+          className="reset-button"
+          onClick={resetColors}
+          title="Reset all color values"
+          style={{
+            marginLeft: 'auto',
+            padding: '4px 8px',
+            fontSize: '11px',
+            backgroundColor: '#ef4444',
+            color: 'white',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer'
+          }}
+        >
+          🔄 Reset
+        </button>
+      </div>
+
       {/* Background Colors */}
       <div className="section-header">
         <span className="section-header-icon">🎨</span>
@@ -1112,7 +1599,10 @@ export const UltimateLayoutControl = ({ value = {}, onChange, device = 'base' })
     justifyContent: '',
     alignItems: '',
     position: '',
-    zIndex: ''
+    zIndex: '',
+    display: '',
+    gridCols: '',
+    gridRows: ''
   }
   
   const quickWidthOptions = [
@@ -1185,6 +1675,36 @@ export const UltimateLayoutControl = ({ value = {}, onChange, device = 'base' })
     { name: 'XL', class: 'max-w-xl' },
     { name: '4XL', class: 'max-w-4xl' }
   ]
+
+  const gridColsOptions = [
+    { name: 'None', class: '' },
+    { name: '1', class: 'grid-cols-1' },
+    { name: '2', class: 'grid-cols-2' },
+    { name: '3', class: 'grid-cols-3' },
+    { name: '4', class: 'grid-cols-4' },
+    { name: '5', class: 'grid-cols-5' },
+    { name: '6', class: 'grid-cols-6' },
+    { name: '12', class: 'grid-cols-12' }
+  ]
+
+  const gridRowsOptions = [
+    { name: 'None', class: '' },
+    { name: '1', class: 'grid-rows-1' },
+    { name: '2', class: 'grid-rows-2' },
+    { name: '3', class: 'grid-rows-3' },
+    { name: '4', class: 'grid-rows-4' },
+    { name: '5', class: 'grid-rows-5' },
+    { name: '6', class: 'grid-rows-6' }
+  ]
+
+  const displayOptions = [
+    { name: 'Block', class: 'block' },
+    { name: 'Flex', class: 'flex' },
+    { name: 'Grid', class: 'grid' },
+    { name: 'Inline', class: 'inline' },
+    { name: 'Inline Block', class: 'inline-block' },
+    { name: 'Hidden', class: 'hidden' }
+  ]
   
   const updateLayout = (property, newValue) => {
     const newLayoutValue = {
@@ -1207,8 +1727,55 @@ export const UltimateLayoutControl = ({ value = {}, onChange, device = 'base' })
     return `${prefix}-[${value}]`
   }
   
+  const resetLayout = () => {
+    const resetValue = {
+      ...value,
+      [device]: {
+        width: '',
+        height: '',
+        customMaxWidth: '',
+        customMinWidth: '',
+        customHeight: '',
+        customMaxHeight: '',
+        customMinHeight: '',
+        gap: '',
+        justifyContent: '',
+        alignItems: '',
+        position: '',
+        zIndex: '',
+        display: '',
+        gridCols: '',
+        gridRows: ''
+      }
+    }
+    onChange(resetValue)
+  }
+
   return (
     <div className="animate-slide-in">
+      {/* Layout Reset Button */}
+      <div className="section-header" style={{ marginBottom: '16px' }}>
+        <span className="section-header-icon">📐</span>
+        {__('Layout Controls', 'tailwind-starter')}
+        <button 
+          className="reset-button"
+          onClick={resetLayout}
+          title="Reset all layout values"
+          style={{
+            marginLeft: 'auto',
+            padding: '4px 8px',
+            fontSize: '11px',
+            backgroundColor: '#ef4444',
+            color: 'white',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer'
+          }}
+        >
+          🔄 Reset
+        </button>
+      </div>
+
       {/* Width Section */}
       <div className="section-header">
         <span className="section-header-icon">📐</span>
@@ -1372,6 +1939,67 @@ export const UltimateLayoutControl = ({ value = {}, onChange, device = 'base' })
         ))}
       </div>
 
+      {/* Display Controls Section */}
+      <div className="section-header" style={{ marginTop: '32px' }}>
+        <span className="section-header-icon">📺</span>
+        {__('Display Type', 'tailwind-starter')}
+      </div>
+
+      <Text size="12px" weight="600" style={{ margin: '12px 0 8px 0', display: 'block', color: '#374151' }}>
+        Display Property
+      </Text>
+      <div className="enhanced-button-grid">
+        {displayOptions.map(option => (
+          <button
+            key={option.class}
+            className={`enhanced-style-button ${deviceLayout.display === option.class ? 'selected' : ''}`}
+            onClick={() => updateLayout('display', option.class)}
+          >
+            {option.name}
+          </button>
+        ))}
+      </div>
+
+      {/* CSS Grid Controls Section */}
+      {deviceLayout.display === 'grid' && (
+        <div>
+          <div className="section-header" style={{ marginTop: '32px' }}>
+            <span className="section-header-icon">🔲</span>
+            {__('CSS Grid Layout', 'tailwind-starter')}
+          </div>
+
+          <Text size="12px" weight="600" style={{ margin: '12px 0 8px 0', display: 'block', color: '#374151' }}>
+            Grid Columns
+          </Text>
+          <div className="enhanced-button-grid">
+            {gridColsOptions.map(option => (
+              <button
+                key={option.class}
+                className={`enhanced-style-button ${deviceLayout.gridCols === option.class ? 'selected' : ''}`}
+                onClick={() => updateLayout('gridCols', option.class)}
+              >
+                {option.name}
+              </button>
+            ))}
+          </div>
+
+          <Text size="12px" weight="600" style={{ margin: '16px 0 8px 0', display: 'block', color: '#374151' }}>
+            Grid Rows
+          </Text>
+          <div className="enhanced-button-grid">
+            {gridRowsOptions.map(option => (
+              <button
+                key={option.class}
+                className={`enhanced-style-button ${deviceLayout.gridRows === option.class ? 'selected' : ''}`}
+                onClick={() => updateLayout('gridRows', option.class)}
+              >
+                {option.name}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* Position Controls Section */}
       <div className="section-header" style={{ marginTop: '32px' }}>
         <span className="section-header-icon">📍</span>
@@ -1417,6 +2045,8 @@ export const UltimateLayoutControl = ({ value = {}, onChange, device = 'base' })
 export const UltimateControlTabs = ({ 
   spacing, 
   onSpacingChange,
+  margins,
+  onMarginsChange,
   background,
   onBackgroundChange,
   textColor,
@@ -1517,11 +2147,20 @@ export const UltimateControlTabs = ({
             
             case 'spacing':
               return (
-                <UltimateSpacingControl
-                  value={spacing}
-                  onChange={onSpacingChange}
-                  device={device}
-                />
+                <div className="animate-slide-in">
+                  <UltimateSpacingControl
+                    value={spacing}
+                    onChange={onSpacingChange}
+                    device={device}
+                  />
+                  <div style={{ marginTop: '24px' }}>
+                    <UltimateMarginControl
+                      value={margins}
+                      onChange={onMarginsChange}
+                      device={device}
+                    />
+                  </div>
+                </div>
               )
             
             case 'layout':
@@ -1587,6 +2226,14 @@ export const generateTailwindClasses = (settings, device = 'base') => {
     if (spacing.bottom > 0) classes.push(`${prefix}pb-${spacingValues[spacing.bottom]}`)
     if (spacing.left > 0) classes.push(`${prefix}pl-${spacingValues[spacing.left]}`)
   }
+
+  if (settings.margins?.[device]) {
+    const margins = settings.margins[device]
+    if (margins.top > 0) classes.push(`${prefix}mt-${spacingValues[margins.top]}`)
+    if (margins.right > 0) classes.push(`${prefix}mr-${spacingValues[margins.right]}`)
+    if (margins.bottom > 0) classes.push(`${prefix}mb-${spacingValues[margins.bottom]}`)
+    if (margins.left > 0) classes.push(`${prefix}ml-${spacingValues[margins.left]}`)
+  }
   
   if (settings.typography?.[device]) {
     const typo = settings.typography[device]
@@ -1614,6 +2261,13 @@ export const generateTailwindClasses = (settings, device = 'base') => {
     // Add position classes
     if (layout.position) classes.push(`${prefix}${layout.position}`)
     if (layout.zIndex) classes.push(`${prefix}${layout.zIndex}`)
+    
+    // Add display classes
+    if (layout.display) classes.push(`${prefix}${layout.display}`)
+    
+    // Add CSS Grid classes
+    if (layout.gridCols) classes.push(`${prefix}${layout.gridCols}`)
+    if (layout.gridRows) classes.push(`${prefix}${layout.gridRows}`)
   }
 
   if (settings.effects?.[device]) {
@@ -1627,11 +2281,20 @@ export const generateTailwindClasses = (settings, device = 'base') => {
     if (effects.borderColor) classes.push(`${prefix}${effects.borderColor}`)
     
     // Add hover effects and transition
-    if (effects.hoverScale || effects.hoverShadow) {
+    if (effects.hoverScale || effects.hoverShadow || effects.hoverOpacity || effects.hoverRotate || effects.hoverBgColor) {
       classes.push(`${prefix}transition-all`)
       if (effects.hoverScale) classes.push(`${prefix}${effects.hoverScale}`)
       if (effects.hoverShadow) classes.push(`${prefix}${effects.hoverShadow}`)
+      if (effects.hoverOpacity) classes.push(`${prefix}${effects.hoverOpacity}`)
+      if (effects.hoverRotate) classes.push(`${prefix}${effects.hoverRotate}`)
+      if (effects.hoverBgColor) classes.push(`${prefix}${effects.hoverBgColor}`)
     }
+    
+    // Add animation and transition classes
+    if (effects.entranceAnimation) classes.push(`${prefix}${effects.entranceAnimation}`)
+    if (effects.scrollAnimation) classes.push(`${prefix}${effects.scrollAnimation}`)
+    if (effects.transitionDuration) classes.push(`${prefix}${effects.transitionDuration}`)
+    if (effects.transitionEasing) classes.push(`${prefix}${effects.transitionEasing}`)
   }
   
   if (settings.gradients?.[device]) {
@@ -1644,9 +2307,25 @@ export const generateTailwindClasses = (settings, device = 'base') => {
     if (gradients.opacity) classes.push(`${prefix}${gradients.opacity}`)
   }
 
-  if (device === 'base') {
-    if (settings.backgroundColor) classes.push(settings.backgroundColor)
-    if (settings.textColor) classes.push(settings.textColor)
+  // Add background and text colors (should work for all devices)
+  if (settings.backgroundColor) {
+    if (typeof settings.backgroundColor === 'string') {
+      // Simple string format for backward compatibility
+      if (device === 'base') classes.push(settings.backgroundColor)
+    } else if (settings.backgroundColor[device]) {
+      // Responsive object format
+      classes.push(`${prefix}${settings.backgroundColor[device]}`)
+    }
+  }
+  
+  if (settings.textColor) {
+    if (typeof settings.textColor === 'string') {
+      // Simple string format for backward compatibility
+      if (device === 'base') classes.push(settings.textColor)
+    } else if (settings.textColor[device]) {
+      // Responsive object format
+      classes.push(`${prefix}${settings.textColor[device]}`)
+    }
   }
   
   return classes.filter(Boolean).join(' ')

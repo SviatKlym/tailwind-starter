@@ -51,6 +51,13 @@ function addVisualAttributes(settings, name) {
             lg: { top: 0, right: 0, bottom: 0, left: 0 },
             xl: { top: 0, right: 0, bottom: 0, left: 0 }
           },
+          margins: {
+            base: { top: 0, right: 0, bottom: 0, left: 0 },
+            sm: { top: 0, right: 0, bottom: 0, left: 0 },
+            md: { top: 0, right: 0, bottom: 0, left: 0 },
+            lg: { top: 0, right: 0, bottom: 0, left: 0 },
+            xl: { top: 0, right: 0, bottom: 0, left: 0 }
+          },
           typography: {
             base: { 
               fontSize: '', fontWeight: '', textAlign: '', 
@@ -86,7 +93,10 @@ function addVisualAttributes(settings, name) {
               justifyContent: '',
               alignItems: '',
               position: '',
-              zIndex: ''
+              zIndex: '',
+              display: '',
+              gridCols: '',
+              gridRows: ''
             },
             sm: { 
               width: '', 
@@ -100,7 +110,10 @@ function addVisualAttributes(settings, name) {
               justifyContent: '',
               alignItems: '',
               position: '',
-              zIndex: ''
+              zIndex: '',
+              display: '',
+              gridCols: '',
+              gridRows: ''
             },
             md: { 
               width: '', 
@@ -114,7 +127,10 @@ function addVisualAttributes(settings, name) {
               justifyContent: '',
               alignItems: '',
               position: '',
-              zIndex: ''
+              zIndex: '',
+              display: '',
+              gridCols: '',
+              gridRows: ''
             },
             lg: { 
               width: '', 
@@ -128,7 +144,10 @@ function addVisualAttributes(settings, name) {
               justifyContent: '',
               alignItems: '',
               position: '',
-              zIndex: ''
+              zIndex: '',
+              display: '',
+              gridCols: '',
+              gridRows: ''
             },
             xl: { 
               width: '', 
@@ -142,7 +161,10 @@ function addVisualAttributes(settings, name) {
               justifyContent: '',
               alignItems: '',
               position: '',
-              zIndex: ''
+              zIndex: '',
+              display: '',
+              gridCols: '',
+              gridRows: ''
             }
           },
           effects: {
@@ -153,7 +175,14 @@ function addVisualAttributes(settings, name) {
               borderStyle: '',
               borderColor: '',
               hoverScale: '',
-              hoverShadow: ''
+              hoverShadow: '',
+              hoverOpacity: '',
+              hoverRotate: '',
+              hoverBgColor: '',
+              entranceAnimation: '',
+              scrollAnimation: '',
+              transitionDuration: '',
+              transitionEasing: ''
             },
             sm: {
               shadow: '',
@@ -162,7 +191,14 @@ function addVisualAttributes(settings, name) {
               borderStyle: '',
               borderColor: '',
               hoverScale: '',
-              hoverShadow: ''
+              hoverShadow: '',
+              hoverOpacity: '',
+              hoverRotate: '',
+              hoverBgColor: '',
+              entranceAnimation: '',
+              scrollAnimation: '',
+              transitionDuration: '',
+              transitionEasing: ''
             },
             md: {
               shadow: '',
@@ -171,7 +207,14 @@ function addVisualAttributes(settings, name) {
               borderStyle: '',
               borderColor: '',
               hoverScale: '',
-              hoverShadow: ''
+              hoverShadow: '',
+              hoverOpacity: '',
+              hoverRotate: '',
+              hoverBgColor: '',
+              entranceAnimation: '',
+              scrollAnimation: '',
+              transitionDuration: '',
+              transitionEasing: ''
             },
             lg: {
               shadow: '',
@@ -180,7 +223,14 @@ function addVisualAttributes(settings, name) {
               borderStyle: '',
               borderColor: '',
               hoverScale: '',
-              hoverShadow: ''
+              hoverShadow: '',
+              hoverOpacity: '',
+              hoverRotate: '',
+              hoverBgColor: '',
+              entranceAnimation: '',
+              scrollAnimation: '',
+              transitionDuration: '',
+              transitionEasing: ''
             },
             xl: {
               shadow: '',
@@ -189,7 +239,14 @@ function addVisualAttributes(settings, name) {
               borderStyle: '',
               borderColor: '',
               hoverScale: '',
-              hoverShadow: ''
+              hoverShadow: '',
+              hoverOpacity: '',
+              hoverRotate: '',
+              hoverBgColor: '',
+              entranceAnimation: '',
+              scrollAnimation: '',
+              transitionDuration: '',
+              transitionEasing: ''
             }
           },
           gradients: {
@@ -289,6 +346,64 @@ const withVisualControls = createHigherOrderComponent((BlockEdit) => {
             activeDevice: activeDevice,
             onChange: (device) => setAttributes({ activeDevice: device })
           }),
+
+          // Full Reset Button
+          createElement('div', {
+            style: { 
+              display: 'flex', 
+              justifyContent: 'center', 
+              margin: '16px 0',
+              padding: '8px',
+              backgroundColor: '#fee2e2',
+              borderRadius: '6px',
+              border: '1px solid #fecaca'
+            }
+          },
+            createElement('button', {
+              onClick: () => {
+                setAttributes({ 
+                  visualSettings: {
+                    spacing: {
+                      base: { top: 0, right: 0, bottom: 0, left: 0 },
+                      sm: { top: 0, right: 0, bottom: 0, left: 0 },
+                      md: { top: 0, right: 0, bottom: 0, left: 0 },
+                      lg: { top: 0, right: 0, bottom: 0, left: 0 },
+                      xl: { top: 0, right: 0, bottom: 0, left: 0 }
+                    },
+                    margins: {
+                      base: { top: 0, right: 0, bottom: 0, left: 0 },
+                      sm: { top: 0, right: 0, bottom: 0, left: 0 },
+                      md: { top: 0, right: 0, bottom: 0, left: 0 },
+                      lg: { top: 0, right: 0, bottom: 0, left: 0 },
+                      xl: { top: 0, right: 0, bottom: 0, left: 0 }
+                    },
+                    typography: {},
+                    layout: {},
+                    effects: {},
+                    gradients: {},
+                    backgroundColor: '',
+                    textColor: ''
+                  }
+                })
+              },
+              style: {
+                padding: '8px 16px',
+                backgroundColor: '#dc2626',
+                color: 'white',
+                border: 'none',
+                borderRadius: '6px',
+                fontSize: '14px',
+                fontWeight: '600',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px'
+              },
+              title: 'Reset all visual controls to default values'
+            },
+              '🔄 Reset All Visual Controls'
+            )
+          ),
           
           createElement('div', {
             style: { 
@@ -309,6 +424,10 @@ const withVisualControls = createHigherOrderComponent((BlockEdit) => {
             spacing: visualSettings.spacing || {},
             onSpacingChange: (spacing) => setAttributes({
               visualSettings: { ...visualSettings, spacing }
+            }),
+            margins: visualSettings.margins || {},
+            onMarginsChange: (margins) => setAttributes({
+              visualSettings: { ...visualSettings, margins }
             }),
             background: visualSettings.backgroundColor,
             onBackgroundChange: (backgroundColor) => setAttributes({
