@@ -12,6 +12,7 @@ import {
   generateAllInlineStyles
 } from './visual-controls.js'
 import { getBlockPresets } from './block-specific-controls.js'
+import { LazyControlWrapper, LazyTabPanel, useDebouncedValue } from './lazy-controls.js'
 
 // Core block names that we want to enhance
 const ENHANCED_BLOCKS = [
@@ -420,43 +421,48 @@ const withVisualControls = createHigherOrderComponent((BlockEdit) => {
             'Use these controls to add professional styling to this block!'
           ),
           
-          createElement(UltimateControlTabs, {
-            spacing: visualSettings.spacing || {},
-            onSpacingChange: (spacing) => setAttributes({
-              visualSettings: { ...visualSettings, spacing }
-            }),
-            margins: visualSettings.margins || {},
-            onMarginsChange: (margins) => setAttributes({
-              visualSettings: { ...visualSettings, margins }
-            }),
-            background: visualSettings.backgroundColor,
-            onBackgroundChange: (backgroundColor) => setAttributes({
-              visualSettings: { ...visualSettings, backgroundColor }
-            }),
-            textColor: visualSettings.textColor,
-            onTextColorChange: (textColor) => setAttributes({
-              visualSettings: { ...visualSettings, textColor }
-            }),
-            typography: visualSettings.typography || {},
-            onTypographyChange: (typography) => setAttributes({
-              visualSettings: { ...visualSettings, typography }
-            }),
-            layout: visualSettings.layout || {},
-            onLayoutChange: (layout) => setAttributes({
-              visualSettings: { ...visualSettings, layout }
-            }),
-            effects: visualSettings.effects || {},
-            onEffectsChange: (effects) => setAttributes({
-              visualSettings: { ...visualSettings, effects }
-            }),
-            gradients: visualSettings.gradients || {},
-            onGradientsChange: (gradients) => setAttributes({
-              visualSettings: { ...visualSettings, gradients }
-            }),
-            device: activeDevice,
-            presets: presets,
-            onPresetApply: handlePresetApply
-          }),
+          createElement(LazyControlWrapper, {
+            componentName: 'VisualControlTabs',
+            height: '500px'
+          },
+            createElement(UltimateControlTabs, {
+              spacing: visualSettings.spacing || {},
+              onSpacingChange: (spacing) => setAttributes({
+                visualSettings: { ...visualSettings, spacing }
+              }),
+              margins: visualSettings.margins || {},
+              onMarginsChange: (margins) => setAttributes({
+                visualSettings: { ...visualSettings, margins }
+              }),
+              background: visualSettings.backgroundColor,
+              onBackgroundChange: (backgroundColor) => setAttributes({
+                visualSettings: { ...visualSettings, backgroundColor }
+              }),
+              textColor: visualSettings.textColor,
+              onTextColorChange: (textColor) => setAttributes({
+                visualSettings: { ...visualSettings, textColor }
+              }),
+              typography: visualSettings.typography || {},
+              onTypographyChange: (typography) => setAttributes({
+                visualSettings: { ...visualSettings, typography }
+              }),
+              layout: visualSettings.layout || {},
+              onLayoutChange: (layout) => setAttributes({
+                visualSettings: { ...visualSettings, layout }
+              }),
+              effects: visualSettings.effects || {},
+              onEffectsChange: (effects) => setAttributes({
+                visualSettings: { ...visualSettings, effects }
+              }),
+              gradients: visualSettings.gradients || {},
+              onGradientsChange: (gradients) => setAttributes({
+                visualSettings: { ...visualSettings, gradients }
+              }),
+              device: activeDevice,
+              presets: presets,
+              onPresetApply: handlePresetApply
+            })
+          ),
 
           createElement('div', {
             style: {

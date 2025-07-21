@@ -18,6 +18,8 @@ import {
   FlexItem
 } from '@wordpress/components'
 import { __ } from '@wordpress/i18n'
+import { trackClassGeneration } from './performance-monitor.js'
+import { useDebouncedValue } from './lazy-controls.js'
 
 // Enhanced CSS for the ultimate visual controls
 const ultimateControlsCSS = `
@@ -1406,11 +1408,17 @@ export const UltimateColorsControl = ({
 
   const gradientTypes = [
     { name: 'None', class: '' },
-    { name: 'Linear', class: 'bg-gradient-to-r' },
-    { name: 'To Bottom', class: 'bg-gradient-to-b' },
-    { name: 'To Top Right', class: 'bg-gradient-to-tr' },
-    { name: 'To Bottom Right', class: 'bg-gradient-to-br' },
-    { name: 'Radial', class: 'bg-gradient-radial' }
+    { name: 'Linear Right', class: 'bg-gradient-to-r' },
+    { name: 'Linear Bottom', class: 'bg-gradient-to-b' },
+    { name: 'Linear Top Right', class: 'bg-gradient-to-tr' },
+    { name: 'Linear Bottom Right', class: 'bg-gradient-to-br' },
+    { name: 'Radial Center', class: 'bg-gradient-radial' },
+    { name: 'Radial Top', class: 'bg-gradient-radial-at-t' },
+    { name: 'Radial Bottom', class: 'bg-gradient-radial-at-b' },
+    { name: 'Radial Top Left', class: 'bg-gradient-radial-at-tl' },
+    { name: 'Radial Top Right', class: 'bg-gradient-radial-at-tr' },
+    { name: 'Conic', class: 'bg-gradient-conic' },
+    { name: 'Conic Top', class: 'bg-gradient-conic-at-t' }
   ]
 
   const gradientColors = [
@@ -2221,18 +2229,18 @@ export const generateTailwindClasses = (settings, device = 'base') => {
   
   if (settings.spacing?.[device]) {
     const spacing = settings.spacing[device]
-    if (spacing.top > 0) classes.push(`${prefix}pt-${spacingValues[spacing.top]}`)
-    if (spacing.right > 0) classes.push(`${prefix}pr-${spacingValues[spacing.right]}`)
-    if (spacing.bottom > 0) classes.push(`${prefix}pb-${spacingValues[spacing.bottom]}`)
-    if (spacing.left > 0) classes.push(`${prefix}pl-${spacingValues[spacing.left]}`)
+    if (spacing.top > 0) classes.push(`${prefix}pt-${spacing.top}`)
+    if (spacing.right > 0) classes.push(`${prefix}pr-${spacing.right}`)
+    if (spacing.bottom > 0) classes.push(`${prefix}pb-${spacing.bottom}`)
+    if (spacing.left > 0) classes.push(`${prefix}pl-${spacing.left}`)
   }
 
   if (settings.margins?.[device]) {
     const margins = settings.margins[device]
-    if (margins.top > 0) classes.push(`${prefix}mt-${spacingValues[margins.top]}`)
-    if (margins.right > 0) classes.push(`${prefix}mr-${spacingValues[margins.right]}`)
-    if (margins.bottom > 0) classes.push(`${prefix}mb-${spacingValues[margins.bottom]}`)
-    if (margins.left > 0) classes.push(`${prefix}ml-${spacingValues[margins.left]}`)
+    if (margins.top > 0) classes.push(`${prefix}mt-${margins.top}`)
+    if (margins.right > 0) classes.push(`${prefix}mr-${margins.right}`)
+    if (margins.bottom > 0) classes.push(`${prefix}mb-${margins.bottom}`)
+    if (margins.left > 0) classes.push(`${prefix}ml-${margins.left}`)
   }
   
   if (settings.typography?.[device]) {
@@ -2363,16 +2371,19 @@ export const generateAllInlineStyles = (settings) => {
 }
 
 export const generateAllClasses = (settings) => {
-  const allClasses = []
-  
-  const baseClasses = generateTailwindClasses(settings, 'base')
-  if (baseClasses) allClasses.push(baseClasses)
-  
-  const breakpoints = ['sm', 'md', 'lg', 'xl']
-  breakpoints.forEach(device => {
-    const deviceClasses = generateTailwindClasses(settings, device)
-    if (deviceClasses) allClasses.push(deviceClasses)
+  // Use performance tracking
+  return trackClassGeneration(settings, () => {
+    const allClasses = []
+    
+    const baseClasses = generateTailwindClasses(settings, 'base')
+    if (baseClasses) allClasses.push(baseClasses)
+    
+    const breakpoints = ['sm', 'md', 'lg', 'xl']
+    breakpoints.forEach(device => {
+      const deviceClasses = generateTailwindClasses(settings, device)
+      if (deviceClasses) allClasses.push(deviceClasses)
+    })
+    
+    return allClasses.join(' ').trim()
   })
-  
-  return allClasses.join(' ').trim()
 }
