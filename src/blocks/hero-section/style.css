@@ -1,7 +1,11 @@
-/* Hero Section Styles */
+/* Hero Section - Performance Optimized Styles */
+
+/* Critical styles - loaded immediately */
 .hero-section {
   width: 100%;
   position: relative;
+  contain: layout style paint;
+  will-change: auto;
 }
 
 .hero-section--centered {
@@ -16,48 +20,221 @@
   text-align: center;
 }
 
-/* Button enhancements */
+/* Hero background optimization */
+.hero-background {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.hero-background img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transform: scale(1.05);
+  transition: transform 0.3s ease-out;
+}
+
+.hero-background.loaded img {
+  transform: scale(1);
+}
+
+/* Performance-optimized button styles */
 .btn-lg {
   font-size: 1.125rem;
   line-height: 1.75rem;
   padding: 1rem 2rem;
   border-radius: 0.5rem;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
 }
 
-/* Trust bar styling */
-.hero-section .trust-logos img {
-  transition: opacity 0.3s ease;
+.btn-primary {
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
-.hero-section .trust-logos img:hover {
+.btn-primary:hover {
+  background-color: #2563eb;
+  text-decoration: none;
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: #374151;
+  border: 2px solid #d1d5db;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.btn-secondary:hover {
+  background-color: #f9fafb;
+  border-color: #9ca3af;
+  text-decoration: none;
+}
+
+/* Trust bar optimization */
+.trust-bar {
+  transition: opacity 0.6s ease-out;
+}
+
+.trust-logos {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+}
+
+.trust-logo img {
+  height: 2rem;
+  width: auto;
+  object-fit: contain;
+  filter: grayscale(100%);
+  opacity: 0.6;
+  transition: filter 0.3s ease, opacity 0.3s ease;
+}
+
+.trust-logo img:hover {
+  filter: grayscale(0%);
   opacity: 1;
 }
 
-/* Responsive adjustments */
+/* Animation performance optimizations */
+[data-animate] {
+  opacity: 0;
+  transform: translateY(30px);
+  will-change: opacity, transform;
+}
+
+[data-animate="headline"] {
+  transform: translateY(20px);
+}
+
+[data-animate="subheadline"] {
+  transform: translateY(15px);
+}
+
+[data-animate="cta-buttons"] {
+  transform: translateY(10px);
+}
+
+[data-animate="hero-image"] {
+  transform: translateY(40px) scale(0.95);
+}
+
+[data-animate="trust-bar"] {
+  transform: translateY(20px);
+}
+
+/* Responsive optimizations - Mobile First */
 @media (max-width: 640px) {
   .hero-section h1 {
     font-size: 2rem;
     line-height: 2.5rem;
   }
   
-  .hero-section .btn-lg {
+  .btn-lg {
     width: 100%;
     text-align: center;
+    min-width: unset;
+  }
+  
+  .trust-logos {
+    gap: 1rem;
+  }
+  
+  .trust-logo img {
+    height: 1.5rem;
   }
 }
 
-/* Animation enhancements */
-.hero-section {
-  animation: fadeInUp 0.6s ease-out;
+@media (min-width: 641px) and (max-width: 768px) {
+  .hero-section h1 {
+    font-size: 2.5rem;
+    line-height: 3rem;
+  }
 }
 
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
+@media (min-width: 769px) {
+  .trust-logo img {
+    height: 2.5rem;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+}
+
+/* Performance optimizations for reduced paint */
+.hero-content {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Prefers reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .hero-section *,
+  .hero-section *::before,
+  .hero-section *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  [data-animate] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* Focus indicators for accessibility */
+.btn:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+/* Loading states */
+.hero-background:not(.loaded)::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Print styles */
+@media print {
+  .hero-section {
+    break-inside: avoid;
+  }
+  
+  .hero-background {
+    display: none;
+  }
+  
+  .btn {
+    border: 1px solid #000;
+    text-decoration: none;
   }
 }

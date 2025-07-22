@@ -1,352 +1,244 @@
-import { useBlockProps, RichText } from '@wordpress/block-editor';
-import { generateAllClasses } from '../../utils/visual-controls.js';
+import { useBlockProps, RichText } from '@wordpress/block-editor'
+import { generatePerformanceConfig, generateDataAttributes } from '../../utils/block-config-generator'
 
 export default function save({ attributes }) {
-	const {
-		layout,
-		testimonials,
-		columns,
-		showRatings,
-		showAuthorImages,
-		showCompany,
-		showLocation,
-		showDate,
-		showVerifiedBadge,
-		useExcerpts,
-		categoryFiltering,
-		featuredFirst,
-		autoRotate,
-		rotationSpeed,
-		cardStyle,
-		quoteStyle,
-		ratingStyle,
-		textAlignment,
-		sectionTitle,
-		sectionSubtitle,
-		showSectionHeader,
-		enableVideoTestimonials,
-		averageRating,
-		totalReviews,
-		showAverageRating,
-		settings,
-		activeDevice
-	} = attributes;
+  const {
+    testimonials,
+    layout,
+    columns,
+    showImages,
+    showCompany,
+    showRating,
+    autoSlide,
+    slideSpeed,
+    sectionTitle,
+    sectionSubtitle,
+    showSectionHeader,
+    backgroundColor,
+    textColor,
+    settings
+  } = attributes
 
-	// Generate classes for all devices
-	const allClasses = generateAllClasses(settings);
+  // Testimonials performance configuration
+  const performanceConfig = generatePerformanceConfig('testimonial-showcase', {
+    lazyLoading: { 
+      enabled: showImages,
+      rootMargin: '100px' 
+    },
+    scrollAnimations: { 
+      enabled: true,
+      type: 'fadeInLeft',
+      duration: '0.7s',
+      threshold: 0.2
+    },
+    analytics: {
+      enabled: true,
+      trackViews: true,
+      viewData: { section: 'testimonials', layout, columns }
+    }
+  })
 
-	const blockProps = useBlockProps.save({
-		className: `testimonial-showcase testimonial-${layout}`,
-		'data-classes': allClasses,
-		'data-attributes': JSON.stringify({
-			layout,
-			columns,
-			showRatings,
-			showAuthorImages,
-			showCompany,
-			showLocation,
-			showDate,
-			showVerifiedBadge,
-			useExcerpts,
-			categoryFiltering,
-			featuredFirst,
-			autoRotate,
-			rotationSpeed,
-			cardStyle,
-			quoteStyle,
-			ratingStyle,
-			textAlignment,
-			enableVideoTestimonials
-		})
-	});
+  const blockProps = useBlockProps.save({
+    className: `testimonial-showcase layout-${layout || 'grid'} ${backgroundColor || ''} ${textColor || ''}`,
+    ...generateDataAttributes(performanceConfig)
+  })
 
-	// Filter and sort testimonials
-	const filteredTestimonials = testimonials
-		.filter(testimonial => testimonial.content && testimonial.content.trim())
-		.sort((a, b) => {
-			if (featuredFirst) {
-				if (a.featured && !b.featured) return -1;
-				if (!a.featured && b.featured) return 1;
-			}
-			return 0;
-		});
+  // Helper for optimized avatar images
+  const renderAvatar = (testimonial, index) => {
+    if (!showImages || !testimonial.avatar?.url) return null
 
-	// Get unique categories for frontend filtering
-	const categories = [...new Set(testimonials.map(testimonial => testimonial.category))];
+    const isLazy = index > 2 // First 3 avatars load immediately
 
-	const getGridColumns = () => {
-		switch (columns) {
-			case 1: return 'grid-cols-1';
-			case 2: return 'grid-cols-1 md:grid-cols-2';
-			case 3: return 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3';
-			case 4: return 'grid-cols-1 md:grid-cols-2 lg:grid-cols-4';
-			default: return 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3';
-		}
-	};
+    return (
+      <div className="testimonial-avatar w-16 h-16 rounded-full overflow-hidden mx-auto mb-4 bg-gray-200">
+        <picture>
+          <source 
+            srcSet={isLazy ? '' : testimonial.avatar.url.replace(/\.(jpg|jpeg|png)$/i, '.webp')}
+            type="image/webp"
+            data-lazy-srcset={isLazy ? testimonial.avatar.url.replace(/\.(jpg|jpeg|png)$/i, '.webp') : ''}
+          />
+          <img
+            src={isLazy ? 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiBmaWxsPSIjRjNGNEY2Ii8+Cjx0ZXh0IHg9IjMyIiB5PSIzMiIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyIiBmaWxsPSIjOUM5Q0EwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5Mb2FkaW5nPC90ZXh0Pgo8L3N2Zz4K' : testimonial.avatar.url}
+            alt={testimonial.avatar.alt || `${testimonial.name || 'Customer'} avatar`}
+            className="w-full h-full object-cover"
+            loading={isLazy ? 'lazy' : 'eager'}
+            data-lazy-src={isLazy ? testimonial.avatar.url : ''}
+          />
+        </picture>
+      </div>
+    )
+  }
 
-	const renderStars = (rating) => {
-		const stars = [];
-		for (let i = 1; i <= 5; i++) {
-			stars.push(
-				<span key={i} className={`star ${i <= rating ? 'text-yellow-400' : 'text-gray-300'}`}>
-					★
-				</span>
-			);
-		}
-		return stars;
-	};
+  // Helper for star ratings
+  const renderRating = (rating) => {
+    if (!showRating || !rating) return null
 
-	const renderTestimonialCard = (testimonial, index) => {
-		const cardClasses = `testimonial-card ${cardStyle === 'elevated' ? 'bg-white shadow-lg' : 
-			cardStyle === 'bordered' ? 'bg-white border border-gray-200' : 'bg-transparent'} 
-			rounded-lg p-6 transition-all duration-300 testimonial-hover`;
+    const stars = []
+    const fullStars = Math.floor(rating)
+    const hasHalfStar = rating % 1 !== 0
 
-		return (
-			<div 
-				key={testimonial.id} 
-				className={cardClasses}
-				data-category={testimonial.category}
-				data-featured={testimonial.featured ? 'true' : 'false'}
-				data-rating={testimonial.rating}
-			>
-				{testimonial.featured && (
-					<div className="featured-badge absolute top-4 right-4 bg-blue-500 text-white px-2 py-1 rounded-full text-xs font-medium z-10">
-						Featured
-					</div>
-				)}
+    for (let i = 0; i < 5; i++) {
+      if (i < fullStars) {
+        stars.push(
+          <svg key={i} className="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 20 20">
+            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+          </svg>
+        )
+      } else if (i === fullStars && hasHalfStar) {
+        stars.push(
+          <svg key={i} className="w-5 h-5 text-yellow-400" viewBox="0 0 20 20">
+            <defs>
+              <linearGradient id="half-star">
+                <stop offset="50%" stopColor="currentColor" />
+                <stop offset="50%" stopColor="transparent" />
+              </linearGradient>
+            </defs>
+            <path fill="url(#half-star)" d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+          </svg>
+        )
+      } else {
+        stars.push(
+          <svg key={i} className="w-5 h-5 text-gray-300" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+          </svg>
+        )
+      }
+    }
 
-				{quoteStyle === 'classic' && (
-					<div className="quote-mark text-6xl text-gray-200 leading-none mb-4" aria-hidden="true">"</div>
-				)}
+    return (
+      <div className="testimonial-rating flex justify-center mb-4">
+        <div className="flex items-center">
+          {stars}
+          <span className="ml-2 text-sm text-gray-600">({rating}/5)</span>
+        </div>
+      </div>
+    )
+  }
 
-				<div className={`testimonial-content mb-6 ${textAlignment === 'center' ? 'text-center' : 
-					textAlignment === 'right' ? 'text-right' : 'text-left'}`}>
-					{showRatings && (
-						<div className="rating mb-4 flex justify-center" role="img" aria-label={`${testimonial.rating} out of 5 stars`}>
-							{renderStars(testimonial.rating)}
-						</div>
-					)}
+  // Individual testimonial component
+  const renderTestimonial = (testimonial, index) => (
+    <div
+      key={testimonial.id || index}
+      className="testimonial bg-white rounded-xl shadow-lg p-6 text-center transition-all duration-300 hover:shadow-xl"
+      data-animate="testimonial"
+      data-animate-delay={index * 200}
+    >
+      
+      {renderAvatar(testimonial, index)}
 
-					<blockquote className="text-gray-700 italic text-lg leading-relaxed" role="text">
-						{useExcerpts ? testimonial.excerpt : testimonial.content}
-					</blockquote>
-				</div>
+      {renderRating(testimonial.rating)}
 
-				<div className={`author-info flex items-center ${textAlignment === 'center' ? 'justify-center' : 
-					textAlignment === 'right' ? 'justify-end' : 'justify-start'}`}>
-					{showAuthorImages && (
-						<div className="author-image mr-4">
-							{testimonial.authorImageUrl ? (
-								<img 
-									src={testimonial.authorImageUrl} 
-									alt={testimonial.authorImageAlt || `${testimonial.authorName} - ${testimonial.authorTitle}`}
-									className="w-12 h-12 rounded-full object-cover"
-									loading="lazy"
-								/>
-							) : (
-								<div className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center">
-									<span className="text-gray-400 text-lg" aria-hidden="true">👤</span>
-								</div>
-							)}
-						</div>
-					)}
+      {testimonial.content && (
+        <RichText.Content
+          tagName="blockquote"
+          value={testimonial.content}
+          className="testimonial-content text-gray-700 text-lg leading-relaxed mb-6 italic"
+        />
+      )}
 
-					<div className="author-details">
-						<div className="author-name font-semibold text-gray-900">{testimonial.authorName}</div>
-						<div className="author-title text-sm text-gray-600">{testimonial.authorTitle}</div>
-						{showCompany && testimonial.authorCompany && (
-							<div className="author-company text-sm text-blue-600">{testimonial.authorCompany}</div>
-						)}
-						{showLocation && testimonial.location && (
-							<div className="author-location text-xs text-gray-500">
-								<span aria-hidden="true">📍</span> {testimonial.location}
-							</div>
-						)}
-						{showDate && testimonial.date && (
-							<div className="testimonial-date text-xs text-gray-500">
-								{new Date(testimonial.date).toLocaleDateString()}
-							</div>
-						)}
-					</div>
+      <div className="testimonial-author">
+        {testimonial.name && (
+          <RichText.Content
+            tagName="cite"
+            value={testimonial.name}
+            className="author-name text-gray-900 font-semibold text-base block"
+          />
+        )}
+        
+        {showCompany && testimonial.company && (
+          <RichText.Content
+            tagName="span"
+            value={testimonial.company}
+            className="author-company text-gray-600 text-sm"
+          />
+        )}
+        
+        {testimonial.position && (
+          <RichText.Content
+            tagName="span"
+            value={testimonial.position}
+            className="author-position text-blue-600 text-sm block"
+          />
+        )}
+      </div>
+    </div>
+  )
 
-					{showVerifiedBadge && testimonial.verified && (
-						<div className="verified-badge ml-auto">
-							<span className="text-green-500 text-sm flex items-center">
-								<span aria-hidden="true">✓</span>
-								<span className="ml-1">Verified</span>
-							</span>
-						</div>
-					)}
-				</div>
+  // Handle empty state
+  if (!testimonials?.length) {
+    return (
+      <div {...blockProps}>
+        <div className="testimonials-placeholder bg-gray-100 rounded-lg p-8 text-center">
+          <svg className="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+          </svg>
+          <p className="text-gray-600">Add testimonials to showcase customer feedback</p>
+        </div>
+      </div>
+    )
+  }
 
-				{enableVideoTestimonials && testimonial.videoUrl && (
-					<div className="video-testimonial mt-4">
-						<div className="video-preview bg-gray-900 rounded-lg relative overflow-hidden aspect-video">
-							<button 
-								className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 hover:bg-opacity-30 transition-all duration-300 group"
-								data-video-url={testimonial.videoUrl}
-								aria-label={`Play video testimonial from ${testimonial.authorName}`}
-							>
-								<div className="bg-white rounded-full p-3 group-hover:scale-110 transition-transform duration-300">
-									<span className="text-gray-900 text-2xl" aria-hidden="true">▶</span>
-								</div>
-							</button>
-							<div className="absolute bottom-4 left-4 right-4">
-								<p className="text-white text-sm">
-									<span aria-hidden="true">🎥</span> Video testimonial from {testimonial.authorName}
-								</p>
-							</div>
-						</div>
-					</div>
-				)}
-			</div>
-		);
-	};
+  // Generate grid classes
+  const getGridClasses = () => {
+    if (layout === 'slider') return 'flex overflow-x-auto snap-x snap-mandatory gap-6 pb-4'
+    
+    const gridCols = {
+      1: 'grid-cols-1',
+      2: 'grid-cols-1 md:grid-cols-2',
+      3: 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3',
+      4: 'grid-cols-1 md:grid-cols-2 lg:grid-cols-4'
+    }
+    
+    return `grid ${gridCols[columns] || gridCols[3]} gap-6`
+  }
 
-	if (filteredTestimonials.length === 0) {
-		return (
-			<div {...blockProps}>
-				<div className="empty-state text-center py-8">
-					<div className="text-gray-400 text-lg mb-2" aria-hidden="true">💬</div>
-					<p className="text-gray-500">No testimonials to display.</p>
-				</div>
-			</div>
-		);
-	}
+  return (
+    <section {...blockProps}>
+      {/* Section Header */}
+      {showSectionHeader && (sectionTitle || sectionSubtitle) && (
+        <div className="testimonials-header text-center mb-12" data-animate="header">
+          {sectionTitle && (
+            <RichText.Content
+              tagName="h2"
+              value={sectionTitle}
+              className="section-title text-3xl md:text-4xl font-bold text-gray-900 mb-4"
+            />
+          )}
+          {sectionSubtitle && (
+            <RichText.Content
+              tagName="p"
+              value={sectionSubtitle}
+              className="section-subtitle text-lg text-gray-600 max-w-2xl mx-auto"
+            />
+          )}
+        </div>
+      )}
 
-	return (
-		<div {...blockProps}>
-			{showSectionHeader && (sectionTitle || sectionSubtitle) && (
-				<div className="section-header text-center mb-8">
-					{sectionTitle && (
-						<RichText.Content
-							tagName="h2"
-							value={sectionTitle}
-							className="text-3xl font-bold mb-2"
-						/>
-					)}
-					{sectionSubtitle && (
-						<RichText.Content
-							tagName="p"
-							value={sectionSubtitle}
-							className="text-gray-600 text-lg"
-						/>
-					)}
+      {/* Testimonials Container */}
+      <div className={`testimonials-container ${getGridClasses()}`}>
+        {testimonials.map((testimonial, index) => 
+          layout === 'slider' ? (
+            <div key={testimonial.id || index} className="testimonial-slide flex-none w-80 snap-center">
+              {renderTestimonial(testimonial, index)}
+            </div>
+          ) : (
+            renderTestimonial(testimonial, index)
+          )
+        )}
+      </div>
 
-					{showAverageRating && (
-						<div className="average-rating mt-4 flex items-center justify-center space-x-2">
-							<div className="rating-stars flex" role="img" aria-label={`Average rating: ${averageRating} out of 5 stars`}>
-								{renderStars(Math.floor(averageRating))}
-							</div>
-							<span className="rating-text text-lg font-medium">{averageRating}</span>
-							<span className="review-count text-gray-600">({totalReviews} reviews)</span>
-						</div>
-					)}
-				</div>
-			)}
-
-			{categoryFiltering && categories.length > 1 && (
-				<div className="category-filters text-center mb-8">
-					<div className="inline-flex space-x-2 bg-gray-100 p-1 rounded-lg">
-						<button 
-							className="filter-btn active px-4 py-2 rounded-md text-sm font-medium bg-white shadow-sm"
-							data-category="all"
-							aria-label="Show all testimonials"
-						>
-							All
-						</button>
-						{categories.map(category => (
-							<button 
-								key={category}
-								className="filter-btn px-4 py-2 rounded-md text-sm font-medium text-gray-600 hover:text-gray-900"
-								data-category={category}
-								aria-label={`Filter by ${category} testimonials`}
-							>
-								{category}
-							</button>
-						))}
-					</div>
-				</div>
-			)}
-
-			{layout === 'quotes-carousel' ? (
-				<div className="testimonials-carousel relative" data-auto-rotate={autoRotate} data-rotation-speed={rotationSpeed}>
-					<div className="carousel-container overflow-hidden">
-						<div className="carousel-track flex transition-transform duration-500">
-							{filteredTestimonials.map((testimonial, index) => (
-								<div key={testimonial.id} className="carousel-slide w-full flex-shrink-0">
-									{renderTestimonialCard(testimonial, index)}
-								</div>
-							))}
-						</div>
-					</div>
-					
-					{filteredTestimonials.length > 1 && (
-						<>
-							<button 
-								className="carousel-prev absolute left-4 top-1/2 transform -translate-y-1/2 bg-white shadow-lg rounded-full p-2 hover:bg-gray-50"
-								aria-label="Previous testimonial"
-							>
-								<span aria-hidden="true">←</span>
-							</button>
-							<button 
-								className="carousel-next absolute right-4 top-1/2 transform -translate-y-1/2 bg-white shadow-lg rounded-full p-2 hover:bg-gray-50"
-								aria-label="Next testimonial"
-							>
-								<span aria-hidden="true">→</span>
-							</button>
-							
-							<div className="carousel-indicators flex justify-center mt-4 space-x-2">
-								{filteredTestimonials.map((_, index) => (
-									<button
-										key={index}
-										className={`indicator w-3 h-3 rounded-full ${index === 0 ? 'bg-blue-500' : 'bg-gray-300'}`}
-										data-slide={index}
-										aria-label={`Go to testimonial ${index + 1}`}
-									></button>
-								))}
-							</div>
-						</>
-					)}
-				</div>
-			) : layout === 'masonry-layout' ? (
-				<div className="testimonials-masonry columns-1 md:columns-2 lg:columns-3 gap-6">
-					{filteredTestimonials.map((testimonial, index) => (
-						<div key={testimonial.id} className="break-inside-avoid mb-6">
-							{renderTestimonialCard(testimonial, index)}
-						</div>
-					))}
-				</div>
-			) : layout === 'single-featured' ? (
-				<div className="testimonials-single">
-					{filteredTestimonials.slice(0, 1).map((testimonial, index) => (
-						<div key={testimonial.id} className="featured-testimonial max-w-4xl mx-auto">
-							{renderTestimonialCard(testimonial, index)}
-						</div>
-					))}
-					
-					{filteredTestimonials.length > 1 && (
-						<div className="other-testimonials grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
-							{filteredTestimonials.slice(1, 4).map((testimonial, index) => (
-								<div key={testimonial.id} className="mini-testimonial">
-									{renderTestimonialCard(testimonial, index + 1)}
-								</div>
-							))}
-						</div>
-					)}
-				</div>
-			) : (
-				<div className={`testimonials-container grid gap-6 ${getGridColumns()}`}>
-					{filteredTestimonials.map((testimonial, index) => renderTestimonialCard(testimonial, index))}
-				</div>
-			)}
-
-			{categoryFiltering && (
-				<div className="empty-filter-state text-center py-8 hidden">
-					<div className="text-gray-400 text-lg mb-2" aria-hidden="true">🔍</div>
-					<p className="text-gray-500">No testimonials found in this category.</p>
-				</div>
-			)}
-		</div>
-	);
+      {/* Slider navigation (if slider layout) */}
+      {layout === 'slider' && (
+        <div className="slider-navigation flex justify-center mt-8 gap-2">
+          {testimonials.map((_, index) => (
+            <button
+              key={index}
+              className="nav-dot w-3 h-3 rounded-full bg-gray-300 hover:bg-blue-600 transition-colors duration-200"
+              aria-label={`Go to testimonial ${index + 1}`}
+            />
+          ))}
+        </div>
+      )}
+    </section>
+  )
 } 

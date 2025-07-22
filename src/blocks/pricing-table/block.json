@@ -12,6 +12,7 @@
 		"html": false,
 		"anchor": true
 	},
+	"render": "file:./render.php",
 	"attributes": {
 		"layout": {
 			"type": "string",

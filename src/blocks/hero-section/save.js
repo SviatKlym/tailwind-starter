@@ -1,187 +1,136 @@
 import { useBlockProps, RichText } from '@wordpress/block-editor'
+import { generatePerformanceConfig, generateDataAttributes } from '../../utils/block-config-generator'
 
-export default function Save({ attributes }) {
+export default function save({ attributes }) {
   const {
-    layout,
-    headline,
-    subheadline,
-    primaryCTA,
-    secondaryCTA,
-    showSecondaryCTA,
+    title,
+    subtitle,
+    description,
     backgroundImage,
-    backgroundColor,
+    ctaText,
+    ctaUrl,
+    layout,
+    alignment,
+    overlayOpacity,
     textColor,
-    heroImage,
-    showTrustBar,
-    trustLogos,
-    trustText,
-    padding
+    settings
   } = attributes
 
-  const blockProps = useBlockProps.save({
-    className: `hero-section hero-section--${layout} ${backgroundColor} ${textColor}`
+  // Generate performance config with simple options
+  const performanceConfig = generatePerformanceConfig('hero-section', {
+    lazyLoading: { 
+      enabled: !!backgroundImage?.url,
+      rootMargin: '100px' 
+    },
+    scrollAnimations: { 
+      enabled: true,
+      type: 'fadeInUp',
+      duration: '0.8s'
+    },
+    analytics: {
+      enabled: true,
+      trackViews: true,
+      trackClicks: !!ctaText,
+      viewData: { section: 'hero', layout }
+    }
   })
 
-  const getPaddingClass = (size) => {
-    const paddingMap = {
-      small: 'py-8 sm:py-12',
-      medium: 'py-12 sm:py-16', 
-      large: 'py-16 sm:py-24',
-      xlarge: 'py-24 sm:py-32'
-    }
-    return paddingMap[size] || paddingMap.large
-  }
+  const blockProps = useBlockProps.save({
+    className: `hero-section layout-${layout || 'centered'} align-${alignment || 'center'}`,
+    ...generateDataAttributes(performanceConfig)
+  })
 
-  const renderCenteredLayout = () => (
-    <div className={`${getPaddingClass(padding.top)} relative`}>
-      {backgroundImage && (
-        <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{ 
-            backgroundImage: `url(${backgroundImage.url})`,
-            opacity: 0.1 
-          }}
+  // Helper function for optimized images (reusable utility)
+  const renderOptimizedImage = (image, alt = '') => {
+    if (!image?.url) return null
+
+    const isLazy = true // Let the framework handle lazy loading logic
+    
+    return (
+      <picture>
+        <source 
+          srcSet={isLazy ? '' : image.url.replace(/\.(jpg|jpeg|png)$/i, '.webp')}
+          type="image/webp"
+          data-lazy-srcset={isLazy ? image.url.replace(/\.(jpg|jpeg|png)$/i, '.webp') : ''}
         />
-      )}
-      <div className="relative container mx-auto px-4 text-center">
-        <div className="max-w-4xl mx-auto">
-          <RichText.Content
-            tagName="h1"
-            value={headline}
-            className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 leading-tight"
-          />
-          <RichText.Content
-            tagName="p"
-            value={subheadline}
-            className="text-lg sm:text-xl text-gray-600 mb-8 leading-relaxed max-w-3xl mx-auto"
-          />
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <a 
-              href={primaryCTA.url}
-              className="btn btn-primary btn-lg px-8 py-4"
-              role="button"
-            >
-              {primaryCTA.text}
-            </a>
-            {showSecondaryCTA && (
-              <a 
-                href={secondaryCTA.url}
-                className="btn btn-secondary btn-lg px-8 py-4"
-                role="button"
-              >
-                {secondaryCTA.text}
-              </a>
-            )}
-          </div>
-        </div>
-        
-        {showTrustBar && (
-          <div className="mt-16 pt-8 border-t border-gray-200">
-            <p className="text-sm text-gray-500 mb-6">{trustText}</p>
-            <div className="flex flex-wrap justify-center items-center gap-8 opacity-60">
-              {trustLogos.map((logo, index) => (
-                <img 
-                  key={index}
-                  src={logo.url} 
-                  alt={logo.alt}
-                  className="h-8 grayscale"
-                />
-              ))}
-            </div>
-          </div>
-        )}
-      </div>
-    </div>
-  )
-
-  const renderSplitLayout = () => (
-    <div className={`${getPaddingClass(padding.top)} relative`}>
-      <div className="container mx-auto px-4">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          <div>
-            <RichText.Content
-              tagName="h1"
-              value={headline}
-              className="text-4xl sm:text-5xl font-bold mb-6 leading-tight"
-            />
-            <RichText.Content
-              tagName="p"
-              value={subheadline}
-              className="text-lg text-gray-600 mb-8 leading-relaxed"
-            />
-            <div className="flex flex-col sm:flex-row gap-4">
-              <a 
-                href={primaryCTA.url}
-                className="btn btn-primary btn-lg px-8 py-4"
-                role="button"
-              >
-                {primaryCTA.text}
-              </a>
-              {showSecondaryCTA && (
-                <a 
-                  href={secondaryCTA.url}
-                  className="btn btn-outline btn-lg px-8 py-4"
-                  role="button"
-                >
-                  {secondaryCTA.text}
-                </a>
-              )}
-            </div>
-          </div>
-          <div className="lg:text-right">
-            {heroImage && (
-              <img 
-                src={heroImage.url} 
-                alt={heroImage.alt}
-                className="w-full max-w-lg ml-auto rounded-lg shadow-2xl"
-              />
-            )}
-          </div>
-        </div>
-      </div>
-    </div>
-  )
-
-  const renderMinimalLayout = () => (
-    <div className={`${getPaddingClass(padding.top)} text-center`}>
-      <div className="container mx-auto px-4">
-        <div className="max-w-2xl mx-auto">
-          <RichText.Content
-            tagName="h1"
-            value={headline}
-            className="text-3xl sm:text-4xl font-bold mb-4"
-          />
-          <RichText.Content
-            tagName="p"
-            value={subheadline}
-            className="text-lg text-gray-600 mb-6"
-          />
-          <a 
-            href={primaryCTA.url}
-            className="btn btn-primary px-6 py-3"
-            role="button"
-          >
-            {primaryCTA.text}
-          </a>
-        </div>
-      </div>
-    </div>
-  )
-
-  const renderLayout = () => {
-    switch (layout) {
-      case 'split':
-        return renderSplitLayout()
-      case 'minimal':
-        return renderMinimalLayout()
-      default:
-        return renderCenteredLayout()
-    }
+        <img
+          src={isLazy ? 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwMCIgaGVpZ2h0PSI2MDAiIHZpZXdCb3g9IjAgMCAxMjAwIDYwMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjEyMDAiIGhlaWdodD0iNjAwIiBmaWxsPSIjRjNGNEY2Ii8+Cjx0ZXh0IHg9IjYwMCIgeT0iMzAwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMjQiIGZpbGw9IiM5QzlDQTAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkxvYWRpbmcuLi48L3RleHQ+Cjwvc3ZnPgo=' : image.url}
+          alt={alt}
+          className="hero-background-image w-full h-full object-cover"
+          data-lazy-src={isLazy ? image.url : ''}
+        />
+      </picture>
+    )
   }
 
   return (
-    <div {...blockProps}>
-      {renderLayout()}
-    </div>
+    <section {...blockProps}>
+      {/* Background */}
+      {backgroundImage?.url && (
+        <div className="hero-background absolute inset-0 overflow-hidden">
+          {renderOptimizedImage(backgroundImage, '')}
+          {overlayOpacity && (
+            <div 
+              className="hero-overlay absolute inset-0 bg-black" 
+              style={{ opacity: overlayOpacity / 100 }}
+            />
+          )}
+        </div>
+      )}
+
+      {/* Content */}
+      <div className={`hero-content relative z-10 container mx-auto px-4 py-24 ${
+        alignment === 'left' ? 'text-left' : 
+        alignment === 'right' ? 'text-right' : 
+        'text-center'
+      }`}>
+        
+        {title && (
+          <RichText.Content
+            tagName="h1"
+            value={title}
+            className={`hero-title text-4xl md:text-6xl font-bold mb-6 ${textColor || 'text-white'}`}
+            data-animate="title"
+          />
+        )}
+
+        {subtitle && (
+          <RichText.Content
+            tagName="h2"
+            value={subtitle}
+            className={`hero-subtitle text-xl md:text-2xl mb-4 ${textColor === 'text-white' ? 'text-gray-200' : 'text-gray-600'}`}
+            data-animate="subtitle"
+            data-animate-delay="200"
+          />
+        )}
+
+        {description && (
+          <RichText.Content
+            tagName="p"
+            value={description}
+            className={`hero-description text-lg mb-8 max-w-2xl ${
+              alignment === 'center' ? 'mx-auto' : ''
+            } ${textColor === 'text-white' ? 'text-gray-300' : 'text-gray-600'}`}
+            data-animate="description"
+            data-animate-delay="400"
+          />
+        )}
+
+        {ctaText && ctaUrl && (
+          <a
+            href={ctaUrl}
+            className="hero-cta inline-flex items-center px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white text-lg font-semibold rounded-lg transition-all duration-200 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50"
+            data-animate="cta"
+            data-animate-delay="600"
+            data-track-click="cta"
+          >
+            <span>{ctaText}</span>
+            <svg className="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+          </a>
+        )}
+      </div>
+    </section>
   )
 }
