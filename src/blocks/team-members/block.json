@@ -1,0 +1,205 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "tailwind-starter/team-members",
+	"version": "0.1.0",
+	"title": "Team Members",
+	"category": "tailwind-starter",
+	"icon": "groups",
+	"description": "Showcase team members with photos, titles, and bio information in organized layouts.",
+	"example": {},
+	"supports": {
+		"html": false,
+		"anchor": true
+	},
+	"attributes": {
+		"layout": {
+			"type": "string",
+			"default": "grid-cards"
+		},
+		"members": {
+			"type": "array",
+			"default": [
+				{
+					"id": "member-1",
+					"name": "Sarah Johnson",
+					"title": "Chief Executive Officer",
+					"department": "Leadership",
+					"bio": "Sarah brings over 15 years of experience in technology leadership. She's passionate about building innovative solutions that transform businesses.",
+					"imageUrl": "",
+					"imageAlt": "Sarah Johnson - CEO",
+					"email": "sarah@company.com",
+					"phone": "+1 (555) 123-4567",
+					"socialLinks": {
+						"linkedin": "https://linkedin.com/in/sarahjohnson",
+						"twitter": "https://twitter.com/sarahjohnson",
+						"github": "",
+						"website": "https://sarahjohnson.com"
+					},
+					"featured": true,
+					"skills": ["Leadership", "Strategy", "Innovation"],
+					"location": "San Francisco, CA",
+					"joinDate": "2019-01-15"
+				},
+				{
+					"id": "member-2",
+					"name": "Michael Chen",
+					"title": "Chief Technology Officer",
+					"department": "Technology",
+					"bio": "Michael is a full-stack engineer with expertise in scalable architecture. He leads our technical vision and development practices.",
+					"imageUrl": "",
+					"imageAlt": "Michael Chen - CTO",
+					"email": "michael@company.com",
+					"phone": "+1 (555) 123-4568",
+					"socialLinks": {
+						"linkedin": "https://linkedin.com/in/michaelchen",
+						"twitter": "",
+						"github": "https://github.com/michaelchen",
+						"website": ""
+					},
+					"featured": false,
+					"skills": ["Development", "Architecture", "DevOps"],
+					"location": "Seattle, WA",
+					"joinDate": "2020-03-10"
+				},
+				{
+					"id": "member-3",
+					"name": "Emily Rodriguez",
+					"title": "Head of Design",
+					"department": "Design",
+					"bio": "Emily creates beautiful, user-centered experiences. Her design philosophy focuses on simplicity and accessibility.",
+					"imageUrl": "",
+					"imageAlt": "Emily Rodriguez - Head of Design",
+					"email": "emily@company.com",
+					"phone": "+1 (555) 123-4569",
+					"socialLinks": {
+						"linkedin": "https://linkedin.com/in/emilyrodriguez",
+						"twitter": "https://twitter.com/emilydesign",
+						"github": "",
+						"website": "https://emilyrodriguez.design"
+					},
+					"featured": false,
+					"skills": ["UI/UX Design", "Prototyping", "Research"],
+					"location": "Austin, TX",
+					"joinDate": "2021-06-01"
+				},
+				{
+					"id": "member-4",
+					"name": "David Kim",
+					"title": "VP of Sales",
+					"department": "Sales",
+					"bio": "David drives our growth strategy and builds lasting relationships with clients. He's committed to understanding customer needs.",
+					"imageUrl": "",
+					"imageAlt": "David Kim - VP Sales",
+					"email": "david@company.com",
+					"phone": "+1 (555) 123-4570",
+					"socialLinks": {
+						"linkedin": "https://linkedin.com/in/davidkim",
+						"twitter": "",
+						"github": "",
+						"website": ""
+					},
+					"featured": false,
+					"skills": ["Sales Strategy", "Client Relations", "Growth"],
+					"location": "New York, NY",
+					"joinDate": "2020-09-15"
+				}
+			]
+		},
+		"columns": {
+			"type": "number",
+			"default": 3
+		},
+		"showBio": {
+			"type": "boolean",
+			"default": true
+		},
+		"showSocialLinks": {
+			"type": "boolean",
+			"default": true
+		},
+		"showContactInfo": {
+			"type": "boolean",
+			"default": false
+		},
+		"showSkills": {
+			"type": "boolean",
+			"default": false
+		},
+		"showLocation": {
+			"type": "boolean",
+			"default": false
+		},
+		"showDepartment": {
+			"type": "boolean",
+			"default": false
+		},
+		"filterByDepartment": {
+			"type": "boolean",
+			"default": false
+		},
+		"cardStyle": {
+			"type": "string",
+			"default": "elevated"
+		},
+		"imageStyle": {
+			"type": "string",
+			"default": "circle"
+		},
+		"hoverEffect": {
+			"type": "string",
+			"default": "lift"
+		},
+		"textAlignment": {
+			"type": "string",
+			"default": "center"
+		},
+		"sectionTitle": {
+			"type": "string",
+			"default": "Meet Our Team"
+		},
+		"sectionSubtitle": {
+			"type": "string",
+			"default": "The talented individuals who make our success possible"
+		},
+		"showSectionHeader": {
+			"type": "boolean",
+			"default": true
+		},
+		"featuredFirst": {
+			"type": "boolean",
+			"default": true
+		},
+		"showJoinDate": {
+			"type": "boolean",
+			"default": false
+		},
+		"settings": {
+			"type": "object",
+			"default": {
+				"spacing": {
+					"base": { "top": 8, "right": 4, "bottom": 8, "left": 4 }
+				},
+				"margins": {
+					"base": { "top": 0, "right": 0, "bottom": 0, "left": 0 }
+				},
+				"typography": {
+					"base": { "fontSize": "text-lg", "fontWeight": "font-normal", "textAlign": "text-center" }
+				},
+				"backgroundColor": "bg-gray-50",
+				"textColor": "text-gray-900",
+				"gradients": {},
+				"layout": {},
+				"effects": {}
+			}
+		},
+		"activeDevice": {
+			"type": "string",
+			"default": "base"
+		}
+	},
+	"textdomain": "tailwind-starter",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css"
+} 

@@ -1,0 +1,331 @@
+/**
+ * Stats Display Block Styles
+ * Handles counter animations, responsive layouts and visual effects
+ */
+
+.wp-block-tailwind-starter-stats-display {
+	// Base container styling
+	.stats-container {
+		&.text-center {
+			text-align: center;
+		}
+		
+		&.text-left {
+			text-align: left;
+		}
+		
+		&.text-right {
+			text-align: right;
+		}
+	}
+
+	// Counter Animation Layout
+	&.stats-counter-animation {
+		.stat-item {
+			background: white;
+			border-radius: 0.5rem;
+			box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+			transition: all 0.3s ease;
+			
+			&:hover {
+				transform: translateY(-4px);
+				box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+			}
+
+			.stat-number {
+				font-variant-numeric: tabular-nums;
+				transition: all 0.3s ease;
+			}
+
+			.stat-icon {
+				transition: transform 0.3s ease;
+				
+				&:hover {
+					transform: scale(1.1) rotate(5deg);
+				}
+			}
+		}
+	}
+
+	// Icon Stats Layout
+	&.stats-icon-stats {
+		.stat-item {
+			background: white;
+			border-radius: 0.5rem;
+			box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+			transition: all 0.3s ease;
+			
+			&:hover {
+				box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+				transform: translateX(4px);
+			}
+
+			.stat-icon {
+				flex-shrink: 0;
+				transition: all 0.3s ease;
+				
+				&:hover {
+					transform: scale(1.15);
+				}
+			}
+
+			.stat-number {
+				font-variant-numeric: tabular-nums;
+			}
+		}
+	}
+
+	// Simple Grid Layout
+	&.stats-simple-grid {
+		.stat-item {
+			transition: all 0.3s ease;
+			border-radius: 0.5rem;
+			
+			&:hover {
+				transform: scale(1.05);
+				background-color: rgba(59, 130, 246, 0.05);
+			}
+
+			.stat-number {
+				font-variant-numeric: tabular-nums;
+				transition: all 0.3s ease;
+			}
+		}
+	}
+
+	// Highlighted Single Layout
+	&.stats-highlighted-single {
+		.stat-item-highlighted {
+			background: white;
+			border-radius: 1rem;
+			box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+			transition: all 0.3s ease;
+			position: relative;
+			overflow: hidden;
+			
+			&::before {
+				content: '';
+				position: absolute;
+				top: 0;
+				left: 0;
+				right: 0;
+				height: 4px;
+				background: linear-gradient(90deg, #3b82f6, #8b5cf6, #f59e0b);
+			}
+			
+			&:hover {
+				transform: translateY(-8px);
+				box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+			}
+
+			.stat-number {
+				font-variant-numeric: tabular-nums;
+				background: linear-gradient(45deg, #3b82f6, #8b5cf6);
+				-webkit-background-clip: text;
+				-webkit-text-fill-color: transparent;
+				background-clip: text;
+			}
+
+			.stat-icon {
+				animation: pulse 2s infinite;
+			}
+		}
+
+		.stat-item {
+			transition: all 0.3s ease;
+			
+			&:hover {
+				opacity: 1 !important;
+				transform: scale(1.05);
+			}
+
+			.stat-number {
+				font-variant-numeric: tabular-nums;
+			}
+		}
+	}
+
+	// Counter Animation Styles
+	.counter-value {
+		display: inline-block;
+		transition: all 0.3s ease;
+	}
+
+	// Animation states
+	.stat-item {
+		&.animating {
+			.stat-number {
+				transform: scale(1.05);
+			}
+		}
+
+		&.animated {
+			.stat-number {
+				animation: numberPop 0.6s ease;
+			}
+		}
+	}
+
+	// Section header styling
+	.section-header {
+		margin-bottom: 3rem;
+		
+		h2 {
+			margin-bottom: 0.5rem;
+		}
+		
+		p {
+			max-width: 600px;
+			margin: 0 auto;
+		}
+	}
+
+	// Responsive adjustments
+	@media (max-width: 768px) {
+		.stats-container {
+			gap: 1rem;
+		}
+
+		&.stats-highlighted-single {
+			.stat-item-highlighted {
+				padding: 2rem;
+				
+				.stat-number {
+					font-size: 3rem;
+				}
+				
+				.stat-icon {
+					font-size: 3rem;
+				}
+			}
+		}
+
+		&.stats-icon-stats {
+			.stat-item {
+				flex-direction: column;
+				text-align: center;
+				space-x: 0;
+				
+				.stat-icon {
+					margin-bottom: 0.5rem;
+				}
+			}
+		}
+	}
+
+	// Loading state
+	&[data-enable-animations="true"] {
+		.stat-item {
+			.counter-value {
+				opacity: 0;
+				animation: fadeIn 0.5s ease 0.2s forwards;
+			}
+		}
+	}
+
+	// Intersection observer animations
+	&.stats-in-view {
+		.stat-item {
+			.stat-number {
+				animation: bounceIn 0.6s ease;
+			}
+		}
+	}
+}
+
+// Keyframe animations
+@keyframes numberPop {
+	0% {
+		transform: scale(1);
+	}
+	50% {
+		transform: scale(1.1);
+	}
+	100% {
+		transform: scale(1);
+	}
+}
+
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+		transform: translateY(10px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes bounceIn {
+	0% {
+		opacity: 0;
+		transform: scale(0.8) translateY(20px);
+	}
+	50% {
+		opacity: 1;
+		transform: scale(1.05) translateY(-5px);
+	}
+	100% {
+		opacity: 1;
+		transform: scale(1) translateY(0);
+	}
+}
+
+@keyframes pulse {
+	0%, 100% {
+		transform: scale(1);
+	}
+	50% {
+		transform: scale(1.05);
+	}
+}
+
+// Editor specific styles
+.editor-styles-wrapper {
+	.wp-block-tailwind-starter-stats-display {
+		// Disable heavy animations in editor for better performance
+		.stat-item {
+			.stat-icon {
+				animation: none;
+			}
+		}
+		
+		.counter-value {
+			opacity: 1;
+			animation: none;
+		}
+	}
+}
+
+// Dark mode support
+@media (prefers-color-scheme: dark) {
+	.wp-block-tailwind-starter-stats-display {
+		.stat-item {
+			background-color: #1f2937;
+			color: #f9fafb;
+			
+			&:hover {
+				background-color: #374151;
+			}
+		}
+
+		.stat-description {
+			color: #d1d5db;
+		}
+
+		.stat-label {
+			color: #f3f4f6;
+		}
+
+		&.stats-highlighted-single {
+			.stat-item-highlighted {
+				background-color: #1f2937;
+				
+				.stat-description {
+					color: #d1d5db;
+				}
+			}
+		}
+	}
+} 
