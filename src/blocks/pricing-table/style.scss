@@ -1,0 +1,86 @@
+/**
+ * Frontend styles for the pricing-table block.
+ */
+
+.wp-block-tailwind-starter-pricing-table {
+	.pricing-toggle {
+		button {
+			border: none;
+			background: transparent;
+			cursor: pointer;
+			outline: none;
+			
+			&:focus {
+				outline: 2px solid #3b82f6;
+				outline-offset: 2px;
+			}
+		}
+	}
+
+	.pricing-plan {
+		transition: all 0.3s ease;
+		
+		&:hover {
+			transform: translateY(-4px);
+			box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+		}
+
+		.plan-cta a {
+			transition: all 0.3s ease;
+			text-decoration: none;
+			
+			&:hover {
+				transform: translateY(-1px);
+				box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+			}
+		}
+	}
+
+	&.pricing-simple {
+		.pricing-plan {
+			border: 1px solid #e5e7eb;
+			
+			&:hover {
+				border-color: #3b82f6;
+			}
+		}
+	}
+
+	&.pricing-comparison {
+		.pricing-plans {
+			overflow-x: auto;
+			
+			@media (max-width: 768px) {
+				display: flex;
+				gap: 1rem;
+				padding-bottom: 1rem;
+			}
+		}
+	}
+
+	@media (max-width: 768px) {
+		.pricing-plans {
+			grid-template-columns: 1fr;
+		}
+		
+		.pricing-toggle {
+			margin-bottom: 2rem;
+			
+			button {
+				padding: 0.5rem 1rem;
+				font-size: 0.875rem;
+			}
+		}
+	}
+}
+
+// JavaScript for pricing toggle functionality
+.wp-block-tailwind-starter-pricing-table[data-has-toggle] {
+	[data-toggle-pricing] button {
+		&.active {
+			background: white;
+			color: #3b82f6;
+			box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+		}
+	}
+}

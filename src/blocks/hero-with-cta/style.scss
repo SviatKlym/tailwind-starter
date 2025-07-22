@@ -1,0 +1,48 @@
+/**
+ * Frontend styles for the hero-with-cta block.
+ */
+
+.wp-block-tailwind-starter-hero-with-cta {
+	.hero-content-wrapper {
+		position: relative;
+		overflow: hidden;
+	}
+
+	&.hero-video {
+		video {
+			object-fit: cover;
+		}
+	}
+
+	.hero-cta-buttons {
+		a {
+			text-decoration: none;
+			transition: all 0.3s ease;
+			
+			&:hover {
+				transform: translateY(-2px);
+				box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+			}
+		}
+	}
+
+	@media (max-width: 768px) {
+		.hero-headline {
+			font-size: 2.5rem !important;
+		}
+		
+		.hero-subheadline {
+			font-size: 1.125rem !important;
+		}
+		
+		.hero-cta-buttons {
+			flex-direction: column;
+			align-items: center;
+			
+			a {
+				width: 100%;
+				text-align: center;
+			}
+		}
+	}
+}
