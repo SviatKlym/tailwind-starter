@@ -217,6 +217,10 @@ export default function Edit({ attributes, setAttributes }) {
 						onMarginsChange={(margins) => setAttributes({
 							visualSettings: { ...visualSettings, margins }
 						})}
+						blockSpacing={visualSettings.blockSpacing || {}}
+						onBlockSpacingChange={(blockSpacing) => setAttributes({
+							visualSettings: { ...visualSettings, blockSpacing }
+						})}
 						background={visualSettings.backgroundColor}
 						onBackgroundChange={(backgroundColor) => setAttributes({
 							visualSettings: { ...visualSettings, backgroundColor }

@@ -95,7 +95,7 @@ export default function Save({ attributes }) {
                   {signal.icon}
                 </div>
               )}
-              <span className="text-sm font-medium">
+              <span className="text-sm text-gray-600 font-medium">
                 {signal.text}
               </span>
             </div>
@@ -166,8 +166,8 @@ export default function Save({ attributes }) {
 
     const buttonId = `cta-${isPrimary ? 'primary' : 'secondary'}-${Date.now()}`
     const baseClasses = isPrimary 
-      ? 'btn-primary bg-blue-600 hover:bg-blue-700'
-      : 'btn-secondary bg-white hover:bg-gray-50 border-2 border-gray-300'
+      ? 'btn-primary bg-blue-600 hover:bg-blue-700 text-white'
+      : 'btn-secondary bg-white hover:bg-gray-50 text-gray-900 border-2 border-gray-300'
 
     return (
       <a
@@ -192,7 +192,7 @@ export default function Save({ attributes }) {
   }
 
   const renderCenteredLayout = () => (
-    <div className="relative flex items-center justify-center hero-content">
+    <div className="relative min-h-screen flex items-center justify-center hero-content">
       {showVideo ? renderVideoBackground() : renderOptimizedBackground()}
       
       <div className="relative container mx-auto px-4 text-center z-10 max-w-4xl">
@@ -200,7 +200,7 @@ export default function Save({ attributes }) {
         <RichText.Content
           tagName="h1"
           value={headline}
-          className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 leading-tight opacity-0"
+          className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 leading-tight text-white opacity-0"
           data-animate="headline"
         />
         
@@ -208,7 +208,7 @@ export default function Save({ attributes }) {
         <RichText.Content
           tagName="p"
           value={subheadline}
-          className="text-xl sm:text-2xl mb-8 leading-relaxed opacity-0"
+          className="text-xl sm:text-2xl text-gray-100 mb-8 leading-relaxed opacity-0"
           data-animate="subheadline"
         />
         
@@ -217,7 +217,7 @@ export default function Save({ attributes }) {
           <RichText.Content
             tagName="p"
             value={description}
-            className="text-lg mb-8 max-w-2xl mx-auto opacity-0"
+            className="text-lg text-gray-200 mb-8 max-w-2xl mx-auto opacity-0"
             data-animate="description"
           />
         )}
@@ -245,7 +245,7 @@ export default function Save({ attributes }) {
       <div className="relative container mx-auto px-4 z-10 h-full flex items-center">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center w-full">
           {/* Content Column */}
-          <div className="">
+          <div className="text-white">
             <RichText.Content
               tagName="h1"
               value={headline}
@@ -256,7 +256,7 @@ export default function Save({ attributes }) {
             <RichText.Content
               tagName="p"
               value={subheadline}
-              className="text-xl mb-6 leading-relaxed opacity-0"
+              className="text-xl text-gray-100 mb-6 leading-relaxed opacity-0"
               data-animate="subheadline"
             />
             
@@ -264,7 +264,7 @@ export default function Save({ attributes }) {
               <RichText.Content
                 tagName="p"
                 value={description}
-                className="text-lg mb-8 opacity-0"
+                className="text-lg text-gray-200 mb-8 opacity-0"
                 data-animate="description"
               />
             )}
@@ -283,8 +283,8 @@ export default function Save({ attributes }) {
           <div className="lg:pl-8 opacity-0" data-animate="visual-content">
             {/* This could contain a form, image, or other visual element */}
             <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20">
-              <h3 className="text-2xl font-bold  mb-4">Ready to Get Started?</h3>
-              <p className=" mb-6">Join thousands of satisfied customers today.</p>
+              <h3 className="text-2xl font-bold text-white mb-4">Ready to Get Started?</h3>
+              <p className="text-gray-100 mb-6">Join thousands of satisfied customers today.</p>
               
               {/* Quick action form */}
               <div className="space-y-4">

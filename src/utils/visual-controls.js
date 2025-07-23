@@ -539,6 +539,175 @@ export const UltimateSpacingControl = ({ value = {}, onChange, device = 'base' }
   )
 }
 
+// Block Spacing Control - Based on site pattern analysis
+export const UltimateBlockSpacingControl = ({ value = {}, onChange, device = 'base' }) => {
+  const currentSpacing = value[device] || { variation: '' }
+
+  const spacingVariations = [
+    {
+      name: 'Compact',
+      key: 'compact',
+      description: '1.5rem / 1rem / 0.5rem',
+      classes: {
+        section: 'mb-6',
+        group: 'mb-4',
+        element: 'mb-2',
+        padding: 'p-4'
+      }
+    },
+    {
+      name: 'Generous',
+      key: 'generous',
+      description: '3rem / 1.5rem / 0.75rem',
+      classes: {
+        section: 'mb-12',
+        group: 'mb-6',
+        element: 'mb-3',
+        padding: 'p-6'
+      }
+    },
+    {
+      name: 'Balanced',
+      key: 'balanced',
+      description: '2.5rem / 1.25rem / 0.625rem',
+      classes: {
+        section: 'mb-10',
+        group: 'mb-5',
+        element: 'mb-2.5',
+        padding: 'p-5'
+      }
+    },
+    {
+      name: 'Rhythmic',
+      key: 'rhythmic',
+      description: '4rem / 2rem / 1rem',
+      classes: {
+        section: 'mb-16',
+        group: 'mb-8',
+        element: 'mb-4',
+        padding: 'p-4'
+      }
+    }
+  ]
+
+
+  const updateBlockSpacing = (property, newValue) => {
+    if (typeof onChange !== 'function') {
+      console.error('onChange is not a function in UltimateBlockSpacingControl')
+      return
+    }
+    
+    const newSpacingValue = {
+      ...value,
+      [device]: {
+        ...currentSpacing,
+        [property]: newValue
+      }
+    }
+    onChange(newSpacingValue)
+  }
+
+  const resetBlockSpacing = () => {
+    if (typeof onChange !== 'function') {
+      console.error('onChange is not a function in UltimateBlockSpacingControl')
+      return
+    }
+    
+    const resetValue = {
+      ...value,
+      [device]: { variation: '' }
+    }
+    onChange(resetValue)
+  }
+
+  const getSelectedVariation = () => {
+    return spacingVariations.find(v => v.key === currentSpacing.variation)
+  }
+
+  return (
+    <div className="animate-slide-in">
+      <div className="section-header">
+        <span className="section-header-icon">📦</span>
+        {__('Block Spacing Patterns', 'tailwind-starter')}
+        <button 
+          className="reset-button"
+          onClick={resetBlockSpacing}
+          title="Reset block spacing"
+          style={{
+            marginLeft: 'auto',
+            padding: '4px 8px',
+            fontSize: '11px',
+            backgroundColor: '#ef4444',
+            color: 'white',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer'
+          }}
+        >
+          🔄 Reset
+        </button>
+      </div>
+
+      <Text size="12px" weight="600" style={{ margin: '12px 0 8px 0', display: 'block', color: '#374151' }}>
+        Choose Spacing Pattern
+      </Text>
+      
+      <div className="preset-grid" style={{ gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+        {spacingVariations.map(variation => {
+          const isSelected = currentSpacing.variation === variation.key
+          return (
+            <button
+              key={variation.key}
+              className={`preset-button ${isSelected ? 'selected' : ''}`}
+              onClick={() => updateBlockSpacing('variation', variation.key)}
+              style={{
+                padding: '12px',
+                background: isSelected ? '#6366f1' : 'white',
+                color: isSelected ? 'white' : '#374151',
+                border: `2px solid ${isSelected ? '#6366f1' : '#e2e8f0'}`,
+                borderRadius: '8px',
+                fontSize: '11px',
+                textAlign: 'left',
+                cursor: 'pointer',
+                transition: 'all 0.2s ease'
+              }}
+            >
+              <div style={{ fontWeight: '600', marginBottom: '4px' }}>
+                {variation.name}
+              </div>
+              <div style={{ fontSize: '10px', opacity: '0.8' }}>
+                {variation.description}
+              </div>
+            </button>
+          )
+        })}
+      </div>
+
+      {/* Preview of selected variation */}
+      {getSelectedVariation() && (
+        <div style={{
+          margin: '16px 0',
+          padding: '12px',
+          background: '#f8fafc',
+          borderRadius: '8px',
+          border: '1px solid #e2e8f0'
+        }}>
+          <Text size="11px" weight="600" style={{ display: 'block', color: '#6366f1', marginBottom: '8px' }}>
+            Pattern Preview: {getSelectedVariation().name}
+          </Text>
+          <div style={{ fontSize: '10px', color: '#64748b', lineHeight: '1.4' }}>
+            <div>• Sections: <code>{getSelectedVariation().classes.section}</code></div>
+            <div>• Groups: <code>{getSelectedVariation().classes.group}</code></div>
+            <div>• Elements: <code>{getSelectedVariation().classes.element}</code></div>
+            <div>• Padding: <code>{getSelectedVariation().classes.padding}</code></div>
+          </div>
+        </div>
+      )}
+
+    </div>
+  )
+}
+
 // Enhanced Margin Control with Class Display
 export const UltimateMarginControl = ({ value = {}, onChange, device = 'base' }) => {
   const spacingValues = [0, 1, 2, 4, 6, 8, 12, 16, 20, 24, 32, 40]
@@ -2048,6 +2217,8 @@ export const UltimateControlTabs = ({
   onSpacingChange,
   margins,
   onMarginsChange,
+  blockSpacing,
+  onBlockSpacingChange,
   background,
   onBackgroundChange,
   textColor,
@@ -2149,11 +2320,18 @@ export const UltimateControlTabs = ({
             case 'spacing':
               return (
                 <div className="animate-slide-in">
-                  <UltimateSpacingControl
-                    value={spacing}
-                    onChange={onSpacingChange}
+                  <UltimateBlockSpacingControl
+                    value={blockSpacing}
+                    onChange={onBlockSpacingChange}
                     device={device}
                   />
+                  <div style={{ marginTop: '24px' }}>
+                    <UltimateSpacingControl
+                      value={spacing}
+                      onChange={onSpacingChange}
+                      device={device}
+                    />
+                  </div>
                   <div style={{ marginTop: '24px' }}>
                     <UltimateMarginControl
                       value={margins}
@@ -2234,6 +2412,43 @@ export const generateTailwindClasses = (settings, device = 'base') => {
     if (margins.right > 0) classes.push(`${prefix}mr-${margins.right}`)
     if (margins.bottom > 0) classes.push(`${prefix}mb-${margins.bottom}`)
     if (margins.left > 0) classes.push(`${prefix}ml-${margins.left}`)
+  }
+
+  // Block spacing patterns - only apply if no individual spacing/margins are set
+  const hasIndividualSpacing = settings.spacing?.[device] && Object.values(settings.spacing[device]).some(val => val > 0)
+  const hasIndividualMargins = settings.margins?.[device] && Object.values(settings.margins[device]).some(val => val > 0)
+  
+  if (settings.blockSpacing?.[device] && !hasIndividualSpacing && !hasIndividualMargins) {
+    const blockSpacing = settings.blockSpacing[device]
+    
+    // Apply spacing variation classes based on selected pattern
+    if (blockSpacing.variation) {
+      const spacingPatterns = {
+        'compact': {
+          section: 'mb-6',
+          padding: 'p-4'
+        },
+        'generous': {
+          section: 'mb-12',
+          padding: 'p-6'
+        },
+        'balanced': {
+          section: 'mb-10',
+          padding: 'p-5'
+        },
+        'rhythmic': {
+          section: 'mb-16',
+          padding: 'p-4'
+        }
+      }
+      
+      const pattern = spacingPatterns[blockSpacing.variation]
+      if (pattern) {
+        // Add the section spacing and padding from pattern
+        classes.push(`${prefix}${pattern.section}`)
+        classes.push(`${prefix}${pattern.padding}`)
+      }
+    }
   }
   
   if (settings.typography?.[device]) {

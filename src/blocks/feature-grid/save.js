@@ -19,6 +19,7 @@ export default function save({ attributes }) {
     showSectionHeader,
     backgroundColor,
     textColor,
+    gridGap,
     settings
   } = attributes
 
@@ -192,7 +193,7 @@ export default function save({ attributes }) {
     const mobile = mobileColumns || 1
     const tablet = tabletColumns || 2
     const desktop = gridColumns || 3
-    return `grid grid-cols-${mobile} md:grid-cols-${tablet} lg:grid-cols-${desktop} gap-6`
+    return `grid grid-cols-${mobile} md:grid-cols-${tablet} lg:grid-cols-${desktop}`
   }
 
   return (
@@ -218,7 +219,7 @@ export default function save({ attributes }) {
       )}
 
       {/* Features Grid */}
-      <div className={`features-container ${getGridClasses()}`}>
+      <div className={`features-container ${getGridClasses()} ${gridGap || 'gap-6'}`}>
         {features.map((feature, index) => renderFeatureCard(feature, index))}
       </div>
     </section>

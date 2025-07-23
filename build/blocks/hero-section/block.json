@@ -88,6 +88,75 @@
         "bottom": "large"
       }
     },
+    "titleFontSize": {
+      "type": "string",
+      "default": "text-4xl md:text-6xl"
+    },
+    "titleFontWeight": {
+      "type": "string",
+      "default": "font-bold"
+    },
+    "subtitleFontSize": {
+      "type": "string",
+      "default": "text-xl md:text-2xl"
+    },
+    "titleMarginBottom": {
+      "type": "string",
+      "default": "mb-6"
+    },
+    "subtitleMarginBottom": {
+      "type": "string",
+      "default": "mb-8"
+    },
+    "contentMaxWidth": {
+      "type": "string",
+      "default": "max-w-3xl"
+    },
+    "contentAlignment": {
+      "type": "string",
+      "default": "text-center"
+    },
+    "contentPadding": {
+      "type": "string",
+      "default": "px-4 py-24"
+    },
+    "buttonSpacing": {
+      "type": "string",
+      "default": "space-x-4"
+    },
+    "primaryButtonStyle": {
+      "type": "object",
+      "default": {
+        "backgroundColor": "bg-blue-600",
+        "hoverBackgroundColor": "hover:bg-blue-700",
+        "textColor": "text-white",
+        "padding": "px-8 py-4",
+        "fontSize": "text-lg",
+        "fontWeight": "font-semibold",
+        "borderRadius": "rounded-lg"
+      }
+    },
+    "secondaryButtonStyle": {
+      "type": "object",
+      "default": {
+        "backgroundColor": "bg-transparent",
+        "hoverBackgroundColor": "hover:bg-gray-50",
+        "textColor": "text-gray-700",
+        "borderStyle": "border border-gray-300",
+        "padding": "px-8 py-4",
+        "fontSize": "text-lg",
+        "fontWeight": "font-semibold",
+        "borderRadius": "rounded-lg"
+      }
+    },
+    "animationDuration": {
+      "type": "string",
+      "default": "duration-200"
+    },
+    "hoverEffects": {
+      "type": "boolean",
+      "default": true
+    },
     "settings": {
       "type": "object",
       "default": {

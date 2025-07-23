@@ -105,6 +105,140 @@
     "activeDevice": {
       "type": "string",
       "default": "base"
+    },
+    "gridColumns": {
+      "type": "number",
+      "default": 3
+    },
+    "mobileColumns": {
+      "type": "number",
+      "default": 1
+    },
+    "tabletColumns": {
+      "type": "number",
+      "default": 2
+    },
+    "gridGap": {
+      "type": "string",
+      "default": "gap-6"
+    },
+    "showImages": {
+      "type": "boolean",
+      "default": false
+    },
+    "showTitles": {
+      "type": "boolean",
+      "default": true
+    },
+    "showDescriptions": {
+      "type": "boolean",
+      "default": true
+    },
+    "showButtons": {
+      "type": "boolean",
+      "default": false
+    },
+    "cardStyle": {
+      "type": "string",
+      "default": "elevated"
+    },
+    "imageStyle": {
+      "type": "string",
+      "default": "rounded"
+    },
+    "showSectionHeader": {
+      "type": "boolean",
+      "default": false
+    },
+    "titleFontSize": {
+      "type": "string",
+      "default": "text-lg md:text-xl"
+    },
+    "titleFontWeight": {
+      "type": "string",
+      "default": "font-semibold"
+    },
+    "titleColor": {
+      "type": "string",
+      "default": "text-gray-900"
+    },
+    "titleHoverColor": {
+      "type": "string",
+      "default": "group-hover:text-blue-600"
+    },
+    "titleMarginBottom": {
+      "type": "string",
+      "default": "mb-3"
+    },
+    "descriptionColor": {
+      "type": "string",
+      "default": "text-gray-600"
+    },
+    "descriptionMarginBottom": {
+      "type": "string",
+      "default": "mb-4"
+    },
+    "cardBackground": {
+      "type": "string",
+      "default": "bg-white"
+    },
+    "cardBorder": {
+      "type": "string",
+      "default": "rounded-xl"
+    },
+    "cardShadow": {
+      "type": "string",
+      "default": "shadow-lg"
+    },
+    "cardHoverShadow": {
+      "type": "string",
+      "default": "hover:shadow-xl"
+    },
+    "cardPadding": {
+      "type": "string",
+      "default": "p-6"
+    },
+    "buttonStyle": {
+      "type": "object",
+      "default": {
+        "backgroundColor": "bg-blue-600",
+        "hoverBackgroundColor": "hover:bg-blue-700",
+        "textColor": "text-white",
+        "padding": "px-4 py-2",
+        "fontSize": "text-sm",
+        "fontWeight": "font-medium",
+        "borderRadius": "rounded-lg"
+      }
+    },
+    "sectionHeaderStyle": {
+      "type": "object",
+      "default": {
+        "titleFontSize": "text-3xl md:text-4xl",
+        "titleFontWeight": "font-bold",
+        "titleColor": "text-gray-900",
+        "titleMarginBottom": "mb-4",
+        "subtitleFontSize": "text-lg",
+        "subtitleColor": "text-gray-600",
+        "subtitleMaxWidth": "max-w-2xl"
+      }
+    },
+    "highlightStyle": {
+      "type": "object",
+      "default": {
+        "backgroundColor": "bg-blue-100",
+        "textColor": "text-blue-800",
+        "padding": "px-2 py-1",
+        "fontSize": "text-xs",
+        "borderRadius": "rounded-full"
+      }
+    },
+    "animationSpeed": {
+      "type": "string",
+      "default": "duration-300"
+    },
+    "hoverEffects": {
+      "type": "boolean",
+      "default": true
     }
   },
   "example": {

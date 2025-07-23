@@ -29,7 +29,8 @@
       "Bash(sed:*)",
       "Bash(echo \"Fixed: $file\")",
       "Bash(fi)",
-      "Bash(done)"
+      "Bash(done)",
+      "WebFetch(domain:emaillistverify.com)"
     ],
     "deny": []
   }

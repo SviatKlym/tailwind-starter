@@ -1,29 +1,21 @@
 <?php
 
 function my_tailwind_starter_enqueue_assets() {
-    // Enqueue main Tailwind CSS
-    $css_file = get_template_directory() . '/build/main.css';
+    // Enqueue main theme CSS (Tailwind compiled)  
+    $theme_css_file = get_template_directory() . '/build/main.css';
     wp_enqueue_style(
-        'tailwind-starter-style',
+        'tailwind-starter-theme',
         get_template_directory_uri() . '/build/main.css',
         [],
-        file_exists($css_file) ? filemtime($css_file) : '1.0.0'
+        file_exists($theme_css_file) ? filemtime($theme_css_file) : '1.0.0'
     );
     
-    // Enqueue frontend JavaScript with performance framework
-    $js_file = get_template_directory() . '/build/main.js';
-    if (file_exists($js_file)) {
-        wp_enqueue_script(
-            'tailwind-starter-frontend',
-            get_template_directory_uri() . '/build/main.js',
-            [],
-            filemtime($js_file),
-            true
-        );
-    }
+    // Frontend JavaScript is handled by individual blocks via viewScript in block.json
     
-    // Visual controls styles are now included in the main Tailwind build
-    // No need to load separate visual-controls.css
+    // Debug: Log what files are being loaded (remove in production)
+    if (WP_DEBUG) {
+        error_log('Theme CSS: ' . (file_exists($theme_css_file) ? 'EXISTS' : 'MISSING'));
+    }
 }
 add_action('wp_enqueue_scripts', 'my_tailwind_starter_enqueue_assets');
 

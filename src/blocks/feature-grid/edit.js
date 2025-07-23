@@ -34,6 +34,30 @@ export default function Edit({ attributes, setAttributes }) {
     sectionSubtitle,
     showSection,
     padding,
+    gridGap,
+    showImages,
+    showTitles,
+    showDescriptions,
+    showButtons,
+    cardStyle,
+    imageStyle,
+    titleFontSize,
+    titleFontWeight,
+    titleColor,
+    titleHoverColor,
+    titleMarginBottom,
+    descriptionColor,
+    descriptionMarginBottom,
+    cardBackground,
+    cardBorder,
+    cardShadow,
+    cardHoverShadow,
+    cardPadding,
+    buttonStyle,
+    sectionHeaderStyle,
+    highlightStyle,
+    animationSpeed,
+    hoverEffects,
     settings,
     activeDevice
   } = attributes
@@ -304,6 +328,10 @@ export default function Edit({ attributes, setAttributes }) {
             onMarginsChange={(margins) => setAttributes({
               settings: { ...settings, margins }
             })}
+            blockSpacing={settings.blockSpacing || {}}
+            onBlockSpacingChange={(blockSpacing) => setAttributes({
+              settings: { ...settings, blockSpacing }
+            })}
             background={settings.backgroundColor}
             onBackgroundChange={(backgroundColor) => setAttributes({
               settings: { ...settings, backgroundColor }
@@ -405,6 +433,180 @@ export default function Edit({ attributes, setAttributes }) {
               </>
             )}
           </VStack>
+        </PanelBody>
+
+        {/* Typography Controls */}
+        <PanelBody title={__('🔤 Typography', 'tailwind-starter')} initialOpen={false}>
+          <SelectControl
+            label={__('Title Font Size', 'tailwind-starter')}
+            value={titleFontSize}
+            options={[
+              { label: 'Small (text-base md:text-lg)', value: 'text-base md:text-lg' },
+              { label: 'Medium (text-lg md:text-xl)', value: 'text-lg md:text-xl' },
+              { label: 'Large (text-xl md:text-2xl)', value: 'text-xl md:text-2xl' },
+              { label: 'X-Large (text-2xl md:text-3xl)', value: 'text-2xl md:text-3xl' }
+            ]}
+            onChange={(value) => setAttributes({ titleFontSize: value })}
+          />
+          
+          <SelectControl
+            label={__('Title Font Weight', 'tailwind-starter')}
+            value={titleFontWeight}
+            options={[
+              { label: 'Normal', value: 'font-normal' },
+              { label: 'Medium', value: 'font-medium' },
+              { label: 'Semibold', value: 'font-semibold' },
+              { label: 'Bold', value: 'font-bold' }
+            ]}
+            onChange={(value) => setAttributes({ titleFontWeight: value })}
+          />
+          
+          <SelectControl
+            label={__('Title Color', 'tailwind-starter')}
+            value={titleColor}
+            options={[
+              { label: 'Gray 900', value: 'text-gray-900' },
+              { label: 'Gray 700', value: 'text-gray-700' },
+              { label: 'Blue 600', value: 'text-blue-600' },
+              { label: 'Black', value: 'text-black' }
+            ]}
+            onChange={(value) => setAttributes({ titleColor: value })}
+          />
+          
+          <SelectControl
+            label={__('Description Color', 'tailwind-starter')}
+            value={descriptionColor}
+            options={[
+              { label: 'Gray 600', value: 'text-gray-600' },
+              { label: 'Gray 500', value: 'text-gray-500' },
+              { label: 'Gray 700', value: 'text-gray-700' }
+            ]}
+            onChange={(value) => setAttributes({ descriptionColor: value })}
+          />
+        </PanelBody>
+
+        {/* Card Styling */}
+        <PanelBody title={__('🎨 Card Styling', 'tailwind-starter')} initialOpen={false}>
+          <SelectControl
+            label={__('Card Style', 'tailwind-starter')}
+            value={cardStyle}
+            options={[
+              { label: 'Elevated (Shadow)', value: 'elevated' },
+              { label: 'Bordered', value: 'bordered' },
+              { label: 'Minimal', value: 'minimal' },
+              { label: 'Filled', value: 'filled' }
+            ]}
+            onChange={(value) => setAttributes({ cardStyle: value })}
+          />
+          
+          <SelectControl
+            label={__('Card Background', 'tailwind-starter')}
+            value={cardBackground}
+            options={[
+              { label: 'White', value: 'bg-white' },
+              { label: 'Gray 50', value: 'bg-gray-50' },
+              { label: 'Blue 50', value: 'bg-blue-50' },
+              { label: 'Transparent', value: 'bg-transparent' }
+            ]}
+            onChange={(value) => setAttributes({ cardBackground: value })}
+          />
+          
+          <SelectControl
+            label={__('Card Border Radius', 'tailwind-starter')}
+            value={cardBorder}
+            options={[
+              { label: 'None', value: 'rounded-none' },
+              { label: 'Small', value: 'rounded-md' },
+              { label: 'Medium', value: 'rounded-lg' },
+              { label: 'Large', value: 'rounded-xl' },
+              { label: 'Extra Large', value: 'rounded-2xl' }
+            ]}
+            onChange={(value) => setAttributes({ cardBorder: value })}
+          />
+          
+          <SelectControl
+            label={__('Card Shadow', 'tailwind-starter')}
+            value={cardShadow}
+            options={[
+              { label: 'None', value: 'shadow-none' },
+              { label: 'Small', value: 'shadow-sm' },
+              { label: 'Medium', value: 'shadow-md' },
+              { label: 'Large', value: 'shadow-lg' },
+              { label: 'Extra Large', value: 'shadow-xl' }
+            ]}
+            onChange={(value) => setAttributes({ cardShadow: value })}
+          />
+          
+          <SelectControl
+            label={__('Card Padding', 'tailwind-starter')}
+            value={cardPadding}
+            options={[
+              { label: 'Small (p-4)', value: 'p-4' },
+              { label: 'Medium (p-6)', value: 'p-6' },
+              { label: 'Large (p-8)', value: 'p-8' }
+            ]}
+            onChange={(value) => setAttributes({ cardPadding: value })}
+          />
+        </PanelBody>
+
+        {/* Grid Layout */}
+        <PanelBody title={__('📐 Grid Layout', 'tailwind-starter')} initialOpen={false}>
+          <SelectControl
+            label={__('Grid Gap', 'tailwind-starter')}
+            value={gridGap}
+            options={[
+              { label: 'Small (gap-4)', value: 'gap-4' },
+              { label: 'Medium (gap-6)', value: 'gap-6' },
+              { label: 'Large (gap-8)', value: 'gap-8' },
+              { label: 'Extra Large (gap-12)', value: 'gap-12' }
+            ]}
+            onChange={(value) => setAttributes({ gridGap: value })}
+          />
+          
+          <ToggleControl
+            label={__('Show Images', 'tailwind-starter')}
+            checked={showImages}
+            onChange={(value) => setAttributes({ showImages: value })}
+          />
+          
+          <ToggleControl
+            label={__('Show Titles', 'tailwind-starter')}
+            checked={showTitles}
+            onChange={(value) => setAttributes({ showTitles: value })}
+          />
+          
+          <ToggleControl
+            label={__('Show Descriptions', 'tailwind-starter')}
+            checked={showDescriptions}
+            onChange={(value) => setAttributes({ showDescriptions: value })}
+          />
+          
+          <ToggleControl
+            label={__('Show Buttons', 'tailwind-starter')}
+            checked={showButtons}
+            onChange={(value) => setAttributes({ showButtons: value })}
+          />
+        </PanelBody>
+
+        {/* Animation & Effects */}
+        <PanelBody title={__('🎭 Animation & Effects', 'tailwind-starter')} initialOpen={false}>
+          <SelectControl
+            label={__('Animation Speed', 'tailwind-starter')}
+            value={animationSpeed}
+            options={[
+              { label: 'Fast (duration-150)', value: 'duration-150' },
+              { label: 'Normal (duration-300)', value: 'duration-300' },
+              { label: 'Slow (duration-500)', value: 'duration-500' }
+            ]}
+            onChange={(value) => setAttributes({ animationSpeed: value })}
+          />
+          
+          <ToggleControl
+            label={__('Enable Hover Effects', 'tailwind-starter')}
+            checked={hoverEffects}
+            onChange={(value) => setAttributes({ hoverEffects: value })}
+            help={hoverEffects ? __('Cards will have hover animations', 'tailwind-starter') : __('No hover effects', 'tailwind-starter')}
+          />
         </PanelBody>
 
         <PanelBody title={__('Features', 'tailwind-starter')}>

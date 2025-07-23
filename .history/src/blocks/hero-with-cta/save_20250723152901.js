@@ -95,7 +95,7 @@ export default function Save({ attributes }) {
                   {signal.icon}
                 </div>
               )}
-              <span className="text-sm font-medium">
+              <span className="text-sm text-gray-600 font-medium">
                 {signal.text}
               </span>
             </div>
@@ -167,7 +167,7 @@ export default function Save({ attributes }) {
     const buttonId = `cta-${isPrimary ? 'primary' : 'secondary'}-${Date.now()}`
     const baseClasses = isPrimary 
       ? 'btn-primary bg-blue-600 hover:bg-blue-700'
-      : 'btn-secondary bg-white hover:bg-gray-50 border-2 border-gray-300'
+      : 'btn-secondary bg-white hover:bg-gray-50 text-gray-900 border-2 border-gray-300'
 
     return (
       <a
@@ -256,7 +256,7 @@ export default function Save({ attributes }) {
             <RichText.Content
               tagName="p"
               value={subheadline}
-              className="text-xl mb-6 leading-relaxed opacity-0"
+              className="text-xl text-gray-100 mb-6 leading-relaxed opacity-0"
               data-animate="subheadline"
             />
             
@@ -264,7 +264,7 @@ export default function Save({ attributes }) {
               <RichText.Content
                 tagName="p"
                 value={description}
-                className="text-lg mb-8 opacity-0"
+                className="text-lg text-gray-200 mb-8 opacity-0"
                 data-animate="description"
               />
             )}

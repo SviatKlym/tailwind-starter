@@ -3,16 +3,30 @@ import { generatePerformanceConfig, generateDataAttributes } from '../../utils/b
 
 export default function save({ attributes }) {
   const {
-    title,
-    subtitle,
-    description,
+    headline,
+    subheadline,
+    primaryCTA,
+    secondaryCTA,
+    showSecondaryCTA,
     backgroundImage,
-    ctaText,
-    ctaUrl,
-    layout,
-    alignment,
-    overlayOpacity,
+    backgroundColor,
     textColor,
+    heroImage,
+    layout,
+    padding,
+    titleFontSize,
+    titleFontWeight,
+    subtitleFontSize,
+    titleMarginBottom,
+    subtitleMarginBottom,
+    contentMaxWidth,
+    contentAlignment,
+    contentPadding,
+    buttonSpacing,
+    primaryButtonStyle,
+    secondaryButtonStyle,
+    animationDuration,
+    hoverEffects,
     settings
   } = attributes
 
@@ -30,13 +44,13 @@ export default function save({ attributes }) {
     analytics: {
       enabled: true,
       trackViews: true,
-      trackClicks: !!ctaText,
+      trackClicks: !!(primaryCTA?.text || secondaryCTA?.text),
       viewData: { section: 'hero', layout }
     }
   })
 
   const blockProps = useBlockProps.save({
-    className: `hero-section layout-${layout || 'centered'} align-${alignment || 'center'}`,
+    className: `hero-section layout-${layout || 'centered'} ${backgroundColor || 'bg-white'}`,
     ...generateDataAttributes(performanceConfig)
   })
 
@@ -79,57 +93,55 @@ export default function save({ attributes }) {
       )}
 
       {/* Content */}
-      <div className={`hero-content relative z-10 container mx-auto px-4 py-24 ${
-        alignment === 'left' ? 'text-left' : 
-        alignment === 'right' ? 'text-right' : 
-        'text-center'
-      }`}>
+      <div className={`hero-content relative z-10 container mx-auto ${contentPadding || 'px-4 py-24'} ${contentAlignment || 'text-center'}`}>
         
-        {title && (
+        {headline && (
           <RichText.Content
             tagName="h1"
-            value={title}
-            className={`hero-title text-4xl md:text-6xl font-bold mb-6 ${textColor || 'text-white'}`}
+            value={headline}
+            className={`hero-title ${titleFontSize || 'text-4xl md:text-6xl'} ${titleFontWeight || 'font-bold'} ${titleMarginBottom || 'mb-6'} ${textColor || 'text-gray-900'}`}
             data-animate="title"
           />
         )}
 
-        {subtitle && (
+        {subheadline && (
           <RichText.Content
             tagName="h2"
-            value={subtitle}
-            className={`hero-subtitle text-xl md:text-2xl mb-4 ${textColor === 'text-white' ? 'text-gray-200' : 'text-gray-600'}`}
+            value={subheadline}
+            className={`hero-subtitle ${subtitleFontSize || 'text-xl md:text-2xl'} ${subtitleMarginBottom || 'mb-8'} ${contentMaxWidth || 'max-w-3xl'} mx-auto ${textColor === 'text-white' ? 'text-gray-200' : 'text-gray-600'}`}
             data-animate="subtitle"
             data-animate-delay="200"
           />
         )}
 
-        {description && (
-          <RichText.Content
-            tagName="p"
-            value={description}
-            className={`hero-description text-lg mb-8 max-w-2xl ${
-              alignment === 'center' ? 'mx-auto' : ''
-            } ${textColor === 'text-white' ? 'text-gray-300' : 'text-gray-600'}`}
-            data-animate="description"
-            data-animate-delay="400"
-          />
-        )}
+        <div className={`hero-ctas ${buttonSpacing || 'space-x-4'}`}>
+          {primaryCTA?.text && primaryCTA?.url && (
+            <a
+              href={primaryCTA.url}
+              className={`hero-cta-primary inline-flex items-center ${primaryButtonStyle?.padding || 'px-8 py-4'} ${primaryButtonStyle?.backgroundColor || 'bg-blue-600'} ${primaryButtonStyle?.hoverBackgroundColor || 'hover:bg-blue-700'} ${primaryButtonStyle?.textColor || 'text-white'} ${primaryButtonStyle?.fontSize || 'text-lg'} ${primaryButtonStyle?.fontWeight || 'font-semibold'} ${primaryButtonStyle?.borderRadius || 'rounded-lg'} transition-all ${animationDuration || 'duration-200'} ${hoverEffects ? 'hover:scale-105' : ''} focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50`}
+              data-animate="cta"
+              data-animate-delay="400"
+              data-track-click="primary-cta"
+            >
+              <span>{primaryCTA.text}</span>
+              <svg className="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </a>
+          )}
 
-        {ctaText && ctaUrl && (
-          <a
-            href={ctaUrl}
-            className="hero-cta inline-flex items-center px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white text-lg font-semibold rounded-lg transition-all duration-200 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50"
-            data-animate="cta"
-            data-animate-delay="600"
-            data-track-click="cta"
-          >
-            <span>{ctaText}</span>
-            <svg className="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-            </svg>
-          </a>
-        )}
+          {showSecondaryCTA && secondaryCTA?.text && secondaryCTA?.url && (
+            <a
+              href={secondaryCTA.url}
+              className={`hero-cta-secondary inline-flex items-center ${secondaryButtonStyle?.padding || 'px-8 py-4'} ${secondaryButtonStyle?.backgroundColor || 'bg-transparent'} ${secondaryButtonStyle?.borderStyle || 'border border-gray-300'} ${secondaryButtonStyle?.hoverBackgroundColor || 'hover:bg-gray-50'} ${secondaryButtonStyle?.textColor || 'text-gray-700'} ${secondaryButtonStyle?.fontSize || 'text-lg'} ${secondaryButtonStyle?.fontWeight || 'font-semibold'} ${secondaryButtonStyle?.borderRadius || 'rounded-lg'} transition-all ${animationDuration || 'duration-200'} focus:outline-none focus:ring-4 focus:ring-gray-500 focus:ring-opacity-50`}
+              data-animate="cta"
+              data-animate-delay="500"
+              data-track-click="secondary-cta"
+            >
+              <span>{secondaryCTA.text}</span>
+            </a>
+          )}
+        </div>
       </div>
     </section>
   )

@@ -5,9 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "wp-scripts start",
-    "build": "npm run blocks:build && npm run frontend:build && npm run theme:build",
+    "build": "npm run blocks:build && npm run theme:build",
     "blocks:build": "wp-scripts build",
-    "frontend:build": "wp-scripts build src/main.js --output-path=build/frontend",
     "theme:build": "tailwindcss -i ./src/style.css -o ./build/main.css --minify",
     "clean": "rimraf build"
   },

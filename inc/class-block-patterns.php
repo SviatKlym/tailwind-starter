@@ -36,6 +36,10 @@ class BlockPatterns {
         register_block_pattern_category( 'tailwind-starter-pages', [
             'label' => __( 'Full Pages', 'tailwind-starter' )
         ] );
+        
+        register_block_pattern_category( 'tailwind-starter-testing', [
+            'label' => __( 'Testing', 'tailwind-starter' )
+        ] );
     }
 
     /**
@@ -222,6 +226,125 @@ class BlockPatterns {
 <!-- /wp:columns -->
 </div>
 <!-- /wp:group -->'
+            ]
+        );
+
+        // All Blocks Testing Pattern
+        register_block_pattern(
+            'tailwind-starter/all-blocks-test',
+            [
+                'title'       => __( 'All Blocks Test Pattern', 'tailwind-starter' ),
+                'description' => __( 'Test pattern containing all custom blocks for development and testing', 'tailwind-starter' ),
+                'categories'  => [ 'tailwind-starter-testing' ],
+                'content'     => '<!-- wp:heading {"level":1,"align":"center"} -->
+<h1 class="has-text-align-center">🧪 All Blocks Testing Pattern</h1>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph {"align":"center"} -->
+<p class="has-text-align-center">This pattern contains all custom blocks for comprehensive testing of frontend/editor styling and functionality.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:separator {"className":"is-style-wide"} -->
+<hr class="wp-block-separator is-style-wide"/>
+<!-- /wp:separator -->
+
+<!-- wp:heading {"level":2} -->
+<h2>🦸 Hero Blocks</h2>
+<!-- /wp:heading -->
+
+<!-- wp:tailwind-starter/hero-section {"headline":"Hero Section Block","subheadline":"Testing hero section with default settings","primaryCTA":{"text":"Primary Button","url":"#","style":"primary"},"align":"full"} /-->
+
+<!-- wp:tailwind-starter/hero-with-cta {"headline":"Hero with CTA Block","subheadline":"Testing hero with dual CTAs","primaryCTA":{"text":"Primary CTA","url":"#","style":"primary"},"secondaryCTA":{"text":"Secondary CTA","url":"#","style":"secondary"},"align":"full"} /-->
+
+<!-- wp:separator -->
+<hr class="wp-block-separator"/>
+<!-- /wp:separator -->
+
+<!-- wp:heading {"level":2} -->
+<h2>🎯 Content & Feature Blocks</h2>
+<!-- /wp:heading -->
+
+<!-- wp:tailwind-starter/feature-grid {"sectionTitle":"Feature Grid Block","sectionSubtitle":"Testing responsive grid layout","showSection":true,"columns":3,"features":[{"id":"1","title":"Feature 1","description":"Description for feature 1 with proper testing","icon":"⚡"},{"id":"2","title":"Feature 2","description":"Description for feature 2 with proper testing","icon":"🔒"},{"id":"3","title":"Feature 3","description":"Description for feature 3 with proper testing","icon":"📊"},{"id":"4","title":"Feature 4","description":"Description for feature 4 with proper testing","icon":"🚀"},{"id":"5","title":"Feature 5","description":"Description for feature 5 with proper testing","icon":"🌟"},{"id":"6","title":"Feature 6","description":"Description for feature 6 with proper testing","icon":"💼"}],"align":"wide"} /-->
+
+<!-- wp:tailwind-starter/content-slider {"sectionTitle":"Content Slider Block","sectionSubtitle":"Testing slider functionality","showSectionHeader":true,"autoplay":true,"align":"wide"} /-->
+
+<!-- wp:tailwind-starter/before-after {"sectionTitle":"Before After Block","sectionSubtitle":"Testing image comparison slider","layout":"slider-comparison","showSectionHeader":true,"align":"wide"} /-->
+
+<!-- wp:separator -->
+<hr class="wp-block-separator"/>
+<!-- /wp:separator -->
+
+<!-- wp:heading {"level":2} -->
+<h2>📊 Data Display Blocks</h2>
+<!-- /wp:heading -->
+
+<!-- wp:tailwind-starter/stats-display {"heading":"Stats Display Block","stats":[{"number":"10,000+","label":"Happy Users"},{"number":"99.9%","label":"Uptime"},{"number":"24/7","label":"Support"},{"number":"5★","label":"Rating"}],"align":"wide"} /-->
+
+<!-- wp:tailwind-starter/pricing-table {"heading":"Pricing Table Block","subheading":"Choose your perfect plan","align":"wide"} /-->
+
+<!-- wp:tailwind-starter/process-steps {"heading":"Process Steps Block","steps":[{"title":"Step 1","description":"First step description"},{"title":"Step 2","description":"Second step description"},{"title":"Step 3","description":"Third step description"},{"title":"Step 4","description":"Fourth step description"}],"align":"wide"} /-->
+
+<!-- wp:separator -->
+<hr class="wp-block-separator"/>
+<!-- /wp:separator -->
+
+<!-- wp:heading {"level":2} -->
+<h2>👥 Social & Testimonial Blocks</h2>
+<!-- /wp:heading -->
+
+<!-- wp:tailwind-starter/testimonial-showcase {"heading":"Testimonial Showcase Block","align":"wide"} /-->
+
+<!-- wp:tailwind-starter/team-members {"heading":"Team Members Block","align":"wide"} /-->
+
+<!-- wp:tailwind-starter/social-proof {"heading":"Social Proof Block","align":"wide"} /-->
+
+<!-- wp:separator -->
+<hr class="wp-block-separator"/>
+<!-- /wp:separator -->
+
+<!-- wp:heading {"level":2} -->
+<h2>🎬 Media & Interactive Blocks</h2>
+<!-- /wp:heading -->
+
+<!-- wp:tailwind-starter/video-section {"heading":"Video Section Block","videoUrl":"https://www.youtube.com/watch?v=dQw4w9WgXcQ","align":"wide"} /-->
+
+<!-- wp:tailwind-starter/faq-accordion {"heading":"FAQ Accordion Block","align":"wide"} /-->
+
+<!-- wp:separator -->
+<hr class="wp-block-separator"/>
+<!-- /wp:separator -->
+
+<!-- wp:heading {"level":2} -->
+<h2>🏢 Business & Integration Blocks</h2>
+<!-- /wp:heading -->
+
+<!-- wp:tailwind-starter/integration-logos {"heading":"Integration Logos Block","align":"wide"} /-->
+
+<!-- wp:tailwind-starter/recent-posts {"heading":"Recent Posts Block","postsToShow":3,"align":"wide"} /-->
+
+<!-- wp:separator -->
+<hr class="wp-block-separator"/>
+<!-- /wp:separator -->
+
+<!-- wp:heading {"level":2} -->
+<h2>📧 CTA & Signup Blocks</h2>
+<!-- /wp:heading -->
+
+<!-- wp:tailwind-starter/cta-section {"heading":"CTA Section Block","description":"Call to action with centered style","buttonText":"Get Started","style":"centered","align":"full"} /-->
+
+<!-- wp:tailwind-starter/newsletter-signup {"heading":"Newsletter Signup Block","description":"Subscribe to our newsletter","align":"wide"} /-->
+
+<!-- wp:separator {"className":"is-style-wide"} -->
+<hr class="wp-block-separator is-style-wide"/>
+<!-- /wp:separator -->
+
+<!-- wp:heading {"level":2,"align":"center"} -->
+<h2 class="has-text-align-center">✅ Testing Complete</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph {"align":"center"} -->
+<p class="has-text-align-center">All custom blocks have been tested above. Check for proper styling, functionality, and responsive behavior.</p>
+<!-- /wp:paragraph -->'
             ]
         );
     }
