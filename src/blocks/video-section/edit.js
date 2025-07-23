@@ -14,7 +14,7 @@ import {
 } from '@wordpress/components';
 
 // Import fixed visual controls
-import { UltimateControlTabs, UltimateDeviceSelector, generateTailwindClasses } from '../../utils/visual-controls-fixed.js';
+import { UltimateControlTabs, UltimateDeviceSelector, generateAllClasses, generateTailwindClasses } from '../../utils/visual-controls.js';
 import { useState, useEffect, useCallback } from '@wordpress/element';
 
 export default function Edit({ attributes, setAttributes }) {
@@ -84,7 +84,7 @@ export default function Edit({ attributes, setAttributes }) {
 	}, [setAttributes]);
 
 	// Generate classes safely
-	const blockClasses = generateTailwindClasses(settings);
+	const blockClasses = generateAllClasses(settings);
 	
 	// Layout options
 	const layoutOptions = [
@@ -238,10 +238,27 @@ export default function Edit({ attributes, setAttributes }) {
 
 				{/* Visual Controls */}
 				<UltimateControlTabs
-					spacing={settings.spacing}
-					typography={settings.typography}
+					spacing={settings.spacing || {}}
 					onSpacingChange={(spacing) => updateSettings({ spacing })}
+					margins={settings.margins || {}}
+					onMarginsChange={(margins) => updateSettings({ margins })}
+					background={settings.backgroundColor}
+					onBackgroundChange={(backgroundColor) => updateSettings({ backgroundColor })}
+					textColor={settings.textColor}
+					onTextColorChange={(textColor) => updateSettings({ textColor })}
+					gradients={settings.gradients || {}}
+					onGradientsChange={(gradients) => updateSettings({ gradients })}
+					typography={settings.typography || {}}
 					onTypographyChange={(typography) => updateSettings({ typography })}
+					layout={settings.layout || {}}
+					onLayoutChange={(layout) => updateSettings({ layout })}
+					effects={settings.effects || {}}
+					onEffectsChange={(effects) => updateSettings({ effects })}
+					device="base"
+					presets={{}}
+					onPresetApply={(preset) => {
+						console.log('Applying preset:', preset);
+					}}
 				/>
 			</InspectorControls>
 

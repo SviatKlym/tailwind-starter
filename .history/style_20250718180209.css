@@ -4,3 +4,7 @@ Description: Modern WordPress theme with Tailwind CSS v4.1.11 and custom Gutenbe
 Version: 1.0.0
 Author: Your Name
 */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

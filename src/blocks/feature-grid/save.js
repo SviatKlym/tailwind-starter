@@ -1,5 +1,6 @@
 import { useBlockProps, RichText } from '@wordpress/block-editor'
-import { generatePerformanceConfig, generateDataAttributes } from '../../utils/block-config-generator'
+import { generatePerformanceConfig, generateDataAttributes } from '../../utils/block-config-generator.js'
+import { generateAllClasses, generateAllInlineStyles } from '../../utils/visual-controls.js'
 
 export default function save({ attributes }) {
   const {
@@ -45,8 +46,13 @@ export default function save({ attributes }) {
     }
   })
 
+  // Generate visual classes and styles
+  const visualClasses = settings ? generateAllClasses(settings) : ''
+  const visualStyles = settings ? generateAllInlineStyles(settings) : {}
+
   const blockProps = useBlockProps.save({
-    className: `feature-grid-block ${backgroundColor || ''} ${textColor || ''}`,
+    className: `feature-grid-block ${backgroundColor || ''} ${textColor || ''} ${visualClasses}`.trim(),
+    style: visualStyles,
     ...generateDataAttributes(performanceConfig)
   })
 

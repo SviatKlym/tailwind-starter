@@ -85,16 +85,36 @@ function my_tailwind_starter_editor_assets() {
     }
     
     // Enqueue the visual controls CSS for dynamic classes in editor
+    // This needs to be loaded with higher priority to avoid scoping issues
     $visual_controls_css = get_template_directory() . '/src/visual-controls.css';
     if (file_exists($visual_controls_css)) {
         wp_enqueue_style(
             'tailwind-starter-visual-controls-editor',
             get_template_directory_uri() . '/src/visual-controls.css',
-            ['tailwind-starter-editor-style'],
+            [],
             filemtime($visual_controls_css)
         );
     }
 }
 add_action('enqueue_block_editor_assets', 'my_tailwind_starter_editor_assets');
+
+// Also enqueue visual controls as admin styles (broader scope)
+function my_tailwind_starter_admin_styles() {
+    $screen = get_current_screen();
+    
+    // Only load on post editor screens
+    if ($screen && ($screen->base === 'post' || $screen->base === 'page')) {
+        $visual_controls_css = get_template_directory() . '/src/visual-controls.css';
+        if (file_exists($visual_controls_css)) {
+            wp_enqueue_style(
+                'tailwind-starter-visual-controls-admin',
+                get_template_directory_uri() . '/src/visual-controls.css',
+                [],
+                filemtime($visual_controls_css)
+            );
+        }
+    }
+}
+add_action('admin_enqueue_scripts', 'my_tailwind_starter_admin_styles');
 
 // AssetController handles block registration automatically

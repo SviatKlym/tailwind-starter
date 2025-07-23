@@ -71,16 +71,14 @@ class AssetController {
             }
         }
 
-        // Include render file and set callback if found
+        // Set up render callback if render file found
         if ( $render_file_found ) {
-            require_once $render_file_found;
-            
-            // Determine function name based on block name
-            $function_name = 'render_' . str_replace( '-', '_', $block_name ) . '_block';
-            
-            if ( function_exists( $function_name ) ) {
-                $render_callback = $function_name;
-            }
+            $render_callback = function( $attributes, $content, $block ) use ( $render_file_found ) {
+                // Only include the render file when the block is actually being rendered
+                ob_start();
+                require_once $render_file_found;
+                return ob_get_clean();
+            };
         }
 
         // Register block with or without render callback

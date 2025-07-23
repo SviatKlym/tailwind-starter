@@ -14,6 +14,68 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+/**
+ * Process newsletter subscription
+ * This function handles the actual subscription logic
+ */
+if (!function_exists('process_newsletter_subscription')) {
+    function process_newsletter_subscription($email, $name, $attributes) {
+        $email_service = $attributes['emailService'] ?? 'wordpress';
+        
+        // Default WordPress handling - store in options table or custom table
+        if ($email_service === 'wordpress') {
+            
+            // Check if email already exists
+            $subscribers = get_option('newsletter_subscribers', []);
+            if (in_array($email, array_column($subscribers, 'email'))) {
+                return [
+                    'success' => false,
+                    'message' => 'This email is already subscribed.'
+                ];
+            }
+            
+            // Add new subscriber
+            $subscribers[] = [
+                'email' => $email,
+                'name' => $name,
+                'date_subscribed' => current_time('mysql'),
+                'status' => 'active'
+            ];
+            
+            update_option('newsletter_subscribers', $subscribers);
+            
+            // Optional: Send confirmation email
+            $subject = 'Welcome to our newsletter!';
+            $message = "Hi " . ($name ?: 'there') . ",\n\nThank you for subscribing to our newsletter!\n\nBest regards,\nThe Team";
+            wp_mail($email, $subject, $message);
+            
+            return ['success' => true];
+            
+        } elseif ($email_service === 'mailchimp' && !empty($attributes['mailchimpApiKey']) && !empty($attributes['mailchimpListId'])) {
+            
+            // Mailchimp integration (requires API implementation)
+            // This would be implemented with Mailchimp API calls
+            return [
+                'success' => false,
+                'message' => 'Mailchimp integration not yet implemented.'
+            ];
+            
+        } elseif ($email_service === 'convertkit' && !empty($attributes['convertKitApiKey']) && !empty($attributes['convertKitFormId'])) {
+            
+            // ConvertKit integration (requires API implementation)
+            return [
+                'success' => false,
+                'message' => 'ConvertKit integration not yet implemented.'
+            ];
+            
+        } else {
+            
+            // Fallback to WordPress
+            return process_newsletter_subscription($email, $name, array_merge($attributes, ['emailService' => 'wordpress']));
+        }
+    }
+}
+
 // Extract and set default values
 $layout = $attributes['layout'] ?? 'inline-form';
 $title = $attributes['title'] ?? 'Stay Updated';
@@ -94,66 +156,6 @@ if (isset($_POST['newsletter_signup_submit']) && isset($_POST['form_id']) && $_P
     } else {
         $form_status = 'error';
         $form_message = 'Security verification failed. Please try again.';
-    }
-}
-
-/**
- * Process newsletter subscription
- * This function handles the actual subscription logic
- */
-function process_newsletter_subscription($email, $name, $attributes) {
-    $email_service = $attributes['emailService'] ?? 'wordpress';
-    
-    // Default WordPress handling - store in options table or custom table
-    if ($email_service === 'wordpress') {
-        
-        // Check if email already exists
-        $subscribers = get_option('newsletter_subscribers', []);
-        if (in_array($email, array_column($subscribers, 'email'))) {
-            return [
-                'success' => false,
-                'message' => 'This email is already subscribed.'
-            ];
-        }
-        
-        // Add new subscriber
-        $subscribers[] = [
-            'email' => $email,
-            'name' => $name,
-            'date_subscribed' => current_time('mysql'),
-            'status' => 'active'
-        ];
-        
-        update_option('newsletter_subscribers', $subscribers);
-        
-        // Optional: Send confirmation email
-        $subject = 'Welcome to our newsletter!';
-        $message = "Hi " . ($name ?: 'there') . ",\n\nThank you for subscribing to our newsletter!\n\nBest regards,\nThe Team";
-        wp_mail($email, $subject, $message);
-        
-        return ['success' => true];
-        
-    } elseif ($email_service === 'mailchimp' && !empty($attributes['mailchimpApiKey']) && !empty($attributes['mailchimpListId'])) {
-        
-        // Mailchimp integration (requires API implementation)
-        // This would be implemented with Mailchimp API calls
-        return [
-            'success' => false,
-            'message' => 'Mailchimp integration not yet implemented.'
-        ];
-        
-    } elseif ($email_service === 'convertkit' && !empty($attributes['convertKitApiKey']) && !empty($attributes['convertKitFormId'])) {
-        
-        // ConvertKit integration (requires API implementation)
-        return [
-            'success' => false,
-            'message' => 'ConvertKit integration not yet implemented.'
-        ];
-        
-    } else {
-        
-        // Fallback to WordPress
-        return process_newsletter_subscription($email, $name, array_merge($attributes, ['emailService' => 'wordpress']));
     }
 }
 
@@ -289,4 +291,4 @@ $input_classes = ['form-input', 'input-' . esc_attr($input_style)];
             <?php endif; ?>
         </form>
     <?php endif; ?>
-</div> 
+</div>

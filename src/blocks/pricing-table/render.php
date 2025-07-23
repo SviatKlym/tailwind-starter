@@ -14,6 +14,73 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+// Helper functions (defined first to avoid undefined function errors)
+if (!function_exists('get_user_currency')) {
+    function get_user_currency() {
+        // This would typically use GeoIP or user preferences
+        // For now, return USD as default
+        return get_option('site_default_currency', 'USD');
+    }
+}
+
+if (!function_exists('get_exchange_rates')) {
+    function get_exchange_rates() {
+        // This would fetch from an API like exchangerate-api.com
+        // For now, return cached rates
+        return get_transient('currency_rates') ?: [
+            'EUR' => 0.85,
+            'GBP' => 0.73,
+            'CAD' => 1.25,
+            'AUD' => 1.35
+        ];
+    }
+}
+
+if (!function_exists('get_currency_symbol')) {
+    function get_currency_symbol($currency) {
+        $symbols = [
+            'USD' => '$',
+            'EUR' => '€',
+            'GBP' => '£',
+            'CAD' => 'C$',
+            'AUD' => 'A$'
+        ];
+        return $symbols[$currency] ?? '$';
+    }
+}
+
+if (!function_exists('get_user_subscriptions')) {
+    function get_user_subscriptions($user_id) {
+        // This would query your subscription/membership database
+        // For now, return empty array
+        return [];
+    }
+}
+
+if (!function_exists('format_price')) {
+    function format_price($price, $currency, $period = '') {
+        $symbol = get_currency_symbol($currency);
+        return $symbol . number_format($price, 2) . ($period ? '/' . $period : '');
+    }
+}
+
+if (!function_exists('render_features')) {
+    function render_features($features) {
+        if (empty($features)) return '';
+        
+        $output = '<ul class="space-y-3">';
+        foreach ($features as $feature) {
+            $checkmark = '<svg class="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>';
+            $output .= '<li class="flex items-start">';
+            $output .= '<span class="flex-shrink-0 mr-3 mt-0.5">' . $checkmark . '</span>';
+            $output .= '<span>' . esc_html($feature) . '</span>';
+            $output .= '</li>';
+        }
+        $output .= '</ul>';
+        return $output;
+    }
+}
+
 // Extract and set default values
 $layout = $attributes['layout'] ?? 'three-tier';
 $plans = $attributes['plans'] ?? [];
@@ -92,41 +159,6 @@ foreach ($plans as $plan) {
     $enhanced_plans[] = $enhanced_plan;
 }
 
-// Helper functions
-function get_user_currency() {
-    // This would typically use GeoIP or user preferences
-    // For now, return USD as default
-    return get_option('site_default_currency', 'USD');
-}
-
-function get_exchange_rates() {
-    // This would fetch from an API like exchangerate-api.com
-    // For now, return cached rates
-    return get_transient('currency_rates') ?: [
-        'EUR' => 0.85,
-        'GBP' => 0.73,
-        'CAD' => 1.25,
-        'AUD' => 1.35
-    ];
-}
-
-function get_currency_symbol($currency) {
-    $symbols = [
-        'USD' => '$',
-        'EUR' => '€',
-        'GBP' => '£',
-        'CAD' => 'C$',
-        'AUD' => 'A$'
-    ];
-    return $symbols[$currency] ?? '$';
-}
-
-function get_user_subscriptions($user_id) {
-    // This would query your subscription/membership database
-    // For now, return empty array
-    return [];
-}
-
 // Handle empty plans
 if (empty($enhanced_plans)) {
     echo '<div class="pricing-table-block no-plans text-center py-8">';
@@ -144,29 +176,7 @@ if (isset($settings['textColor'])) {
     $wrapper_classes[] = esc_attr($settings['textColor']);
 }
 
-// Helper function to format price
-function format_price($price, $currency, $period = '') {
-    $formatted_price = number_format($price, 2);
-    $period_text = $period ? '/' . $period : '';
-    return $currency . $formatted_price . $period_text;
-}
-
-// Helper function to render feature list
-function render_features($features) {
-    if (empty($features)) return '';
-    
-    $output = '<ul class="plan-features space-y-3 mb-8">';
-    foreach ($features as $feature) {
-        $output .= '<li class="flex items-start">';
-        $output .= '<svg class="w-5 h-5 text-green-500 mr-3 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">';
-        $output .= '<path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>';
-        $output .= '</svg>';
-        $output .= '<span class="text-gray-600">' . esc_html($feature) . '</span>';
-        $output .= '</li>';
-    }
-    $output .= '</ul>';
-    return $output;
-}
+// Functions are now defined at the top of the file
 ?>
 
 <div class="<?php echo esc_attr(implode(' ', $wrapper_classes)); ?>">
@@ -386,4 +396,4 @@ function render_features($features) {
         });
         </script>
     <?php endif; ?>
-</div> 
+</div>

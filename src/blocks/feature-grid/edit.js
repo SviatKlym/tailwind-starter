@@ -19,8 +19,7 @@ import { plus, trash } from '@wordpress/icons'
 import { 
   UltimateDeviceSelector,
   UltimateControlTabs,
-  generateTailwindClasses,
-  generateAllClasses
+  generateAllClasses, generateTailwindClasses
 } from '../../utils/visual-controls.js'
 
 export default function Edit({ attributes, setAttributes }) {
@@ -90,7 +89,7 @@ export default function Edit({ attributes, setAttributes }) {
   const allClasses = generateAllClasses(settings)
 
   // Generate preview classes (just base for editor)
-  const previewClasses = generateTailwindClasses(settings, 'base')
+  const previewClasses = generateAllClasses(settings || {})
 
   const blockProps = useBlockProps({
     className: `feature-grid ${backgroundColor} ${previewClasses}`,
@@ -301,6 +300,10 @@ export default function Edit({ attributes, setAttributes }) {
             onSpacingChange={(spacing) => setAttributes({
               settings: { ...settings, spacing }
             })}
+            margins={settings.margins || {}}
+            onMarginsChange={(margins) => setAttributes({
+              settings: { ...settings, margins }
+            })}
             background={settings.backgroundColor}
             onBackgroundChange={(backgroundColor) => setAttributes({
               settings: { ...settings, backgroundColor }
@@ -309,9 +312,21 @@ export default function Edit({ attributes, setAttributes }) {
             onTextColorChange={(textColor) => setAttributes({
               settings: { ...settings, textColor }
             })}
+            gradients={settings.gradients || {}}
+            onGradientsChange={(gradients) => setAttributes({
+              settings: { ...settings, gradients }
+            })}
             typography={settings.typography || {}}
             onTypographyChange={(typography) => setAttributes({
               settings: { ...settings, typography }
+            })}
+            layout={settings.layout || {}}
+            onLayoutChange={(layout) => setAttributes({
+              settings: { ...settings, layout }
+            })}
+            effects={settings.effects || {}}
+            onEffectsChange={(effects) => setAttributes({
+              settings: { ...settings, effects }
             })}
             device={activeDevice}
             presets={presets}

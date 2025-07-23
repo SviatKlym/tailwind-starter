@@ -9,7 +9,7 @@ import {
 	TextareaControl,
 	__experimentalDivider as Divider
 } from '@wordpress/components';
-import { UltimateControlTabs, UltimateDeviceSelector, generateTailwindClasses, generateAllClasses } from '../../utils/visual-controls.js';
+import { UltimateControlTabs, UltimateDeviceSelector, generateAllClasses, generateTailwindClasses } from '../../utils/visual-controls.js';
 import { useState } from '@wordpress/element';
 
 export default function Edit({ attributes, setAttributes }) {
@@ -80,7 +80,7 @@ export default function Edit({ attributes, setAttributes }) {
 	const allClasses = generateAllClasses(settings);
 
 	// Generate preview classes (just base for editor)
-	const previewClasses = generateTailwindClasses(settings, 'base');
+	const previewClasses = generateAllClasses(settings || {});
 
 	const blockProps = useBlockProps({
 		className: `faq-accordion faq-${layout} ${previewClasses}`,
@@ -414,7 +414,11 @@ export default function Edit({ attributes, setAttributes }) {
 					onEffectsChange={(effects) => setAttributes({
 						settings: { ...settings, effects }
 					})}
-					activeDevice={activeDevice}
+					device={activeDevice}
+					presets={{}}
+					onPresetApply={(preset) => {
+						console.log('Applying preset:', preset);
+					}}
 				/>
 			</InspectorControls>
 

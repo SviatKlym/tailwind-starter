@@ -1,5 +1,6 @@
 import { useBlockProps, RichText } from '@wordpress/block-editor'
-import { generatePerformanceConfig, generateDataAttributes } from '../../utils/block-config-generator'
+import { generatePerformanceConfig, generateDataAttributes } from '../../utils/block-config-generator.js'
+import { generateAllClasses, generateAllInlineStyles } from '../../utils/visual-controls.js'
 
 export default function save({ attributes }) {
   const {
@@ -48,8 +49,13 @@ export default function save({ attributes }) {
     }
   })
 
+  // Generate visual classes and styles
+  const visualClasses = settings ? generateAllClasses(settings) : ''
+  const visualStyles = settings ? generateAllInlineStyles(settings) : {}
+
   const blockProps = useBlockProps.save({
-    className: `content-slider-block ${backgroundColor || ''}`,
+    className: `content-slider-block ${backgroundColor || ''} ${visualClasses}`.trim(),
+    style: visualStyles,
     ...generateDataAttributes(performanceConfig),
     'data-autoplay': autoplay || false,
     'data-autoplay-speed': autoplaySpeed || 3000,

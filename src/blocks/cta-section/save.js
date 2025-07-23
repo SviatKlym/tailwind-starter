@@ -1,5 +1,6 @@
 import { useBlockProps, RichText } from '@wordpress/block-editor'
-import { generatePerformanceConfig, generateDataAttributes } from '../../utils/block-config-generator'
+import { generatePerformanceConfig, generateDataAttributes } from '../../utils/block-config-generator.js'
+import { generateAllClasses, generateAllInlineStyles } from '../../utils/visual-controls.js'
 
 export default function save({ attributes }) {
   const {
@@ -47,8 +48,13 @@ export default function save({ attributes }) {
     } : { enabled: false }
   })
 
+  // Generate visual classes and styles  
+  const visualClasses = settings ? generateAllClasses(settings) : ''
+  const visualStyles = settings ? generateAllInlineStyles(settings) : {}
+
   const blockProps = useBlockProps.save({
-    className: `cta-section layout-${layout || 'centered'} ${backgroundColor || 'bg-blue-600'} ${textColor || 'text-white'}`,
+    className: `cta-section layout-${layout || 'centered'} ${backgroundColor || 'bg-blue-600'} ${textColor || 'text-white'} ${visualClasses}`.trim(),
+    style: visualStyles,
     ...generateDataAttributes(performanceConfig)
   })
 

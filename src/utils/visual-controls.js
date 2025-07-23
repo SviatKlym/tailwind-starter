@@ -1411,14 +1411,7 @@ export const UltimateColorsControl = ({
     { name: 'Linear Right', class: 'bg-gradient-to-r' },
     { name: 'Linear Bottom', class: 'bg-gradient-to-b' },
     { name: 'Linear Top Right', class: 'bg-gradient-to-tr' },
-    { name: 'Linear Bottom Right', class: 'bg-gradient-to-br' },
-    { name: 'Radial Center', class: 'bg-gradient-radial' },
-    { name: 'Radial Top', class: 'bg-gradient-radial-at-t' },
-    { name: 'Radial Bottom', class: 'bg-gradient-radial-at-b' },
-    { name: 'Radial Top Left', class: 'bg-gradient-radial-at-tl' },
-    { name: 'Radial Top Right', class: 'bg-gradient-radial-at-tr' },
-    { name: 'Conic', class: 'bg-gradient-conic' },
-    { name: 'Conic Top', class: 'bg-gradient-conic-at-t' }
+    { name: 'Linear Bottom Right', class: 'bg-gradient-to-br' }
   ]
 
   const gradientColors = [

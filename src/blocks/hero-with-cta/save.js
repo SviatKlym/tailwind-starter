@@ -1,4 +1,5 @@
 import { useBlockProps, RichText } from '@wordpress/block-editor'
+import { generateAllClasses, generateAllInlineStyles } from '../../utils/visual-controls.js'
 
 export default function Save({ attributes }) {
   const {
@@ -19,15 +20,16 @@ export default function Save({ attributes }) {
     showTrustSignals,
     videoUrl,
     showVideo,
-    settings
+    visualSettings
   } = attributes
 
   // Generate optimized classes for all devices
-  const allClasses = settings ? generateAllClasses(settings) : ''
+  const visualClasses = visualSettings ? generateAllClasses(visualSettings) : ''
+  const visualStyles = visualSettings ? generateAllInlineStyles(visualSettings) : {}
 
   const blockProps = useBlockProps.save({
-    className: `hero-with-cta hero-with-cta--${layout} ${backgroundColor} ${textColor}`,
-    'data-classes': allClasses,
+    className: `hero-with-cta hero-with-cta--${layout} ${backgroundColor} ${textColor} ${visualClasses}`.trim(),
+    style: visualStyles,
     'data-conversion-tracking': 'enabled'
   })
 
@@ -410,21 +412,3 @@ export default function Save({ attributes }) {
   )
 }
 
-// Helper function for generating classes
-function generateAllClasses(settings) {
-  if (!settings) return ''
-  
-  return Object.entries(settings).map(([key, value]) => {
-    if (typeof value === 'object') {
-      return Object.entries(value).map(([device, deviceValue]) => {
-        if (typeof deviceValue === 'object') {
-          return Object.entries(deviceValue).map(([prop, propValue]) => 
-            device === 'base' ? propValue : `${device}:${propValue}`
-          ).join(' ')
-        }
-        return device === 'base' ? deviceValue : `${device}:${deviceValue}`
-      }).join(' ')
-    }
-    return value
-  }).join(' ')
-}

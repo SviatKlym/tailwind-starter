@@ -2,10 +2,16 @@
  * Core Block Enhancements Editor Styles
  * 
  * This file imports the core block enhancement styles for the editor.
+ * The visual controls CSS needs to be available globally in the editor.
  */
 
-/* Import visual controls CSS */
+/* Import visual controls CSS globally - not scoped to blocks */
 @import "../../visual-controls.css";
+
+/* Make visual controls work in all editor contexts */
+.editor-styles-wrapper {
+  /* Ensure visual controls CSS is available everywhere in editor */
+}
 
 /* Hide the core-enhancements block from the inserter (it should never be inserted) */
 .block-editor-inserter__results .editor-block-list-item-tailwind-starter-core-enhancements {

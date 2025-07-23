@@ -1,0 +1,93 @@
+/*
+Theme Name: My Tailwind Starter
+Description: Modern WordPress theme with Tailwind CSS v4.1.11 and custom Gutenberg blocks
+Version: 1.0.0
+Author: Your Name
+*/
+
+
+>1. Before After -Text colors is not aaplied,  errors on style presets 
+Uncaught TypeError: S is not a function │ │ at onClick (index.js:1:47822) │ │ at Object.Xa (react-dom.min.js:10:105345) │ │ at B (react-dom.min.js:10:10501) │ │ at W (react-dom.min.js:10:10556) │ │ at qe (react-dom.min.js:10:23297) │ │ at Ke (react-dom.min.js:10:23711) │ │ at react-dom.min.js:10:29062 │ │ at dl (react-dom.min.js:10:85582) │ │ at V (react-dom.min.js:10:9856) │ │ at Je (react-dom.min.js:10:24934) 
+2. Content Slider - The same trouble 
+Uncaught TypeError: S is not a function at onClick (index.js:1:47822) at Object.Xa (react-dom.min.js:10:105345) at B (react-dom.min.js:10:10501) at W (react-dom.min.js:10:10556) at qe (react-dom.min.js:10:23297) at Ke (react-dom.min.js:10:23711) at react-dom.min.js:10:29062 at dl (react-dom.min.js:10:85582) at V (react-dom.min.js:10:9856) at Je (react-dom.min.js:10:24934)
+Text colors is not aaplied
+3. CTA Section : All Visual Controls is not apllied;
+4. FAQ Accordion  - Quick Style Presets: react-dom.min.js:10 Uncaught TypeError: S is not a function at onClick (index.js:1:47840) at Object.Xa (react-dom.min.js:10:105345) at B (react-dom.min.js:10:10501) at W (react-dom.min.js:10:10556) at qe (react-dom.min.js:10:23297) at Ke (react-dom.min.js:10:23711) at react-dom.min.js:10:29062 at dl (react-dom.min.js:10:85582) at V (react-dom.min.js:10:9856) at Je (react-dom.min.js:10:24934)
+5. Feature grid - Spacing: Margin : react-dom.min.js:10 Uncaught TypeError: n is not a function
+    at index.js:1:15308
+    at onChange (index.js:1:15314)
+    at onChange (components.min.js:26:261304)
+    at Object.Xa (react-dom.min.js:10:105345)
+    at B (react-dom.min.js:10:10501)
+    at W (react-dom.min.js:10:10556)
+    at qe (react-dom.min.js:10:23297)
+    at Ke (react-dom.min.js:10:23711)
+    at react-dom.min.js:10:29062
+    at dl (react-dom.min.js:10:85582)
+
+    Background Colntrol: TypeError: Cannot read properties of undefined (reading 'base')
+    at g (index.js:1:33479)
+    at ht (react-dom.min.js:10:45677)
+    at Qs (react-dom.min.js:10:120133)
+    at wl (react-dom.min.js:10:88341)
+    at bl (react-dom.min.js:10:88269)
+    at yl (react-dom.min.js:10:88132)
+    at il (react-dom.min.js:10:84984)
+    at fl (react-dom.min.js:10:85364)
+    at Nn (react-dom.min.js:10:32442)
+    at react-dom.min.js:10:82952
+6. Feature Grid Enhanced The same problem  . I think we can just leave only one feature grid
+7. Integration Logos - Quick Style Presets : react-dom.min.js:10 Uncaught TypeError: S is not a function
+    at onClick (index.js:1:47822)
+    at Object.Xa (react-dom.min.js:10:105345)
+    at B (react-dom.min.js:10:10501)
+    at W (react-dom.min.js:10:10556)
+    at qe (react-dom.min.js:10:23297)
+    at Ke (react-dom.min.js:10:23711)
+    at react-dom.min.js:10:29062
+    at dl (react-dom.min.js:10:85582)
+    at V (react-dom.min.js:10:9856)
+    at Je (react-dom.min.js:10:24934)
+8. Newsletter Signup - have not Visual Design Controls 
+9. Process Steps - Quick Style Presets : react-dom.min.js:10 Uncaught TypeError: T is not a function
+    at onClick (index.js:1:47840)
+    at Object.Xa (react-dom.min.js:10:105345)
+    at B (react-dom.min.js:10:10501)
+    at W (react-dom.min.js:10:10556)
+    at qe (react-dom.min.js:10:23297)
+    at Ke (react-dom.min.js:10:23711)
+    at react-dom.min.js:10:29062
+    at dl (react-dom.min.js:10:85582)
+    at V (react-dom.min.js:10:9856)
+    at Je (react-dom.min.js:10:24934)
+
+   We have a lot of persets here I think we should migrate Visuals Presets to Quick Style Presets or how it correctly handle it because every block or core element in future should have a presets which should use only for this blocks nad have a different styles
+
+10. Recent Posts the same problem as Process Steps.
+11: Social Proof - Quick Style Presets: react-dom.min.js:10 Uncaught TypeError: T is not a function
+    at onClick (index.js:1:47212)
+    at Object.Xa (react-dom.min.js:10:105345)
+    at B (react-dom.min.js:10:10501)
+    at W (react-dom.min.js:10:10556)
+    at qe (react-dom.min.js:10:23297)
+    at Ke (react-dom.min.js:10:23711)
+    at react-dom.min.js:10:29062
+    at dl (react-dom.min.js:10:85582)
+    at V (react-dom.min.js:10:9856)
+    at Je (react-dom.min.js:10:24934)
+    Background Controls : TypeError: Cannot read properties of undefined (reading 'base')
+    at m (index.js:1:32198)
+    at ht (react-dom.min.js:10:45677)
+    at Qs (react-dom.min.js:10:120133)
+    at wl (react-dom.min.js:10:88341)
+    at bl (react-dom.min.js:10:88269)
+    at yl (react-dom.min.js:10:88132)
+    at il (react-dom.min.js:10:84984)
+    at fl (react-dom.min.js:10:85364)
+    at Nn (react-dom.min.js:10:32442)
+    at react-dom.min.js:10:82952
+12. Stats Display the same problem as Process Steps
+13. Team Members the same problem as Process Steps
+13. Testimonial Showcase the same problem as Process Steps
+14. Video Section - have not Visual Design Controls
+15. Tailwind Visual Builder - we can remove it 

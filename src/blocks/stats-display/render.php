@@ -14,6 +14,35 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+// Helper function to format numbers with animation data
+if (!function_exists('format_stat_number')) {
+    function format_stat_number($stat, $enable_animations) {
+        $number = $stat['number'] ?? '0';
+        $prefix = $stat['prefix'] ?? '';
+        $suffix = $stat['suffix'] ?? '';
+        
+        // Extract numeric value for animation
+        $numeric_value = preg_replace('/[^0-9.]/', '', $number);
+        
+        $data_attrs = '';
+        if ($enable_animations) {
+            $data_attrs = sprintf(
+                'data-animate="true" data-target="%s" data-duration="%d"',
+                esc_attr($numeric_value),
+                esc_attr($stat['animationDuration'] ?? 2000)
+            );
+        }
+        
+        return sprintf(
+            '<span class="stat-number-wrapper" %s>%s<span class="stat-number-value">%s</span>%s</span>',
+            $data_attrs,
+            esc_html($prefix),
+            esc_html($number),
+            esc_html($suffix)
+        );
+    }
+}
+
 // Extract and set default values
 $layout = $attributes['layout'] ?? 'counter-animation';
 $stats = $attributes['stats'] ?? [];
@@ -154,32 +183,6 @@ switch ($number_size) {
         $number_classes .= 'text-4xl md:text-5xl lg:text-6xl';
 }
 
-// Helper function to format numbers with animation data
-function format_stat_number($stat, $enable_animations) {
-    $number = $stat['number'] ?? '0';
-    $prefix = $stat['prefix'] ?? '';
-    $suffix = $stat['suffix'] ?? '';
-    
-    // Extract numeric value for animation
-    $numeric_value = preg_replace('/[^0-9.]/', '', $number);
-    
-    $data_attrs = '';
-    if ($enable_animations) {
-        $data_attrs = sprintf(
-            'data-animate="true" data-target="%s" data-duration="%d"',
-            esc_attr($numeric_value),
-            esc_attr($stat['animationDuration'] ?? 2000)
-        );
-    }
-    
-    return sprintf(
-        '<span class="stat-number-wrapper" %s>%s<span class="stat-number-value">%s</span>%s</span>',
-        $data_attrs,
-        esc_html($prefix),
-        esc_html($number),
-        esc_html($suffix)
-    );
-}
 ?>
 
 <div class="<?php echo esc_attr(implode(' ', $wrapper_classes)); ?>">
@@ -336,4 +339,4 @@ function format_stat_number($stat, $enable_animations) {
         });
         </script>
     <?php endif; ?>
-</div> 
+</div>

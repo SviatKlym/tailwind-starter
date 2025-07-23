@@ -9,7 +9,7 @@ import {
 	TextControl,
 	__experimentalDivider as Divider
 } from '@wordpress/components';
-import { UltimateControlTabs } from '../../utils/visual-controls.js';
+import { UltimateControlTabs, generateAllClasses, generateTailwindClasses, generateAllInlineStyles } from '../../utils/visual-controls.js';
 
 export default function Edit({ attributes, setAttributes }) {
 	const {
@@ -27,8 +27,13 @@ export default function Edit({ attributes, setAttributes }) {
 		visualSettings
 	} = attributes;
 
+	// Generate visual classes from settings
+	const visualClasses = generateAllClasses(visualSettings || {});
+	const visualStyles = generateAllInlineStyles(visualSettings || {});
+
 	const blockProps = useBlockProps({
-		className: `hero-with-cta hero-${layout} text-${textAlignment}`
+		className: `hero-with-cta hero-${layout} text-${textAlignment} ${visualClasses}`.trim(),
+		style: visualStyles
 	});
 
 	const layoutOptions = [
@@ -208,6 +213,10 @@ export default function Edit({ attributes, setAttributes }) {
 						onSpacingChange={(spacing) => setAttributes({
 							visualSettings: { ...visualSettings, spacing }
 						})}
+						margins={visualSettings.margins || {}}
+						onMarginsChange={(margins) => setAttributes({
+							visualSettings: { ...visualSettings, margins }
+						})}
 						background={visualSettings.backgroundColor}
 						onBackgroundChange={(backgroundColor) => setAttributes({
 							visualSettings: { ...visualSettings, backgroundColor }
@@ -216,10 +225,28 @@ export default function Edit({ attributes, setAttributes }) {
 						onTextColorChange={(textColor) => setAttributes({
 							visualSettings: { ...visualSettings, textColor }
 						})}
+						gradients={visualSettings.gradients || {}}
+						onGradientsChange={(gradients) => setAttributes({
+							visualSettings: { ...visualSettings, gradients }
+						})}
 						typography={visualSettings.typography || {}}
 						onTypographyChange={(typography) => setAttributes({
 							visualSettings: { ...visualSettings, typography }
 						})}
+						layout={visualSettings.layout || {}}
+						onLayoutChange={(layout) => setAttributes({
+							visualSettings: { ...visualSettings, layout }
+						})}
+						effects={visualSettings.effects || {}}
+						onEffectsChange={(effects) => setAttributes({
+							visualSettings: { ...visualSettings, effects }
+						})}
+						device="base"
+						presets={{}}
+						onPresetApply={(preset) => {
+							// Handle preset application
+							console.log('Applying preset:', preset);
+						}}
 					/>
 				</PanelBody>
 			</InspectorControls>

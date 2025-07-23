@@ -4,23 +4,16 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "wp-scripts start",
     "build": "npm run blocks:build && npm run theme:build",
-    "build:analyze": "npm run build",
-    "preview": "vite preview",
     "blocks:build": "wp-scripts build",
-    "blocks:dev": "wp-scripts start",
     "theme:build": "tailwindcss -i ./src/style.css -o ./build/main.css --minify",
-    "performance:audit": "npm run build",
-    "clean": "rimraf build dist"
+    "clean": "rimraf build"
   },
   "devDependencies": {
     "@tailwindcss/cli": "^4.1.1",
-    "@tailwindcss/vite": "^4.1.11",
-    "@vitejs/plugin-react": "^4.7.0",
     "@wordpress/scripts": "^30.19.0",
     "tailwindcss": "^4.1.11",
-    "vite": "^7.0.5",
     "rimraf": "^5.0.1"
   },
   "dependencies": {

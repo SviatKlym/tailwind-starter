@@ -10,16 +10,8 @@ function my_tailwind_starter_enqueue_assets() {
         file_exists($css_file) ? filemtime($css_file) : '1.0.0'
     );
     
-    // Enqueue the visual controls CSS for dynamic classes
-    $visual_controls_css = get_template_directory() . '/src/visual-controls.css';
-    if (file_exists($visual_controls_css)) {
-        wp_enqueue_style(
-            'tailwind-starter-visual-controls',
-            get_template_directory_uri() . '/src/visual-controls.css',
-            ['tailwind-starter-style'],
-            filemtime($visual_controls_css)
-        );
-    }
+    // Visual controls styles are now included in the main Tailwind build
+    // No need to load separate visual-controls.css
 }
 add_action('wp_enqueue_scripts', 'my_tailwind_starter_enqueue_assets');
 

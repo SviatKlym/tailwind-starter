@@ -14,6 +14,55 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+// Helper function to render star rating
+if (!function_exists('render_social_proof_stars')) {
+    function render_social_proof_stars($rating, $max_rating = 5) {
+        $output = '<div class="star-rating flex items-center justify-center">';
+        for ($i = 1; $i <= $max_rating; $i++) {
+            if ($i <= $rating) {
+                $output .= '<svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 24 24">';
+                $output .= '<path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>';
+                $output .= '</svg>';
+            } else {
+                $output .= '<svg class="w-4 h-4 text-gray-300 fill-current" viewBox="0 0 24 24">';
+                $output .= '<path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>';
+                $output .= '</svg>';
+            }
+        }
+        $output .= '</div>';
+        return $output;
+    }
+}
+
+// Helper function to render trust indicator
+if (!function_exists('render_trust_indicator')) {
+    function render_trust_indicator($indicator) {
+        $output = '<div class="trust-indicator text-center p-4">';
+        
+        if (!empty($indicator['icon'])) {
+            $output .= '<div class="indicator-icon text-2xl mb-2">' . esc_html($indicator['icon']) . '</div>';
+        }
+        
+        $output .= '<div class="indicator-count text-xl font-bold text-blue-600 mb-1">';
+        $output .= esc_html($indicator['count'] ?? '0');
+        $output .= '</div>';
+        
+        $output .= '<div class="indicator-label text-sm text-gray-600">';
+        $output .= esc_html($indicator['label'] ?? '');
+        $output .= '</div>';
+        
+        if (isset($indicator['dynamic']) && $indicator['dynamic']) {
+            $output .= '<div class="dynamic-indicator mt-1">';
+            $output .= '<span class="inline-flex items-center px-1 py-0.5 text-xs bg-green-100 text-green-800 rounded">';
+            $output .= '<span class="w-1 h-1 bg-green-400 rounded-full mr-1 animate-pulse"></span>Live';
+            $output .= '</span></div>';
+        }
+        
+        $output .= '</div>';
+        return $output;
+    }
+}
+
 // Extract and set default values
 $layout = $attributes['layout'] ?? 'testimonial-carousel';
 $testimonials = $attributes['testimonials'] ?? [];
@@ -132,51 +181,6 @@ if (isset($settings['backgroundColor'])) {
 }
 if (isset($settings['textColor'])) {
     $wrapper_classes[] = esc_attr($settings['textColor']);
-}
-
-// Helper function to render star rating
-function render_social_proof_stars($rating, $max_rating = 5) {
-    $output = '<div class="star-rating flex items-center justify-center">';
-    for ($i = 1; $i <= $max_rating; $i++) {
-        if ($i <= $rating) {
-            $output .= '<svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 24 24">';
-            $output .= '<path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>';
-            $output .= '</svg>';
-        } else {
-            $output .= '<svg class="w-4 h-4 text-gray-300 fill-current" viewBox="0 0 24 24">';
-            $output .= '<path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>';
-            $output .= '</svg>';
-        }
-    }
-    $output .= '</div>';
-    return $output;
-}
-
-// Helper function to render trust indicator
-function render_trust_indicator($indicator) {
-    $output = '<div class="trust-indicator text-center p-4">';
-    
-    if (!empty($indicator['icon'])) {
-        $output .= '<div class="indicator-icon text-2xl mb-2">' . esc_html($indicator['icon']) . '</div>';
-    }
-    
-    $output .= '<div class="indicator-count text-xl font-bold text-blue-600 mb-1">';
-    $output .= esc_html($indicator['count'] ?? '0');
-    $output .= '</div>';
-    
-    $output .= '<div class="indicator-label text-sm text-gray-600">';
-    $output .= esc_html($indicator['label'] ?? '');
-    $output .= '</div>';
-    
-    if (isset($indicator['dynamic']) && $indicator['dynamic']) {
-        $output .= '<div class="dynamic-indicator mt-1">';
-        $output .= '<span class="inline-flex items-center px-1 py-0.5 text-xs bg-green-100 text-green-800 rounded">';
-        $output .= '<span class="w-1 h-1 bg-green-400 rounded-full mr-1 animate-pulse"></span>Live';
-        $output .= '</span></div>';
-    }
-    
-    $output .= '</div>';
-    return $output;
 }
 ?>
 
@@ -423,4 +427,4 @@ function render_trust_indicator($indicator) {
         });
         </script>
     <?php endif; ?>
-</div> 
+</div>

@@ -8,7 +8,7 @@ import {
 	Button,
 	__experimentalDivider as Divider
 } from '@wordpress/components';
-import { UltimateControlTabs, UltimateDeviceSelector, generateTailwindClasses, generateAllClasses } from '../../utils/visual-controls.js';
+import { UltimateControlTabs, UltimateDeviceSelector, generateAllClasses, generateTailwindClasses } from '../../utils/visual-controls.js';
 import { useState } from '@wordpress/element';
 
 export default function Edit({ attributes, setAttributes }) {
@@ -70,7 +70,7 @@ export default function Edit({ attributes, setAttributes }) {
 	const allClasses = generateAllClasses(settings);
 
 	// Generate preview classes (just base for editor)
-	const previewClasses = generateTailwindClasses(settings, 'base');
+	const previewClasses = generateAllClasses(settings || {});
 
 	const blockProps = useBlockProps({
 		className: `pricing-table pricing-${layout} ${previewClasses}`,

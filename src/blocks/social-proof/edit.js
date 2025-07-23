@@ -308,6 +308,11 @@ export default function Edit({ attributes, setAttributes }) {
 						onTypographyChange={(typography) => setAttributes({
 							visualSettings: { ...visualSettings, typography }
 						})}
+						device="base"
+						presets={{}}
+						onPresetApply={(preset) => {
+							console.log('Applying preset:', preset);
+						}}
 					/>
 				</PanelBody>
 			</InspectorControls>

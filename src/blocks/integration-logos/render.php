@@ -14,6 +14,45 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+// Helper functions
+if (!function_exists('optimize_logo_url')) {
+    function optimize_logo_url($image_url) {
+        // This would integrate with a CDN service
+        $cdn_base = get_option('logo_cdn_base', '');
+        if ($cdn_base && strpos($image_url, 'http') === 0) {
+            // Convert to CDN URL with optimization parameters
+            return $cdn_base . '?url=' . urlencode($image_url) . '&w=200&h=100&f=auto&q=80';
+        }
+        return $image_url;
+    }
+}
+
+if (!function_exists('convert_to_webp')) {
+    function convert_to_webp($image_url) {
+        // This would convert images to WebP format
+        if (strpos($image_url, '.webp') !== false) {
+            return $image_url;
+        }
+        return str_replace(['.jpg', '.jpeg', '.png'], '.webp', $image_url);
+    }
+}
+
+if (!function_exists('get_partnership_status')) {
+    function get_partnership_status($logo_id) {
+        // This would check a partnerships database
+        $partnership_statuses = get_option('partnership_statuses', []);
+        return $partnership_statuses[$logo_id] ?? 'inactive';
+    }
+}
+
+if (!function_exists('add_tracking_params')) {
+    function add_tracking_params($url, $logo_id) {
+        // Add UTM parameters for analytics
+        $separator = strpos($url, '?') !== false ? '&' : '?';
+        return $url . $separator . 'utm_source=website&utm_medium=logo&utm_campaign=partnerships&logo_id=' . $logo_id;
+    }
+}
+
 // Extract and set default values
 $layout = $attributes['layout'] ?? 'simple-grid';
 $logos = $attributes['logos'] ?? [];
@@ -90,37 +129,6 @@ usort($enhanced_logos, function($a, $b) {
     
     return strcmp($a['category'] ?? '', $b['category'] ?? '');
 });
-
-// Helper functions
-function optimize_logo_url($image_url) {
-    // This would integrate with a CDN service
-    $cdn_base = get_option('logo_cdn_base', '');
-    if ($cdn_base && strpos($image_url, 'http') === 0) {
-        // Convert to CDN URL with optimization parameters
-        return $cdn_base . '?url=' . urlencode($image_url) . '&w=200&h=100&f=auto&q=80';
-    }
-    return $image_url;
-}
-
-function convert_to_webp($image_url) {
-    // This would convert images to WebP format
-    if (strpos($image_url, '.webp') !== false) {
-        return $image_url;
-    }
-    return str_replace(['.jpg', '.jpeg', '.png'], '.webp', $image_url);
-}
-
-function get_partnership_status($logo_id) {
-    // This would check a partnerships database
-    $partnership_statuses = get_option('partnership_statuses', []);
-    return $partnership_statuses[$logo_id] ?? 'inactive';
-}
-
-function add_tracking_params($url, $logo_id) {
-    // Add UTM parameters for analytics
-    $separator = strpos($url, '?') !== false ? '&' : '?';
-    return $url . $separator . 'utm_source=website&utm_medium=logo&utm_campaign=partnerships&logo_id=' . $logo_id;
-}
 
 // Handle empty logos
 if (empty($enhanced_logos)) {
@@ -387,4 +395,4 @@ switch ($grayscale_mode) {
     });
     <?php endif; ?>
     </script>
-</div> 
+</div>

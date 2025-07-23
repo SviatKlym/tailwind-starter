@@ -1,14 +1,6 @@
-import { registerBlockType } from '@wordpress/blocks';
+import { createDynamicBlock } from '../../utils/block-factory.js';
 import Edit from './edit.js';
-import save from './save.js';
 import metadata from './block.json';
+import './style.scss';
 
-/**
- * Register Testimonial Showcase Block
- */
-registerBlockType(metadata.name, {
-	edit: Edit,
-	save,
-});
-
-console.log('💬 Testimonial Showcase block registered'); 
+createDynamicBlock(metadata.name, Edit, metadata); 

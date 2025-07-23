@@ -1,5 +1,5 @@
 import { useBlockProps, RichText } from '@wordpress/block-editor'
-import { generatePerformanceConfig, generateDataAttributes } from '../../utils/block-config-generator'
+import { generatePerformanceConfig, generateDataAttributes } from '../../utils/block-config-generator.js'
 
 export default function save({ attributes }) {
   const {

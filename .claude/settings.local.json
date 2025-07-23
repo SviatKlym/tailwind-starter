@@ -21,7 +21,15 @@
       "WebFetch(domain:touchstay.com)",
       "WebFetch(domain:www.deadlinefunnel.com)",
       "WebFetch(domain:www.warmupinbox.com)",
-      "Bash(node:*)"
+      "Bash(node:*)",
+      "Bash(for file in src/blocks/*/edit.js)",
+      "Bash(do)",
+      "Bash(if grep -q \"generateTailwindClasses\" \"$file\")",
+      "Bash(then)",
+      "Bash(sed:*)",
+      "Bash(echo \"Fixed: $file\")",
+      "Bash(fi)",
+      "Bash(done)"
     ],
     "deny": []
   }

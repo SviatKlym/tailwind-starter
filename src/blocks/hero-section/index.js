@@ -1,12 +1,7 @@
-import { registerBlockType } from '@wordpress/blocks'
+import { createBlock } from '../../utils/block-factory.js'
 import Edit from './edit.js'
 import Save from './save.js'
 import metadata from './block.json'
-import './style.css'
-import './editor.css'
+import './style.scss'
 
-registerBlockType(metadata.name, {
-  ...metadata,
-  edit: Edit,
-  save: Save,
-})
+createBlock(metadata.name, Edit, Save, metadata)

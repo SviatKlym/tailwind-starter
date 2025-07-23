@@ -253,7 +253,117 @@
   /* Add other LG classes as needed */
 }
 
+/* Essential Layout & Position Classes */
+.absolute { position: absolute; }
+.relative { position: relative; }
+.fixed { position: fixed; }
+.static { position: static; }
+.sticky { position: sticky; }
+
+.top-0 { top: 0; }
+.top-1 { top: 0.25rem; }
+.top-2 { top: 0.5rem; }
+.top-4 { top: 1rem; }
+.right-0 { right: 0; }
+.right-1 { right: 0.25rem; }
+.right-2 { right: 0.5rem; }
+.right-4 { right: 1rem; }
+.bottom-0 { bottom: 0; }
+.bottom-1 { bottom: 0.25rem; }
+.bottom-2 { bottom: 0.5rem; }
+.bottom-4 { bottom: 1rem; }
+.left-0 { left: 0; }
+.left-1 { left: 0.25rem; }
+.left-2 { left: 0.5rem; }
+.left-4 { left: 1rem; }
+.left-1\/2 { left: 50%; }
+
+/* Transform utilities */
+.transform { transform: translateX(var(--tw-translate-x, 0)) translateY(var(--tw-translate-y, 0)) rotate(var(--tw-rotate, 0)) skewX(var(--tw-skew-x, 0)) skewY(var(--tw-skew-y, 0)) scaleX(var(--tw-scale-x, 1)) scaleY(var(--tw-scale-y, 1)); }
+.-translate-x-1\/2 { --tw-translate-x: -50%; }
+
+/* Essential Flexbox */
+.flex { display: flex; }
+.inline-flex { display: inline-flex; }
+.items-center { align-items: center; }
+.items-start { align-items: flex-start; }
+.items-end { align-items: flex-end; }
+.justify-center { justify-content: center; }
+.justify-between { justify-content: space-between; }
+.justify-start { justify-content: flex-start; }
+.justify-end { justify-content: flex-end; }
+
+/* Grid */
+.grid { display: grid; }
+.grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+.grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.gap-4 { gap: 1rem; }
+.gap-6 { gap: 1.5rem; }
+.gap-8 { gap: 2rem; }
+
+/* Width & Height */
+.w-full { width: 100%; }
+.h-full { height: 100%; }
+.w-auto { width: auto; }
+.h-auto { height: auto; }
+
+/* More padding classes */
+.px-3 { padding-left: 0.75rem; padding-right: 0.75rem; }
+.py-1 { padding-top: 0.25rem; padding-bottom: 0.25rem; }
+.px-4 { padding-left: 1rem; padding-right: 1rem; }
+.py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+
+/* More margin classes */
+.mt-2 { margin-top: 0.5rem; }
+.mb-2 { margin-bottom: 0.5rem; }
+.mt-4 { margin-top: 1rem; }
+.mb-4 { margin-bottom: 1rem; }
+
 /* Utility classes */
+.rounded { border-radius: 0.25rem; }
+.rounded-md { border-radius: 0.375rem; }
 .rounded-lg { border-radius: 0.5rem; }
+.rounded-full { border-radius: 9999px; }
+.shadow-md { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
+.shadow-lg { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); }
+.overflow-hidden { overflow: hidden; }
+
+/* Background opacity */
+.bg-opacity-50 { --tw-bg-opacity: 0.5; }
+.bg-opacity-90 { --tw-bg-opacity: 0.9; }
+
+/* Hover states */
+.hover\:bg-opacity-100:hover { --tw-bg-opacity: 1; }
+
+/* Transitions */
 .transition-all { transition-property: all; }
+.transition-opacity { transition-property: opacity; }
 .duration-200 { transition-duration: 200ms; }
+
+/* Display utilities */
+.block { display: block; }
+.inline { display: inline; }
+.inline-block { display: inline-block; }
+.hidden { display: none; }
+
+/* Block-specific classes that might be missing */
+.slide-item { 
+  /* Add styling for slide items if needed */
+}
+.slider-container {
+  /* Add styling for slider container if needed */
+}
+
+/* Cursor */
+.cursor-ew-resize { cursor: ew-resize; }
+
+/* Common WordPress editor overrides to ensure styles work */
+.wp-block .absolute { position: absolute !important; }
+.wp-block .relative { position: relative !important; }
+.wp-block .flex { display: flex !important; }
+.wp-block .grid { display: grid !important; }
+.wp-block .hidden { display: none !important; }
+.wp-block .overflow-hidden { overflow: hidden !important; }
+.wp-block .rounded-lg { border-radius: 0.5rem !important; }

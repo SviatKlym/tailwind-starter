@@ -7,10 +7,39 @@ export default {
     './build/**/*.js',
     './inc/**/*.php',
     './template-parts/**/*.php',
-    // Include our visual controls CSS to ensure all classes are available
-    './src/visual-controls.css'
+    // Visual controls classes are safelist'd below, no need to scan the CSS file
   ],
   safelist: [
+    // Essential layout classes that must always be available
+    'block', 'inline', 'inline-block', 'flex', 'inline-flex', 'grid', 'inline-grid', 'hidden',
+    'relative', 'absolute', 'fixed', 'sticky', 'static',
+    'items-start', 'items-center', 'items-end', 'items-stretch', 'items-baseline',
+    'justify-start', 'justify-center', 'justify-end', 'justify-between', 'justify-around', 'justify-evenly',
+    'flex-row', 'flex-col', 'flex-wrap', 'flex-nowrap',
+    'space-x-1', 'space-x-2', 'space-x-3', 'space-x-4', 'space-x-6', 'space-x-8',
+    'space-y-1', 'space-y-2', 'space-y-3', 'space-y-4', 'space-y-6', 'space-y-8',
+    'w-full', 'w-auto', 'w-fit', 'h-full', 'h-auto', 'h-fit', 'min-h-screen',
+    'max-w-none', 'max-w-full', 'max-w-screen-sm', 'max-w-screen-md', 'max-w-screen-lg', 'max-w-screen-xl',
+    'mx-auto', 'container',
+    
+    // Common spacing classes  
+    'mb-1', 'mb-2', 'mb-3', 'mb-4', 'mb-6', 'mb-8', 'mb-12',
+    'mt-1', 'mt-2', 'mt-3', 'mt-4', 'mt-6', 'mt-8', 'mt-12',
+    'ml-1', 'ml-2', 'ml-3', 'ml-4', 'ml-6', 'ml-8', 
+    'mr-1', 'mr-2', 'mr-3', 'mr-4', 'mr-6', 'mr-8',
+    'px-2', 'px-3', 'px-4', 'px-6', 'px-8', 'py-2', 'py-3', 'py-4', 'py-6', 'py-8',
+    
+    // Block-specific classes
+    'plan-features', 'feature-item', 'block-container', 'block-section', 'section-header',
+    'slider-handle', 'color-picker-wrapper', 'post-card', 'post-content',
+    
+    // Common text alignments
+    'text-center', 'text-left', 'text-right', 'text-justify',
+    
+    // Common display utilities
+    'overflow-hidden', 'rounded-lg', 'rounded-md', 'rounded-full', 'shadow-md', 'shadow-lg',
+    'bg-opacity-50', 'hover:opacity-100', 'transition-opacity', 'duration-200',
+    
     // Visual Controls Dynamic Classes - Colors
     {
       pattern: /^(bg|text|border)-(slate|gray|zinc|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose)-(50|100|200|300|400|500|600|700|800|900|950)$/,
@@ -38,9 +67,15 @@ export default {
     {
       pattern: /^(uppercase|lowercase|capitalize|normal-case)$/,
     },
-    // Visual Controls Dynamic Classes - Layout & Display
+    // Layout & Display - More comprehensive patterns
     {
-      pattern: /^(block|inline|inline-block|flex|grid|hidden)$/,
+      pattern: /^(block|inline|inline-block|flex|inline-flex|table|table-cell|grid|inline-grid|hidden)$/,
+    },
+    {
+      pattern: /^(items|justify|content)-(start|center|end|between|around|evenly|stretch|baseline)$/,
+    },
+    {
+      pattern: /^flex-(row|col|wrap|nowrap|1|auto|none)$/,
     },
     {
       pattern: /^w-(1\/4|1\/3|1\/2|2\/3|3\/4|full|auto|fit|min|max)$/,
@@ -137,28 +172,16 @@ export default {
     extend: {
       colors: {
         primary: {
-          50: '#f0f9ff',
-          100: '#e0f2fe',
-          200: '#bae6fd',
-          300: '#7dd3fc',
-          400: '#38bdf8',
-          500: '#0ea5e9',
-          600: '#0284c7',
-          700: '#0369a1',
-          800: '#075985',
-          900: '#0c4a6e',
+          DEFAULT: 'var(--wp--preset--color--primary)',
+          50: 'var(--wp--preset--color--primary-50)',
+          500: 'var(--wp--preset--color--primary)',
+          600: 'var(--wp--preset--color--primary-600)',
         },
         secondary: {
-          50: '#fdf2f8',
-          100: '#fce7f3',
-          200: '#fbcfe8',
-          300: '#f9a8d4',
-          400: '#f472b6',
-          500: '#ec4899',
-          600: '#db2777',
-          700: '#be185d',
-          800: '#9d174d',
-          900: '#831843',
+          DEFAULT: 'var(--wp--preset--color--secondary)',
+          50: 'var(--wp--preset--color--secondary-50)',
+          500: 'var(--wp--preset--color--secondary)',
+          600: 'var(--wp--preset--color--secondary-600)',
         },
       },
       fontFamily: {

@@ -11,8 +11,8 @@ import {
 	TextareaControl
 } from '@wordpress/components';
 
-// Import fixed visual controls
-import { UltimateControlTabs, generateTailwindClasses } from '../../utils/visual-controls-fixed.js';
+// Import visual controls
+import { UltimateControlTabs, generateAllClasses, generateTailwindClasses, generateAllInlineStyles } from '../../utils/visual-controls.js';
 import { useState, useCallback } from '@wordpress/element';
 
 export default function Edit({ attributes, setAttributes }) {
@@ -66,7 +66,7 @@ export default function Edit({ attributes, setAttributes }) {
 	}, [settings, setAttributes]);
 
 	// Generate classes safely
-	const blockClasses = generateTailwindClasses(settings);
+	const blockClasses = generateAllClasses(settings || {});
 	
 	// Layout options
 	const layoutOptions = [
@@ -131,8 +131,13 @@ export default function Edit({ attributes, setAttributes }) {
 		return 'w-full';
 	};
 
+	// Generate visual classes and styles
+	const visualClasses = generateAllClasses(settings || {});
+	const visualStyles = generateAllInlineStyles(settings || {});
+
 	const blockProps = useBlockProps({
-		className: `newsletter-signup ${blockClasses}`.trim()
+		className: `newsletter-signup ${blockClasses} ${visualClasses}`.trim(),
+		style: visualStyles
 	});
 
 	return (
@@ -257,12 +262,31 @@ export default function Edit({ attributes, setAttributes }) {
 				</PanelBody>
 
 				{/* Visual Controls */}
-				<UltimateControlTabs
-					spacing={settings.spacing}
-					typography={settings.typography}
-					onSpacingChange={(spacing) => updateSettings({ spacing })}
-					onTypographyChange={(typography) => updateSettings({ typography })}
-				/>
+				<PanelBody title={__('🎨 Visual Design Studio', 'tailwind-starter')} initialOpen={false}>
+					<UltimateControlTabs
+						spacing={settings.spacing || {}}
+						onSpacingChange={(spacing) => updateSettings({ spacing })}
+						margins={settings.margins || {}}
+						onMarginsChange={(margins) => updateSettings({ margins })}
+						background={settings.backgroundColor}
+						onBackgroundChange={(backgroundColor) => updateSettings({ backgroundColor })}
+						textColor={settings.textColor}
+						onTextColorChange={(textColor) => updateSettings({ textColor })}
+						gradients={settings.gradients || {}}
+						onGradientsChange={(gradients) => updateSettings({ gradients })}
+						typography={settings.typography || {}}
+						onTypographyChange={(typography) => updateSettings({ typography })}
+						layout={settings.layout || {}}
+						onLayoutChange={(layout) => updateSettings({ layout })}
+						effects={settings.effects || {}}
+						onEffectsChange={(effects) => updateSettings({ effects })}
+						device="base"
+						presets={{}}
+						onPresetApply={(preset) => {
+							console.log('Applying preset:', preset);
+						}}
+					/>
+				</PanelBody>
 			</InspectorControls>
 
 			<div {...blockProps}>
