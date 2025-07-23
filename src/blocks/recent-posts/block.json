@@ -1,173 +1,191 @@
 {
-	"$schema": "https://schemas.wp.org/trunk/block.json",
-	"apiVersion": 3,
-	"name": "tailwind-starter/recent-posts",
-	"version": "0.1.0",
-	"title": "Recent Posts",
-	"category": "tailwind-starter",
-	"icon": "admin-post",
-	"description": "Automatically display the latest blog posts with customizable layouts and filtering options.",
-	"example": {},
-	"supports": {
-		"html": false,
-		"anchor": true
-	},
-	"attributes": {
-		"layout": {
-			"type": "string",
-			"default": "grid-layout"
-		},
-		"postsPerPage": {
-			"type": "number",
-			"default": 6
-		},
-		"columns": {
-			"type": "number",
-			"default": 3
-		},
-		"categories": {
-			"type": "array",
-			"default": []
-		},
-		"tags": {
-			"type": "array",
-			"default": []
-		},
-		"showFeaturedImage": {
-			"type": "boolean",
-			"default": true
-		},
-		"showExcerpt": {
-			"type": "boolean",
-			"default": true
-		},
-		"showAuthor": {
-			"type": "boolean",
-			"default": true
-		},
-		"showDate": {
-			"type": "boolean",
-			"default": true
-		},
-		"showCategories": {
-			"type": "boolean",
-			"default": true
-		},
-		"showTags": {
-			"type": "boolean",
-			"default": false
-		},
-		"showReadTime": {
-			"type": "boolean",
-			"default": false
-		},
-		"showReadMore": {
-			"type": "boolean",
-			"default": true
-		},
-		"excludeCurrentPost": {
-			"type": "boolean",
-			"default": true
-		},
-		"orderBy": {
-			"type": "string",
-			"default": "date"
-		},
-		"order": {
-			"type": "string",
-			"default": "desc"
-		},
-		"featuredPostSize": {
-			"type": "string",
-			"default": "large"
-		},
-		"imageAspectRatio": {
-			"type": "string",
-			"default": "16:9"
-		},
-		"cardStyle": {
-			"type": "string",
-			"default": "elevated"
-		},
-		"hoverEffect": {
-			"type": "string",
-			"default": "lift"
-		},
-		"textAlignment": {
-			"type": "string",
-			"default": "left"
-		},
-		"excerptLength": {
-			"type": "number",
-			"default": 150
-		},
-		"dateFormat": {
-			"type": "string",
-			"default": "relative"
-		},
-		"readMoreText": {
-			"type": "string",
-			"default": "Read More"
-		},
-		"noPostsMessage": {
-			"type": "string",
-			"default": "No posts found."
-		},
-		"sectionTitle": {
-			"type": "string",
-			"default": "Latest Posts"
-		},
-		"sectionSubtitle": {
-			"type": "string",
-			"default": "Stay updated with our latest articles and insights"
-		},
-		"showSectionHeader": {
-			"type": "boolean",
-			"default": true
-		},
-		"enablePagination": {
-			"type": "boolean",
-			"default": false
-		},
-		"enableLoadMore": {
-			"type": "boolean",
-			"default": false
-		},
-		"enableCategoryFilter": {
-			"type": "boolean",
-			"default": false
-		},
-		"showPostViews": {
-			"type": "boolean",
-			"default": false
-		},
-		"settings": {
-			"type": "object",
-			"default": {
-				"spacing": {
-					"base": { "top": 8, "right": 4, "bottom": 8, "left": 4 }
-				},
-				"margins": {
-					"base": { "top": 0, "right": 0, "bottom": 0, "left": 0 }
-				},
-				"typography": {
-					"base": { "fontSize": "text-lg", "fontWeight": "font-normal", "textAlign": "text-left" }
-				},
-				"backgroundColor": "bg-white",
-				"textColor": "text-gray-900",
-				"gradients": {},
-				"layout": {},
-				"effects": {}
-			}
-		},
-		"activeDevice": {
-			"type": "string",
-			"default": "base"
-		}
-	},
-	"textdomain": "tailwind-starter",
-	"editorScript": "file:./index.js",
-	"editorStyle": "file:./index.css",
-	"render": "file:./render.php",
-	"style": "file:./style-index.css"
-} 
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "tailwind-starter/recent-posts",
+  "version": "0.1.0",
+  "title": "Recent Posts",
+  "category": "tailwind-starter",
+  "icon": "admin-post",
+  "description": "Automatically display the latest blog posts with customizable layouts and filtering options.",
+  "example": {},
+  "supports": {
+    "html": false,
+    "anchor": true,
+    "align": [
+      "wide",
+      "full"
+    ]
+  },
+  "attributes": {
+    "layout": {
+      "type": "string",
+      "default": "grid-layout"
+    },
+    "postsPerPage": {
+      "type": "number",
+      "default": 6
+    },
+    "columns": {
+      "type": "number",
+      "default": 3
+    },
+    "categories": {
+      "type": "array",
+      "default": []
+    },
+    "tags": {
+      "type": "array",
+      "default": []
+    },
+    "showFeaturedImage": {
+      "type": "boolean",
+      "default": true
+    },
+    "showExcerpt": {
+      "type": "boolean",
+      "default": true
+    },
+    "showAuthor": {
+      "type": "boolean",
+      "default": true
+    },
+    "showDate": {
+      "type": "boolean",
+      "default": true
+    },
+    "showCategories": {
+      "type": "boolean",
+      "default": true
+    },
+    "showTags": {
+      "type": "boolean",
+      "default": false
+    },
+    "showReadTime": {
+      "type": "boolean",
+      "default": false
+    },
+    "showReadMore": {
+      "type": "boolean",
+      "default": true
+    },
+    "excludeCurrentPost": {
+      "type": "boolean",
+      "default": true
+    },
+    "orderBy": {
+      "type": "string",
+      "default": "date"
+    },
+    "order": {
+      "type": "string",
+      "default": "desc"
+    },
+    "featuredPostSize": {
+      "type": "string",
+      "default": "large"
+    },
+    "imageAspectRatio": {
+      "type": "string",
+      "default": "16:9"
+    },
+    "cardStyle": {
+      "type": "string",
+      "default": "elevated"
+    },
+    "hoverEffect": {
+      "type": "string",
+      "default": "lift"
+    },
+    "textAlignment": {
+      "type": "string",
+      "default": "left"
+    },
+    "excerptLength": {
+      "type": "number",
+      "default": 150
+    },
+    "dateFormat": {
+      "type": "string",
+      "default": "relative"
+    },
+    "readMoreText": {
+      "type": "string",
+      "default": "Read More"
+    },
+    "noPostsMessage": {
+      "type": "string",
+      "default": "No posts found."
+    },
+    "sectionTitle": {
+      "type": "string",
+      "default": "Latest Posts"
+    },
+    "sectionSubtitle": {
+      "type": "string",
+      "default": "Stay updated with our latest articles and insights"
+    },
+    "showSectionHeader": {
+      "type": "boolean",
+      "default": true
+    },
+    "enablePagination": {
+      "type": "boolean",
+      "default": false
+    },
+    "enableLoadMore": {
+      "type": "boolean",
+      "default": false
+    },
+    "enableCategoryFilter": {
+      "type": "boolean",
+      "default": false
+    },
+    "showPostViews": {
+      "type": "boolean",
+      "default": false
+    },
+    "settings": {
+      "type": "object",
+      "default": {
+        "spacing": {
+          "base": {
+            "top": 8,
+            "right": 4,
+            "bottom": 8,
+            "left": 4
+          }
+        },
+        "margins": {
+          "base": {
+            "top": 0,
+            "right": 0,
+            "bottom": 0,
+            "left": 0
+          }
+        },
+        "typography": {
+          "base": {
+            "fontSize": "text-lg",
+            "fontWeight": "font-normal",
+            "textAlign": "text-left"
+          }
+        },
+        "backgroundColor": "bg-white",
+        "textColor": "text-gray-900",
+        "gradients": {},
+        "layout": {},
+        "effects": {}
+      }
+    },
+    "activeDevice": {
+      "type": "string",
+      "default": "base"
+    }
+  },
+  "textdomain": "tailwind-starter",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "render": "file:./render.php",
+  "style": "file:./style-index.css"
+}

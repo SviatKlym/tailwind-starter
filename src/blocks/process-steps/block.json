@@ -1,117 +1,135 @@
 {
-	"$schema": "https://schemas.wp.org/trunk/block.json",
-	"apiVersion": 3,
-	"name": "tailwind-starter/process-steps",
-	"version": "0.1.0",
-	"title": "Process Steps",
-	"category": "tailwind-starter",
-	"icon": "list-view",
-	"description": "Display step-by-step processes or workflows with numbering and descriptions.",
-	"example": {},
-	"supports": {
-		"html": false,
-		"anchor": true
-	},
-	"attributes": {
-		"layout": {
-			"type": "string",
-			"default": "horizontal-timeline"
-		},
-		"steps": {
-			"type": "array",
-			"default": [
-				{
-					"id": "step-1",
-					"title": "Plan & Strategy",
-					"description": "We start by understanding your goals and creating a comprehensive strategy tailored to your business needs.",
-					"icon": "🎯",
-					"duration": "1-2 weeks"
-				},
-				{
-					"id": "step-2",
-					"title": "Design & Development",
-					"description": "Our expert team designs and develops your solution using the latest technologies and best practices.",
-					"icon": "⚡",
-					"duration": "2-4 weeks"
-				},
-				{
-					"id": "step-3",
-					"title": "Test & Launch",
-					"description": "Rigorous testing ensures everything works perfectly before we launch your project to the world.",
-					"icon": "🚀",
-					"duration": "1 week"
-				},
-				{
-					"id": "step-4",
-					"title": "Support & Growth",
-					"description": "Ongoing support and optimization to help your business grow and scale successfully.",
-					"icon": "📈",
-					"duration": "Ongoing"
-				}
-			]
-		},
-		"showNumbers": {
-			"type": "boolean",
-			"default": true
-		},
-		"showIcons": {
-			"type": "boolean",
-			"default": true
-		},
-		"showDuration": {
-			"type": "boolean",
-			"default": true
-		},
-		"connectingLines": {
-			"type": "boolean",
-			"default": true
-		},
-		"numberStyle": {
-			"type": "string",
-			"default": "circle"
-		},
-		"alignment": {
-			"type": "string",
-			"default": "center"
-		},
-		"sectionTitle": {
-			"type": "string",
-			"default": "How We Work"
-		},
-		"sectionSubtitle": {
-			"type": "string",
-			"default": "Our proven process ensures successful project delivery every time"
-		},
-		"showSectionHeader": {
-			"type": "boolean",
-			"default": true
-		},
-		"settings": {
-			"type": "object",
-			"default": {
-				"spacing": {
-					"base": { "top": 8, "right": 4, "bottom": 8, "left": 4 }
-				},
-				"margins": {
-					"base": { "top": 0, "right": 0, "bottom": 0, "left": 0 }
-				},
-				"typography": {
-					"base": { "fontSize": "text-lg", "fontWeight": "font-normal", "textAlign": "text-center" }
-				},
-				"backgroundColor": "bg-white",
-				"textColor": "text-gray-900",
-				"gradients": {},
-				"layout": {},
-				"effects": {}
-			}
-		},
-		"activeDevice": {
-			"type": "string",
-			"default": "base"
-		}
-	},
-	"textdomain": "tailwind-starter",
-	"editorScript": "file:./index.js",
-	"editorStyle": "file:./index.css",
-	"style": "file:./style-index.css"
-} 
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "tailwind-starter/process-steps",
+  "version": "0.1.0",
+  "title": "Process Steps",
+  "category": "tailwind-starter",
+  "icon": "list-view",
+  "description": "Display step-by-step processes or workflows with numbering and descriptions.",
+  "example": {},
+  "supports": {
+    "html": false,
+    "anchor": true,
+    "align": [
+      "wide",
+      "full"
+    ]
+  },
+  "attributes": {
+    "layout": {
+      "type": "string",
+      "default": "horizontal-timeline"
+    },
+    "steps": {
+      "type": "array",
+      "default": [
+        {
+          "id": "step-1",
+          "title": "Plan & Strategy",
+          "description": "We start by understanding your goals and creating a comprehensive strategy tailored to your business needs.",
+          "icon": "🎯",
+          "duration": "1-2 weeks"
+        },
+        {
+          "id": "step-2",
+          "title": "Design & Development",
+          "description": "Our expert team designs and develops your solution using the latest technologies and best practices.",
+          "icon": "⚡",
+          "duration": "2-4 weeks"
+        },
+        {
+          "id": "step-3",
+          "title": "Test & Launch",
+          "description": "Rigorous testing ensures everything works perfectly before we launch your project to the world.",
+          "icon": "🚀",
+          "duration": "1 week"
+        },
+        {
+          "id": "step-4",
+          "title": "Support & Growth",
+          "description": "Ongoing support and optimization to help your business grow and scale successfully.",
+          "icon": "📈",
+          "duration": "Ongoing"
+        }
+      ]
+    },
+    "showNumbers": {
+      "type": "boolean",
+      "default": true
+    },
+    "showIcons": {
+      "type": "boolean",
+      "default": true
+    },
+    "showDuration": {
+      "type": "boolean",
+      "default": true
+    },
+    "connectingLines": {
+      "type": "boolean",
+      "default": true
+    },
+    "numberStyle": {
+      "type": "string",
+      "default": "circle"
+    },
+    "alignment": {
+      "type": "string",
+      "default": "center"
+    },
+    "sectionTitle": {
+      "type": "string",
+      "default": "How We Work"
+    },
+    "sectionSubtitle": {
+      "type": "string",
+      "default": "Our proven process ensures successful project delivery every time"
+    },
+    "showSectionHeader": {
+      "type": "boolean",
+      "default": true
+    },
+    "settings": {
+      "type": "object",
+      "default": {
+        "spacing": {
+          "base": {
+            "top": 8,
+            "right": 4,
+            "bottom": 8,
+            "left": 4
+          }
+        },
+        "margins": {
+          "base": {
+            "top": 0,
+            "right": 0,
+            "bottom": 0,
+            "left": 0
+          }
+        },
+        "typography": {
+          "base": {
+            "fontSize": "text-lg",
+            "fontWeight": "font-normal",
+            "textAlign": "text-center"
+          }
+        },
+        "backgroundColor": "bg-white",
+        "textColor": "text-gray-900",
+        "gradients": {},
+        "layout": {},
+        "effects": {}
+      }
+    },
+    "activeDevice": {
+      "type": "string",
+      "default": "base"
+    }
+  },
+  "textdomain": "tailwind-starter",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css"
+}

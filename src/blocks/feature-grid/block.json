@@ -7,10 +7,18 @@
   "category": "tailwind-starter",
   "icon": "grid-view",
   "description": "Showcase product features and benefits in an organized grid layout",
-  "keywords": ["features", "benefits", "grid", "services"],
+  "keywords": [
+    "features",
+    "benefits",
+    "grid",
+    "services"
+  ],
   "supports": {
     "html": false,
-    "align": ["wide", "full"]
+    "align": [
+      "wide",
+      "full"
+    ]
   },
   "attributes": {
     "features": {
@@ -23,7 +31,7 @@
           "description": "Get results in seconds, not minutes. Our optimized infrastructure ensures peak performance."
         },
         {
-          "id": "2", 
+          "id": "2",
           "icon": "🔒",
           "title": "Secure & Reliable",
           "description": "Enterprise-grade security with 99.9% uptime guarantee. Your data is always protected."
@@ -61,7 +69,7 @@
       "default": ""
     },
     "sectionSubtitle": {
-      "type": "string", 
+      "type": "string",
       "default": ""
     },
     "showSection": {
@@ -76,10 +84,19 @@
       "type": "object",
       "default": {
         "spacing": {
-          "base": { "top": 6, "right": 6, "bottom": 6, "left": 6 }
+          "base": {
+            "top": 6,
+            "right": 6,
+            "bottom": 6,
+            "left": 6
+          }
         },
         "typography": {
-          "base": { "fontSize": "text-lg", "fontWeight": "font-medium", "textAlign": "text-center" }
+          "base": {
+            "fontSize": "text-lg",
+            "fontWeight": "font-medium",
+            "textAlign": "text-center"
+          }
         },
         "backgroundColor": "bg-white",
         "textColor": "text-gray-900"

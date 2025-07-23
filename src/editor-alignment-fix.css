@@ -1,0 +1,86 @@
+/* Fix alignment issues in the block editor */
+
+/* Reset conflicting styles for alignfull blocks */
+.editor-styles-wrapper .wp-block[data-align="full"] {
+    max-width: none;
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+    position: relative;
+    left: auto;
+    right: auto;
+}
+
+/* Ensure proper width for alignwide blocks */
+.editor-styles-wrapper .wp-block[data-align="wide"] {
+    max-width: var(--wp--style--global--wide-size, 1200px);
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Fix the block list layout */
+.editor-styles-wrapper .block-editor-block-list__layout.is-root-container > [data-align="full"] {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+/* Override theme.json padding for full width blocks */
+.editor-styles-wrapper .has-global-padding > [data-align="full"] {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+/* Ensure our custom blocks work properly with alignment */
+.editor-styles-wrapper [data-align="full"] > .wp-block-tailwind-starter-hero-section,
+.editor-styles-wrapper [data-align="full"] > .wp-block-tailwind-starter-cta-section,
+.editor-styles-wrapper [data-align="full"] > .wp-block-tailwind-starter-feature-grid,
+.editor-styles-wrapper [data-align="full"] > .wp-block-tailwind-starter-pricing-table,
+.editor-styles-wrapper [data-align="full"] > .wp-block-tailwind-starter-testimonial-showcase,
+.editor-styles-wrapper [data-align="full"] > .wp-block-tailwind-starter-stats-display,
+.editor-styles-wrapper [data-align="full"] > .wp-block-tailwind-starter-before-after,
+.editor-styles-wrapper [data-align="full"] > .wp-block-tailwind-starter-content-slider,
+.editor-styles-wrapper [data-align="full"] > .wp-block-tailwind-starter-faq-accordion,
+.editor-styles-wrapper [data-align="full"] > .wp-block-tailwind-starter-integration-logos,
+.editor-styles-wrapper [data-align="full"] > .wp-block-tailwind-starter-newsletter-signup,
+.editor-styles-wrapper [data-align="full"] > .wp-block-tailwind-starter-process-steps,
+.editor-styles-wrapper [data-align="full"] > .wp-block-tailwind-starter-recent-posts,
+.editor-styles-wrapper [data-align="full"] > .wp-block-tailwind-starter-social-proof,
+.editor-styles-wrapper [data-align="full"] > .wp-block-tailwind-starter-team-members,
+.editor-styles-wrapper [data-align="full"] > .wp-block-tailwind-starter-video-section,
+.editor-styles-wrapper [data-align="full"] > [class*="wp-block-tailwind-starter"] {
+    width: 100%;
+    max-width: none;
+}
+
+/* Frontend alignment styles - Override problematic rules */
+body .alignfull {
+    width: 100vw;
+    position: relative;
+    left: 0 !important;  /* Override the problematic left: 50% */
+    right: 0 !important; /* Override the problematic right: 50% */
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+}
+
+/* Fix for when inside a constrained container */
+.entry-content .alignfull,
+.wp-site-blocks .alignfull {
+    width: 100vw;
+    max-width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+}
+
+/* Wide alignment */
+body .alignwide {
+    max-width: var(--wp--style--global--wide-size, 1200px);
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+}
+
+/* Ensure proper box-sizing */
+.alignfull *,
+.alignwide * {
+    box-sizing: border-box;
+}

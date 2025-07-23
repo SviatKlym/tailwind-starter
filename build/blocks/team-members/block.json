@@ -10,7 +10,11 @@
   "example": {},
   "supports": {
     "html": false,
-    "anchor": true
+    "anchor": true,
+    "align": [
+      "wide",
+      "full"
+    ]
   },
   "render": "file:./render.php",
   "attributes": {

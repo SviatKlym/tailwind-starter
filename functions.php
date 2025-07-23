@@ -23,3 +23,6 @@ require_once get_template_directory() . '/inc/security.php';
 
 // Custom Post Types
 require_once get_template_directory() . '/inc/post-types.php';
+
+// Block Patterns
+require_once get_template_directory() . '/inc/class-block-patterns.php';

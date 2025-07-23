@@ -1,177 +1,195 @@
 {
-	"$schema": "https://schemas.wp.org/trunk/block.json",
-	"apiVersion": 3,
-	"name": "tailwind-starter/content-slider",
-	"version": "0.1.0",
-	"title": "Content Slider",
-	"category": "tailwind-starter",
-	"icon": "slides",
-	"description": "Display multiple content pieces in rotating carousel format with navigation controls.",
-	"example": {},
-	"supports": {
-		"html": false,
-		"anchor": true
-	},
-	"attributes": {
-		"layout": {
-			"type": "string",
-			"default": "image-slider"
-		},
-		"slides": {
-			"type": "array",
-			"default": [
-				{
-					"id": "slide-1",
-					"type": "image",
-					"title": "Innovative Solutions",
-					"subtitle": "Leading the way in technology",
-					"description": "We create cutting-edge solutions that transform businesses and drive growth in the digital era.",
-					"imageUrl": "",
-					"imageAlt": "Innovative technology solutions",
-					"buttonText": "Learn More",
-					"buttonUrl": "#",
-					"backgroundColor": "#f8fafc",
-					"textColor": "#1f2937",
-					"overlayOpacity": 0.3,
-					"textAlignment": "center",
-					"featured": false
-				},
-				{
-					"id": "slide-2",
-					"type": "content",
-					"title": "Trusted by Thousands",
-					"subtitle": "Customer success stories",
-					"description": "Join thousands of satisfied customers who have transformed their business with our platform.",
-					"imageUrl": "",
-					"imageAlt": "Happy customers",
-					"buttonText": "View Case Studies",
-					"buttonUrl": "#",
-					"backgroundColor": "#f0f9ff",
-					"textColor": "#1e40af",
-					"overlayOpacity": 0.2,
-					"textAlignment": "left",
-					"featured": true
-				},
-				{
-					"id": "slide-3",
-					"type": "testimonial",
-					"title": "Game-changing platform!",
-					"subtitle": "Sarah Johnson, CEO",
-					"description": "This platform has revolutionized how we operate. The efficiency gains and cost savings have been incredible.",
-					"imageUrl": "",
-					"imageAlt": "Sarah Johnson testimonial",
-					"buttonText": "Read More",
-					"buttonUrl": "#",
-					"backgroundColor": "#fefce8",
-					"textColor": "#854d0e",
-					"overlayOpacity": 0.1,
-					"textAlignment": "center",
-					"featured": false
-				}
-			]
-		},
-		"autoplay": {
-			"type": "boolean",
-			"default": true
-		},
-		"autoplayDelay": {
-			"type": "number",
-			"default": 5000
-		},
-		"showNavigation": {
-			"type": "boolean",
-			"default": true
-		},
-		"showPagination": {
-			"type": "boolean",
-			"default": true
-		},
-		"showScrollbar": {
-			"type": "boolean",
-			"default": false
-		},
-		"loop": {
-			"type": "boolean",
-			"default": true
-		},
-		"slidesPerView": {
-			"type": "number",
-			"default": 1
-		},
-		"spaceBetween": {
-			"type": "number",
-			"default": 30
-		},
-		"effect": {
-			"type": "string",
-			"default": "slide"
-		},
-		"speed": {
-			"type": "number",
-			"default": 600
-		},
-		"pauseOnHover": {
-			"type": "boolean",
-			"default": true
-		},
-		"centeredSlides": {
-			"type": "boolean",
-			"default": false
-		},
-		"freeMode": {
-			"type": "boolean",
-			"default": false
-		},
-		"sliderHeight": {
-			"type": "string",
-			"default": "auto"
-		},
-		"navigationStyle": {
-			"type": "string",
-			"default": "arrows"
-		},
-		"paginationStyle": {
-			"type": "string",
-			"default": "bullets"
-		},
-		"sectionTitle": {
-			"type": "string",
-			"default": "Featured Content"
-		},
-		"sectionSubtitle": {
-			"type": "string",
-			"default": "Discover what makes us different"
-		},
-		"showSectionHeader": {
-			"type": "boolean",
-			"default": true
-		},
-		"settings": {
-			"type": "object",
-			"default": {
-				"spacing": {
-					"base": { "top": 8, "right": 4, "bottom": 8, "left": 4 }
-				},
-				"margins": {
-					"base": { "top": 0, "right": 0, "bottom": 0, "left": 0 }
-				},
-				"typography": {
-					"base": { "fontSize": "text-lg", "fontWeight": "font-normal", "textAlign": "text-center" }
-				},
-				"backgroundColor": "bg-gray-50",
-				"textColor": "text-gray-900",
-				"gradients": {},
-				"layout": {},
-				"effects": {}
-			}
-		},
-		"activeDevice": {
-			"type": "string",
-			"default": "base"
-		}
-	},
-	"textdomain": "tailwind-starter",
-	"editorScript": "file:./index.js",
-	"editorStyle": "file:./index.css",
-	"style": "file:./style-index.css"
-} 
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "tailwind-starter/content-slider",
+  "version": "0.1.0",
+  "title": "Content Slider",
+  "category": "tailwind-starter",
+  "icon": "slides",
+  "description": "Display multiple content pieces in rotating carousel format with navigation controls.",
+  "example": {},
+  "supports": {
+    "html": false,
+    "anchor": true,
+    "align": [
+      "wide",
+      "full"
+    ]
+  },
+  "attributes": {
+    "layout": {
+      "type": "string",
+      "default": "image-slider"
+    },
+    "slides": {
+      "type": "array",
+      "default": [
+        {
+          "id": "slide-1",
+          "type": "image",
+          "title": "Innovative Solutions",
+          "subtitle": "Leading the way in technology",
+          "description": "We create cutting-edge solutions that transform businesses and drive growth in the digital era.",
+          "imageUrl": "",
+          "imageAlt": "Innovative technology solutions",
+          "buttonText": "Learn More",
+          "buttonUrl": "#",
+          "backgroundColor": "#f8fafc",
+          "textColor": "#1f2937",
+          "overlayOpacity": 0.3,
+          "textAlignment": "center",
+          "featured": false
+        },
+        {
+          "id": "slide-2",
+          "type": "content",
+          "title": "Trusted by Thousands",
+          "subtitle": "Customer success stories",
+          "description": "Join thousands of satisfied customers who have transformed their business with our platform.",
+          "imageUrl": "",
+          "imageAlt": "Happy customers",
+          "buttonText": "View Case Studies",
+          "buttonUrl": "#",
+          "backgroundColor": "#f0f9ff",
+          "textColor": "#1e40af",
+          "overlayOpacity": 0.2,
+          "textAlignment": "left",
+          "featured": true
+        },
+        {
+          "id": "slide-3",
+          "type": "testimonial",
+          "title": "Game-changing platform!",
+          "subtitle": "Sarah Johnson, CEO",
+          "description": "This platform has revolutionized how we operate. The efficiency gains and cost savings have been incredible.",
+          "imageUrl": "",
+          "imageAlt": "Sarah Johnson testimonial",
+          "buttonText": "Read More",
+          "buttonUrl": "#",
+          "backgroundColor": "#fefce8",
+          "textColor": "#854d0e",
+          "overlayOpacity": 0.1,
+          "textAlignment": "center",
+          "featured": false
+        }
+      ]
+    },
+    "autoplay": {
+      "type": "boolean",
+      "default": true
+    },
+    "autoplayDelay": {
+      "type": "number",
+      "default": 5000
+    },
+    "showNavigation": {
+      "type": "boolean",
+      "default": true
+    },
+    "showPagination": {
+      "type": "boolean",
+      "default": true
+    },
+    "showScrollbar": {
+      "type": "boolean",
+      "default": false
+    },
+    "loop": {
+      "type": "boolean",
+      "default": true
+    },
+    "slidesPerView": {
+      "type": "number",
+      "default": 1
+    },
+    "spaceBetween": {
+      "type": "number",
+      "default": 30
+    },
+    "effect": {
+      "type": "string",
+      "default": "slide"
+    },
+    "speed": {
+      "type": "number",
+      "default": 600
+    },
+    "pauseOnHover": {
+      "type": "boolean",
+      "default": true
+    },
+    "centeredSlides": {
+      "type": "boolean",
+      "default": false
+    },
+    "freeMode": {
+      "type": "boolean",
+      "default": false
+    },
+    "sliderHeight": {
+      "type": "string",
+      "default": "auto"
+    },
+    "navigationStyle": {
+      "type": "string",
+      "default": "arrows"
+    },
+    "paginationStyle": {
+      "type": "string",
+      "default": "bullets"
+    },
+    "sectionTitle": {
+      "type": "string",
+      "default": "Featured Content"
+    },
+    "sectionSubtitle": {
+      "type": "string",
+      "default": "Discover what makes us different"
+    },
+    "showSectionHeader": {
+      "type": "boolean",
+      "default": true
+    },
+    "settings": {
+      "type": "object",
+      "default": {
+        "spacing": {
+          "base": {
+            "top": 8,
+            "right": 4,
+            "bottom": 8,
+            "left": 4
+          }
+        },
+        "margins": {
+          "base": {
+            "top": 0,
+            "right": 0,
+            "bottom": 0,
+            "left": 0
+          }
+        },
+        "typography": {
+          "base": {
+            "fontSize": "text-lg",
+            "fontWeight": "font-normal",
+            "textAlign": "text-center"
+          }
+        },
+        "backgroundColor": "bg-gray-50",
+        "textColor": "text-gray-900",
+        "gradients": {},
+        "layout": {},
+        "effects": {}
+      }
+    },
+    "activeDevice": {
+      "type": "string",
+      "default": "base"
+    }
+  },
+  "textdomain": "tailwind-starter",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css"
+}

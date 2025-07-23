@@ -7,10 +7,19 @@
   "category": "tailwind-starter",
   "icon": "admin-customizer",
   "description": "Core block enhancements loader - this block is not meant to be used directly",
-  "keywords": ["core", "enhancements", "visual", "controls"],
+  "keywords": [
+    "core",
+    "enhancements",
+    "visual",
+    "controls"
+  ],
   "supports": {
     "html": false,
-    "inserter": false
+    "inserter": false,
+    "align": [
+      "wide",
+      "full"
+    ]
   },
   "attributes": {},
   "textdomain": "tailwind-starter",

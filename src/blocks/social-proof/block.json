@@ -1,118 +1,122 @@
 {
-	"$schema": "https://schemas.wp.org/trunk/block.json",
-	"apiVersion": 3,
-	"name": "tailwind-starter/social-proof",
-	"version": "0.1.0",
-	"title": "Social Proof",
-	"category": "tailwind-starter",
-	"icon": "star-filled",
-	"description": "Showcase customer testimonials, reviews, or trust indicators in various layouts.",
-	"example": {},
-	"supports": {
-		"html": false,
-		"anchor": true
-	},
-	"render": "file:./render.php",
-	"attributes": {
-		"layout": {
-			"type": "string",
-			"default": "testimonial-carousel"
-		},
-		"testimonials": {
-			"type": "array",
-			"default": [
-				{
-					"id": "testimonial-1",
-					"name": "Sarah Johnson",
-					"position": "CEO, TechStart",
-					"company": "TechStart Inc.",
-					"content": "This solution has transformed our business operations. The results exceeded our expectations and the support team is exceptional.",
-					"rating": 5,
-					"avatar": null
-				},
-				{
-					"id": "testimonial-2",
-					"name": "Michael Chen",
-					"position": "Marketing Director",
-					"company": "Growth Co.",
-					"content": "Outstanding service and incredible value. We saw immediate improvements in our workflow and team productivity.",
-					"rating": 5,
-					"avatar": null
-				},
-				{
-					"id": "testimonial-3",
-					"name": "Emily Rodriguez",
-					"position": "Product Manager",
-					"company": "InnovateLab",
-					"content": "The best investment we've made this year. Easy to implement and the ROI has been phenomenal.",
-					"rating": 5,
-					"avatar": null
-				}
-			]
-		},
-		"logos": {
-			"type": "array",
-			"default": [
-				{
-					"id": "logo-1",
-					"name": "TechCorp",
-					"image": null,
-					"url": "#"
-				},
-				{
-					"id": "logo-2",
-					"name": "DataFlow",
-					"image": null,
-					"url": "#"
-				},
-				{
-					"id": "logo-3",
-					"name": "CloudSys",
-					"image": null,
-					"url": "#"
-				}
-			]
-		},
-		"trustBadges": {
-			"type": "array",
-			"default": [
-				{
-					"id": "badge-1",
-					"name": "SSL Secured",
-					"description": "256-bit encryption",
-					"icon": "shield"
-				},
-				{
-					"id": "badge-2",
-					"name": "99.9% Uptime",
-					"description": "Guaranteed availability",
-					"icon": "check"
-				}
-			]
-		},
-		"showRatings": {
-			"type": "boolean",
-			"default": true
-		},
-		"showAvatars": {
-			"type": "boolean",
-			"default": true
-		},
-		"autoplay": {
-			"type": "boolean",
-			"default": true
-		},
-		"autoplaySpeed": {
-			"type": "number",
-			"default": 5000
-		},
-		"visualSettings": {
-			"type": "object",
-			"default": {}
-		}
-	},
-	"textdomain": "tailwind-starter",
-	"editorScript": "file:./index.js",
-	"editorStyle": "file:./index.css",
-	"style": "file:./style-index.css"
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "tailwind-starter/social-proof",
+  "version": "0.1.0",
+  "title": "Social Proof",
+  "category": "tailwind-starter",
+  "icon": "star-filled",
+  "description": "Showcase customer testimonials, reviews, or trust indicators in various layouts.",
+  "example": {},
+  "supports": {
+    "html": false,
+    "anchor": true,
+    "align": [
+      "wide",
+      "full"
+    ]
+  },
+  "render": "file:./render.php",
+  "attributes": {
+    "layout": {
+      "type": "string",
+      "default": "testimonial-carousel"
+    },
+    "testimonials": {
+      "type": "array",
+      "default": [
+        {
+          "id": "testimonial-1",
+          "name": "Sarah Johnson",
+          "position": "CEO, TechStart",
+          "company": "TechStart Inc.",
+          "content": "This solution has transformed our business operations. The results exceeded our expectations and the support team is exceptional.",
+          "rating": 5,
+          "avatar": null
+        },
+        {
+          "id": "testimonial-2",
+          "name": "Michael Chen",
+          "position": "Marketing Director",
+          "company": "Growth Co.",
+          "content": "Outstanding service and incredible value. We saw immediate improvements in our workflow and team productivity.",
+          "rating": 5,
+          "avatar": null
+        },
+        {
+          "id": "testimonial-3",
+          "name": "Emily Rodriguez",
+          "position": "Product Manager",
+          "company": "InnovateLab",
+          "content": "The best investment we've made this year. Easy to implement and the ROI has been phenomenal.",
+          "rating": 5,
+          "avatar": null
+        }
+      ]
+    },
+    "logos": {
+      "type": "array",
+      "default": [
+        {
+          "id": "logo-1",
+          "name": "TechCorp",
+          "image": null,
+          "url": "#"
+        },
+        {
+          "id": "logo-2",
+          "name": "DataFlow",
+          "image": null,
+          "url": "#"
+        },
+        {
+          "id": "logo-3",
+          "name": "CloudSys",
+          "image": null,
+          "url": "#"
+        }
+      ]
+    },
+    "trustBadges": {
+      "type": "array",
+      "default": [
+        {
+          "id": "badge-1",
+          "name": "SSL Secured",
+          "description": "256-bit encryption",
+          "icon": "shield"
+        },
+        {
+          "id": "badge-2",
+          "name": "99.9% Uptime",
+          "description": "Guaranteed availability",
+          "icon": "check"
+        }
+      ]
+    },
+    "showRatings": {
+      "type": "boolean",
+      "default": true
+    },
+    "showAvatars": {
+      "type": "boolean",
+      "default": true
+    },
+    "autoplay": {
+      "type": "boolean",
+      "default": true
+    },
+    "autoplaySpeed": {
+      "type": "number",
+      "default": 5000
+    },
+    "visualSettings": {
+      "type": "object",
+      "default": {}
+    }
+  },
+  "textdomain": "tailwind-starter",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css"
 }

@@ -1,197 +1,215 @@
 {
-	"$schema": "https://schemas.wp.org/trunk/block.json",
-	"apiVersion": 3,
-	"name": "tailwind-starter/testimonial-showcase",
-	"version": "0.1.0",
-	"title": "Testimonial Showcase",
-	"category": "tailwind-starter",
-	"icon": "format-quote",
-	"description": "Display customer testimonials and reviews with various elegant layouts and filtering options.",
-	"example": {},
-	"supports": {
-		"html": false,
-		"anchor": true
-	},
-	"attributes": {
-		"layout": {
-			"type": "string",
-			"default": "cards-grid"
-		},
-		"testimonials": {
-			"type": "array",
-			"default": [
-				{
-					"id": "testimonial-1",
-					"content": "This product has completely transformed how we handle our customer relationships. The intuitive interface and powerful features have increased our team's productivity by 300%.",
-					"excerpt": "This product has completely transformed how we handle our customer relationships...",
-					"authorName": "Sarah Johnson",
-					"authorTitle": "Marketing Director",
-					"authorCompany": "TechCorp Solutions",
-					"authorImageUrl": "",
-					"authorImageAlt": "Sarah Johnson - Marketing Director",
-					"rating": 5,
-					"category": "Marketing",
-					"featured": true,
-					"videoUrl": "",
-					"verified": true,
-					"date": "2024-01-15",
-					"location": "San Francisco, CA"
-				},
-				{
-					"id": "testimonial-2", 
-					"content": "Outstanding customer support and a product that delivers exactly what it promises. Our conversion rates have improved dramatically since implementing this solution.",
-					"excerpt": "Outstanding customer support and a product that delivers exactly what it promises...",
-					"authorName": "Michael Chen",
-					"authorTitle": "CEO",
-					"authorCompany": "Growth Ventures",
-					"authorImageUrl": "",
-					"authorImageAlt": "Michael Chen - CEO",
-					"rating": 5,
-					"category": "Leadership",
-					"featured": false,
-					"videoUrl": "",
-					"verified": true,
-					"date": "2024-01-10",
-					"location": "New York, NY"
-				},
-				{
-					"id": "testimonial-3",
-					"content": "The analytics and reporting features are incredible. We can now make data-driven decisions with confidence and see real-time impacts on our business metrics.",
-					"excerpt": "The analytics and reporting features are incredible...",
-					"authorName": "Emily Rodriguez",
-					"authorTitle": "Data Analyst",
-					"authorCompany": "Analytics Pro",
-					"authorImageUrl": "",
-					"authorImageAlt": "Emily Rodriguez - Data Analyst",
-					"rating": 4,
-					"category": "Analytics",
-					"featured": false,
-					"videoUrl": "",
-					"verified": true,
-					"date": "2024-01-05",
-					"location": "Austin, TX"
-				}
-			]
-		},
-		"columns": {
-			"type": "number",
-			"default": 3
-		},
-		"showRatings": {
-			"type": "boolean",
-			"default": true
-		},
-		"showAuthorImages": {
-			"type": "boolean",
-			"default": true
-		},
-		"showCompany": {
-			"type": "boolean",
-			"default": true
-		},
-		"showLocation": {
-			"type": "boolean",
-			"default": false
-		},
-		"showDate": {
-			"type": "boolean",
-			"default": false
-		},
-		"showVerifiedBadge": {
-			"type": "boolean",
-			"default": true
-		},
-		"useExcerpts": {
-			"type": "boolean",
-			"default": false
-		},
-		"categoryFiltering": {
-			"type": "boolean",
-			"default": false
-		},
-		"featuredFirst": {
-			"type": "boolean",
-			"default": true
-		},
-		"autoRotate": {
-			"type": "boolean",
-			"default": false
-		},
-		"rotationSpeed": {
-			"type": "number",
-			"default": 5000
-		},
-		"cardStyle": {
-			"type": "string",
-			"default": "elevated"
-		},
-		"quoteStyle": {
-			"type": "string",
-			"default": "modern"
-		},
-		"ratingStyle": {
-			"type": "string",
-			"default": "stars"
-		},
-		"textAlignment": {
-			"type": "string",
-			"default": "center"
-		},
-		"sectionTitle": {
-			"type": "string",
-			"default": "What Our Customers Say"
-		},
-		"sectionSubtitle": {
-			"type": "string",
-			"default": "Real stories from satisfied customers"
-		},
-		"showSectionHeader": {
-			"type": "boolean",
-			"default": true
-		},
-		"enableVideoTestimonials": {
-			"type": "boolean",
-			"default": false
-		},
-		"averageRating": {
-			"type": "number",
-			"default": 4.8
-		},
-		"totalReviews": {
-			"type": "number",
-			"default": 250
-		},
-		"showAverageRating": {
-			"type": "boolean",
-			"default": false
-		},
-		"settings": {
-			"type": "object",
-			"default": {
-				"spacing": {
-					"base": { "top": 8, "right": 4, "bottom": 8, "left": 4 }
-				},
-				"margins": {
-					"base": { "top": 0, "right": 0, "bottom": 0, "left": 0 }
-				},
-				"typography": {
-					"base": { "fontSize": "text-lg", "fontWeight": "font-normal", "textAlign": "text-center" }
-				},
-				"backgroundColor": "bg-gray-50",
-				"textColor": "text-gray-900",
-				"gradients": {},
-				"layout": {},
-				"effects": {}
-			}
-		},
-		"activeDevice": {
-			"type": "string",
-			"default": "base"
-		}
-	},
-	"textdomain": "tailwind-starter",
-	"editorScript": "file:./index.js",
-	"editorStyle": "file:./index.css",
-	"render": "file:./render.php",
-	"style": "file:./style-index.css"
-} 
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "tailwind-starter/testimonial-showcase",
+  "version": "0.1.0",
+  "title": "Testimonial Showcase",
+  "category": "tailwind-starter",
+  "icon": "format-quote",
+  "description": "Display customer testimonials and reviews with various elegant layouts and filtering options.",
+  "example": {},
+  "supports": {
+    "html": false,
+    "anchor": true,
+    "align": [
+      "wide",
+      "full"
+    ]
+  },
+  "attributes": {
+    "layout": {
+      "type": "string",
+      "default": "cards-grid"
+    },
+    "testimonials": {
+      "type": "array",
+      "default": [
+        {
+          "id": "testimonial-1",
+          "content": "This product has completely transformed how we handle our customer relationships. The intuitive interface and powerful features have increased our team's productivity by 300%.",
+          "excerpt": "This product has completely transformed how we handle our customer relationships...",
+          "authorName": "Sarah Johnson",
+          "authorTitle": "Marketing Director",
+          "authorCompany": "TechCorp Solutions",
+          "authorImageUrl": "",
+          "authorImageAlt": "Sarah Johnson - Marketing Director",
+          "rating": 5,
+          "category": "Marketing",
+          "featured": true,
+          "videoUrl": "",
+          "verified": true,
+          "date": "2024-01-15",
+          "location": "San Francisco, CA"
+        },
+        {
+          "id": "testimonial-2",
+          "content": "Outstanding customer support and a product that delivers exactly what it promises. Our conversion rates have improved dramatically since implementing this solution.",
+          "excerpt": "Outstanding customer support and a product that delivers exactly what it promises...",
+          "authorName": "Michael Chen",
+          "authorTitle": "CEO",
+          "authorCompany": "Growth Ventures",
+          "authorImageUrl": "",
+          "authorImageAlt": "Michael Chen - CEO",
+          "rating": 5,
+          "category": "Leadership",
+          "featured": false,
+          "videoUrl": "",
+          "verified": true,
+          "date": "2024-01-10",
+          "location": "New York, NY"
+        },
+        {
+          "id": "testimonial-3",
+          "content": "The analytics and reporting features are incredible. We can now make data-driven decisions with confidence and see real-time impacts on our business metrics.",
+          "excerpt": "The analytics and reporting features are incredible...",
+          "authorName": "Emily Rodriguez",
+          "authorTitle": "Data Analyst",
+          "authorCompany": "Analytics Pro",
+          "authorImageUrl": "",
+          "authorImageAlt": "Emily Rodriguez - Data Analyst",
+          "rating": 4,
+          "category": "Analytics",
+          "featured": false,
+          "videoUrl": "",
+          "verified": true,
+          "date": "2024-01-05",
+          "location": "Austin, TX"
+        }
+      ]
+    },
+    "columns": {
+      "type": "number",
+      "default": 3
+    },
+    "showRatings": {
+      "type": "boolean",
+      "default": true
+    },
+    "showAuthorImages": {
+      "type": "boolean",
+      "default": true
+    },
+    "showCompany": {
+      "type": "boolean",
+      "default": true
+    },
+    "showLocation": {
+      "type": "boolean",
+      "default": false
+    },
+    "showDate": {
+      "type": "boolean",
+      "default": false
+    },
+    "showVerifiedBadge": {
+      "type": "boolean",
+      "default": true
+    },
+    "useExcerpts": {
+      "type": "boolean",
+      "default": false
+    },
+    "categoryFiltering": {
+      "type": "boolean",
+      "default": false
+    },
+    "featuredFirst": {
+      "type": "boolean",
+      "default": true
+    },
+    "autoRotate": {
+      "type": "boolean",
+      "default": false
+    },
+    "rotationSpeed": {
+      "type": "number",
+      "default": 5000
+    },
+    "cardStyle": {
+      "type": "string",
+      "default": "elevated"
+    },
+    "quoteStyle": {
+      "type": "string",
+      "default": "modern"
+    },
+    "ratingStyle": {
+      "type": "string",
+      "default": "stars"
+    },
+    "textAlignment": {
+      "type": "string",
+      "default": "center"
+    },
+    "sectionTitle": {
+      "type": "string",
+      "default": "What Our Customers Say"
+    },
+    "sectionSubtitle": {
+      "type": "string",
+      "default": "Real stories from satisfied customers"
+    },
+    "showSectionHeader": {
+      "type": "boolean",
+      "default": true
+    },
+    "enableVideoTestimonials": {
+      "type": "boolean",
+      "default": false
+    },
+    "averageRating": {
+      "type": "number",
+      "default": 4.8
+    },
+    "totalReviews": {
+      "type": "number",
+      "default": 250
+    },
+    "showAverageRating": {
+      "type": "boolean",
+      "default": false
+    },
+    "settings": {
+      "type": "object",
+      "default": {
+        "spacing": {
+          "base": {
+            "top": 8,
+            "right": 4,
+            "bottom": 8,
+            "left": 4
+          }
+        },
+        "margins": {
+          "base": {
+            "top": 0,
+            "right": 0,
+            "bottom": 0,
+            "left": 0
+          }
+        },
+        "typography": {
+          "base": {
+            "fontSize": "text-lg",
+            "fontWeight": "font-normal",
+            "textAlign": "text-center"
+          }
+        },
+        "backgroundColor": "bg-gray-50",
+        "textColor": "text-gray-900",
+        "gradients": {},
+        "layout": {},
+        "effects": {}
+      }
+    },
+    "activeDevice": {
+      "type": "string",
+      "default": "base"
+    }
+  },
+  "textdomain": "tailwind-starter",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "render": "file:./render.php",
+  "style": "file:./style-index.css"
+}

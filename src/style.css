@@ -102,13 +102,21 @@
     @apply flex flex-col gap-4;
   }
   
+  /* Fixed alignfull to prevent shifting */
   .alignfull {
-    width: 100vw;
+    width: 100vw !important;
+    max-width: none !important;
     position: relative;
-    left: 50%;
-    right: 50%;
-    margin-left: -50vw;
-    margin-right: -50vw;
+    left: 0 !important;  /* Override any left: 50% */
+    right: 0 !important; /* Override any right: 50% */
+    margin-left: calc(50% - 50vw) !important;
+    margin-right: calc(50% - 50vw) !important;
+  }
+  
+  /* More specific override for body context */
+  body .alignfull {
+    left: 0 !important;
+    right: 0 !important;
   }
   
   .alignwide {

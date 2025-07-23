@@ -1,172 +1,190 @@
 {
-	"$schema": "https://schemas.wp.org/trunk/block.json",
-	"apiVersion": 3,
-	"name": "tailwind-starter/integration-logos",
-	"version": "0.1.0",
-	"title": "Integration Logos",
-	"category": "tailwind-starter",
-	"icon": "grid-view",
-	"description": "Display partner, integration, or certification logos in organized grids with optional links and hover effects.",
-	"example": {},
-	"supports": {
-		"html": false,
-		"anchor": true
-	},
-	"render": "file:./render.php",
-	"attributes": {
-		"layout": {
-			"type": "string",
-			"default": "simple-grid"
-		},
-		"logos": {
-			"type": "array",
-			"default": [
-				{
-					"id": 1,
-					"image": "",
-					"alt": "Integration Logo",
-					"title": "Integration",
-					"link": "",
-					"category": "integrations",
-					"description": "",
-					"openInNewTab": true
-				}
-			]
-		},
-		"columns": {
-			"type": "number",
-			"default": 4
-		},
-		"logoSize": {
-			"type": "string",
-			"default": "medium"
-		},
-		"showTitle": {
-			"type": "boolean",
-			"default": false
-		},
-		"showDescription": {
-			"type": "boolean",
-			"default": false
-		},
-		"showCategories": {
-			"type": "boolean",
-			"default": false
-		},
-		"enableLinks": {
-			"type": "boolean",
-			"default": true
-		},
-		"hoverEffect": {
-			"type": "string",
-			"default": "lift"
-		},
-		"logoFilter": {
-			"type": "string",
-			"default": "none"
-		},
-		"alignment": {
-			"type": "string",
-			"default": "center"
-		},
-		"spacing": {
-			"type": "string",
-			"default": "normal"
-		},
-		"backgroundColor": {
-			"type": "string",
-			"default": "transparent"
-		},
-		"borderStyle": {
-			"type": "string",
-			"default": "none"
-		},
-		"aspectRatio": {
-			"type": "string",
-			"default": "auto"
-		},
-		"autoScroll": {
-			"type": "boolean",
-			"default": false
-		},
-		"scrollSpeed": {
-			"type": "number",
-			"default": 30
-		},
-		"pauseOnHover": {
-			"type": "boolean",
-			"default": true
-		},
-		"enableCategoryFilter": {
-			"type": "boolean",
-			"default": false
-		},
-		"filterPosition": {
-			"type": "string",
-			"default": "top"
-		},
-		"sectionTitle": {
-			"type": "string",
-			"default": "Our Integrations"
-		},
-		"sectionSubtitle": {
-			"type": "string",
-			"default": "Trusted by leading companies worldwide"
-		},
-		"showSectionHeader": {
-			"type": "boolean",
-			"default": true
-		},
-		"grayscaleDefault": {
-			"type": "boolean",
-			"default": false
-		},
-		"colorOnHover": {
-			"type": "boolean",
-			"default": true
-		},
-		"uniformSize": {
-			"type": "boolean",
-			"default": true
-		},
-		"maxLogoHeight": {
-			"type": "number",
-			"default": 80
-		},
-		"carouselAutoplay": {
-			"type": "boolean",
-			"default": true
-		},
-		"carouselSpeed": {
-			"type": "number",
-			"default": 3000
-		},
-		"settings": {
-			"type": "object",
-			"default": {
-				"spacing": {
-					"base": { "top": 8, "right": 4, "bottom": 8, "left": 4 }
-				},
-				"margins": {
-					"base": { "top": 0, "right": 0, "bottom": 0, "left": 0 }
-				},
-				"typography": {
-					"base": { "fontSize": "text-lg", "fontWeight": "font-normal", "textAlign": "text-center" }
-				},
-				"backgroundColor": "bg-white",
-				"textColor": "text-gray-900",
-				"gradients": {},
-				"layout": {},
-				"effects": {}
-			}
-		},
-		"activeDevice": {
-			"type": "string",
-			"default": "base"
-		}
-	},
-	"textdomain": "tailwind-starter",
-	"editorScript": "file:./index.js",
-	"editorStyle": "file:./index.css",
-	"style": "file:./style-index.css"
-} 
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "tailwind-starter/integration-logos",
+  "version": "0.1.0",
+  "title": "Integration Logos",
+  "category": "tailwind-starter",
+  "icon": "grid-view",
+  "description": "Display partner, integration, or certification logos in organized grids with optional links and hover effects.",
+  "example": {},
+  "supports": {
+    "html": false,
+    "anchor": true,
+    "align": [
+      "wide",
+      "full"
+    ]
+  },
+  "render": "file:./render.php",
+  "attributes": {
+    "layout": {
+      "type": "string",
+      "default": "simple-grid"
+    },
+    "logos": {
+      "type": "array",
+      "default": [
+        {
+          "id": 1,
+          "image": "",
+          "alt": "Integration Logo",
+          "title": "Integration",
+          "link": "",
+          "category": "integrations",
+          "description": "",
+          "openInNewTab": true
+        }
+      ]
+    },
+    "columns": {
+      "type": "number",
+      "default": 4
+    },
+    "logoSize": {
+      "type": "string",
+      "default": "medium"
+    },
+    "showTitle": {
+      "type": "boolean",
+      "default": false
+    },
+    "showDescription": {
+      "type": "boolean",
+      "default": false
+    },
+    "showCategories": {
+      "type": "boolean",
+      "default": false
+    },
+    "enableLinks": {
+      "type": "boolean",
+      "default": true
+    },
+    "hoverEffect": {
+      "type": "string",
+      "default": "lift"
+    },
+    "logoFilter": {
+      "type": "string",
+      "default": "none"
+    },
+    "alignment": {
+      "type": "string",
+      "default": "center"
+    },
+    "spacing": {
+      "type": "string",
+      "default": "normal"
+    },
+    "backgroundColor": {
+      "type": "string",
+      "default": "transparent"
+    },
+    "borderStyle": {
+      "type": "string",
+      "default": "none"
+    },
+    "aspectRatio": {
+      "type": "string",
+      "default": "auto"
+    },
+    "autoScroll": {
+      "type": "boolean",
+      "default": false
+    },
+    "scrollSpeed": {
+      "type": "number",
+      "default": 30
+    },
+    "pauseOnHover": {
+      "type": "boolean",
+      "default": true
+    },
+    "enableCategoryFilter": {
+      "type": "boolean",
+      "default": false
+    },
+    "filterPosition": {
+      "type": "string",
+      "default": "top"
+    },
+    "sectionTitle": {
+      "type": "string",
+      "default": "Our Integrations"
+    },
+    "sectionSubtitle": {
+      "type": "string",
+      "default": "Trusted by leading companies worldwide"
+    },
+    "showSectionHeader": {
+      "type": "boolean",
+      "default": true
+    },
+    "grayscaleDefault": {
+      "type": "boolean",
+      "default": false
+    },
+    "colorOnHover": {
+      "type": "boolean",
+      "default": true
+    },
+    "uniformSize": {
+      "type": "boolean",
+      "default": true
+    },
+    "maxLogoHeight": {
+      "type": "number",
+      "default": 80
+    },
+    "carouselAutoplay": {
+      "type": "boolean",
+      "default": true
+    },
+    "carouselSpeed": {
+      "type": "number",
+      "default": 3000
+    },
+    "settings": {
+      "type": "object",
+      "default": {
+        "spacing": {
+          "base": {
+            "top": 8,
+            "right": 4,
+            "bottom": 8,
+            "left": 4
+          }
+        },
+        "margins": {
+          "base": {
+            "top": 0,
+            "right": 0,
+            "bottom": 0,
+            "left": 0
+          }
+        },
+        "typography": {
+          "base": {
+            "fontSize": "text-lg",
+            "fontWeight": "font-normal",
+            "textAlign": "text-center"
+          }
+        },
+        "backgroundColor": "bg-white",
+        "textColor": "text-gray-900",
+        "gradients": {},
+        "layout": {},
+        "effects": {}
+      }
+    },
+    "activeDevice": {
+      "type": "string",
+      "default": "base"
+    }
+  },
+  "textdomain": "tailwind-starter",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css"
+}

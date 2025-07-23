@@ -15,7 +15,11 @@
   ],
   "supports": {
     "html": false,
-    "inserter": false
+    "inserter": false,
+    "align": [
+      "wide",
+      "full"
+    ]
   },
   "attributes": {},
   "textdomain": "tailwind-starter",

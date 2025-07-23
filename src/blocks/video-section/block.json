@@ -1,238 +1,269 @@
 {
-	"$schema": "https://schemas.wp.org/trunk/block.json",
-	"apiVersion": 3,
-	"name": "tailwind-starter/video-section",
-	"version": "0.1.0",
-	"title": "Video Section",
-	"category": "tailwind-starter",
-	"icon": "format-video",
-	"description": "Embed videos with customizable players, thumbnails, and surrounding content.",
-	"example": {},
-	"supports": {
-		"html": false,
-		"anchor": true
-	},
-	"attributes": {
-		"layout": {
-			"type": "string",
-			"default": "featured-video"
-		},
-		"videos": {
-			"type": "array",
-			"default": [
-				{
-					"id": 1,
-					"url": "",
-					"type": "upload",
-					"title": "Sample Video",
-					"description": "Video description goes here",
-					"thumbnail": {
-						"url": "",
-						"alt": "Video thumbnail",
-						"id": 0
-					},
-					"duration": "",
-					"category": "general",
-					"autoplay": false,
-					"muted": false,
-					"loop": false,
-					"controls": true,
-					"poster": "",
-					"youtubeId": "",
-					"vimeoId": ""
-				}
-			]
-		},
-		"backgroundVideo": {
-			"type": "object",
-			"default": {
-				"url": "",
-				"type": "upload",
-				"autoplay": true,
-				"muted": true,
-				"loop": true,
-				"controls": false,
-				"overlay": true,
-				"overlayOpacity": 50,
-				"youtubeId": "",
-				"vimeoId": ""
-			}
-		},
-		"sectionTitle": {
-			"type": "string",
-			"default": "Video Showcase"
-		},
-		"sectionSubtitle": {
-			"type": "string",
-			"default": "Discover our latest videos and content"
-		},
-		"showSectionHeader": {
-			"type": "boolean",
-			"default": true
-		},
-		"overlayContent": {
-			"type": "object",
-			"default": {
-				"title": "Watch Our Story",
-				"subtitle": "Experience the difference",
-				"ctaText": "Watch Now",
-				"ctaUrl": "#",
-				"showCta": true
-			}
-		},
-		"playerStyle": {
-			"type": "string",
-			"default": "modern"
-		},
-		"thumbnailStyle": {
-			"type": "string",
-			"default": "rounded"
-		},
-		"hoverEffect": {
-			"type": "string",
-			"default": "scale"
-		},
-		"showPlayButton": {
-			"type": "boolean",
-			"default": true
-		},
-		"showDuration": {
-			"type": "boolean",
-			"default": true
-		},
-		"showTitle": {
-			"type": "boolean",
-			"default": true
-		},
-		"showDescription": {
-			"type": "boolean",
-			"default": true
-		},
-		"columns": {
-			"type": "number",
-			"default": 3
-		},
-		"aspectRatio": {
-			"type": "string",
-			"default": "16:9"
-		},
-		"enableModal": {
-			"type": "boolean",
-			"default": true
-		},
-		"enableLightbox": {
-			"type": "boolean",
-			"default": false
-		},
-		"autoplayModal": {
-			"type": "boolean",
-			"default": true
-		},
-		"enableCategories": {
-			"type": "boolean",
-			"default": false
-		},
-		"categories": {
-			"type": "array",
-			"default": ["general", "tutorials", "testimonials", "demos"]
-		},
-		"activeCategory": {
-			"type": "string",
-			"default": "all"
-		},
-		"enableSearch": {
-			"type": "boolean",
-			"default": false
-		},
-		"enablePagination": {
-			"type": "boolean",
-			"default": false
-		},
-		"videosPerPage": {
-			"type": "number",
-			"default": 6
-		},
-		"loadingStyle": {
-			"type": "string",
-			"default": "skeleton"
-		},
-		"enableLazyLoad": {
-			"type": "boolean",
-			"default": true
-		},
-		"preloadStrategy": {
-			"type": "string",
-			"default": "metadata"
-		},
-		"qualitySettings": {
-			"type": "object",
-			"default": {
-				"enableQualitySelector": false,
-				"defaultQuality": "720p",
-				"qualities": ["480p", "720p", "1080p"]
-			}
-		},
-		"playlistMode": {
-			"type": "boolean",
-			"default": false
-		},
-		"autoplayNext": {
-			"type": "boolean",
-			"default": false
-		},
-		"showPlaylist": {
-			"type": "boolean",
-			"default": false
-		},
-		"enableFullscreen": {
-			"type": "boolean",
-			"default": true
-		},
-		"enablePictureInPicture": {
-			"type": "boolean",
-			"default": true
-		},
-		"enableKeyboardShortcuts": {
-			"type": "boolean",
-			"default": true
-		},
-		"customControlsColor": {
-			"type": "string",
-			"default": "#ffffff"
-		},
-		"accentColor": {
-			"type": "string",
-			"default": "#3b82f6"
-		},
-		"settings": {
-			"type": "object",
-			"default": {
-				"spacing": {
-					"base": { "top": 8, "right": 4, "bottom": 8, "left": 4 }
-				},
-				"margins": {
-					"base": { "top": 0, "right": 0, "bottom": 0, "left": 0 }
-				},
-				"typography": {
-					"base": { "fontSize": "text-lg", "fontWeight": "font-normal", "textAlign": "text-left" }
-				},
-				"backgroundColor": "bg-white",
-				"textColor": "text-gray-900",
-				"gradients": {},
-				"layout": {},
-				"effects": {}
-			}
-		},
-		"activeDevice": {
-			"type": "string",
-			"default": "base"
-		}
-	},
-	"textdomain": "tailwind-starter",
-	"editorScript": "file:./index.js",
-	"editorStyle": "file:./index.css",
-	"style": "file:./style-index.css",
-	"viewScript": "file:./frontend.js",
-	"presets": ["modal-manager", "animations", "intersection-observer"],
-	"assetPriority": "normal"
-} 
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "tailwind-starter/video-section",
+  "version": "0.1.0",
+  "title": "Video Section",
+  "category": "tailwind-starter",
+  "icon": "format-video",
+  "description": "Embed videos with customizable players, thumbnails, and surrounding content.",
+  "example": {},
+  "supports": {
+    "html": false,
+    "anchor": true,
+    "align": [
+      "wide",
+      "full"
+    ]
+  },
+  "attributes": {
+    "layout": {
+      "type": "string",
+      "default": "featured-video"
+    },
+    "videos": {
+      "type": "array",
+      "default": [
+        {
+          "id": 1,
+          "url": "",
+          "type": "upload",
+          "title": "Sample Video",
+          "description": "Video description goes here",
+          "thumbnail": {
+            "url": "",
+            "alt": "Video thumbnail",
+            "id": 0
+          },
+          "duration": "",
+          "category": "general",
+          "autoplay": false,
+          "muted": false,
+          "loop": false,
+          "controls": true,
+          "poster": "",
+          "youtubeId": "",
+          "vimeoId": ""
+        }
+      ]
+    },
+    "backgroundVideo": {
+      "type": "object",
+      "default": {
+        "url": "",
+        "type": "upload",
+        "autoplay": true,
+        "muted": true,
+        "loop": true,
+        "controls": false,
+        "overlay": true,
+        "overlayOpacity": 50,
+        "youtubeId": "",
+        "vimeoId": ""
+      }
+    },
+    "sectionTitle": {
+      "type": "string",
+      "default": "Video Showcase"
+    },
+    "sectionSubtitle": {
+      "type": "string",
+      "default": "Discover our latest videos and content"
+    },
+    "showSectionHeader": {
+      "type": "boolean",
+      "default": true
+    },
+    "overlayContent": {
+      "type": "object",
+      "default": {
+        "title": "Watch Our Story",
+        "subtitle": "Experience the difference",
+        "ctaText": "Watch Now",
+        "ctaUrl": "#",
+        "showCta": true
+      }
+    },
+    "playerStyle": {
+      "type": "string",
+      "default": "modern"
+    },
+    "thumbnailStyle": {
+      "type": "string",
+      "default": "rounded"
+    },
+    "hoverEffect": {
+      "type": "string",
+      "default": "scale"
+    },
+    "showPlayButton": {
+      "type": "boolean",
+      "default": true
+    },
+    "showDuration": {
+      "type": "boolean",
+      "default": true
+    },
+    "showTitle": {
+      "type": "boolean",
+      "default": true
+    },
+    "showDescription": {
+      "type": "boolean",
+      "default": true
+    },
+    "columns": {
+      "type": "number",
+      "default": 3
+    },
+    "aspectRatio": {
+      "type": "string",
+      "default": "16:9"
+    },
+    "enableModal": {
+      "type": "boolean",
+      "default": true
+    },
+    "enableLightbox": {
+      "type": "boolean",
+      "default": false
+    },
+    "autoplayModal": {
+      "type": "boolean",
+      "default": true
+    },
+    "enableCategories": {
+      "type": "boolean",
+      "default": false
+    },
+    "categories": {
+      "type": "array",
+      "default": [
+        "general",
+        "tutorials",
+        "testimonials",
+        "demos"
+      ]
+    },
+    "activeCategory": {
+      "type": "string",
+      "default": "all"
+    },
+    "enableSearch": {
+      "type": "boolean",
+      "default": false
+    },
+    "enablePagination": {
+      "type": "boolean",
+      "default": false
+    },
+    "videosPerPage": {
+      "type": "number",
+      "default": 6
+    },
+    "loadingStyle": {
+      "type": "string",
+      "default": "skeleton"
+    },
+    "enableLazyLoad": {
+      "type": "boolean",
+      "default": true
+    },
+    "preloadStrategy": {
+      "type": "string",
+      "default": "metadata"
+    },
+    "qualitySettings": {
+      "type": "object",
+      "default": {
+        "enableQualitySelector": false,
+        "defaultQuality": "720p",
+        "qualities": [
+          "480p",
+          "720p",
+          "1080p"
+        ]
+      }
+    },
+    "playlistMode": {
+      "type": "boolean",
+      "default": false
+    },
+    "autoplayNext": {
+      "type": "boolean",
+      "default": false
+    },
+    "showPlaylist": {
+      "type": "boolean",
+      "default": false
+    },
+    "enableFullscreen": {
+      "type": "boolean",
+      "default": true
+    },
+    "enablePictureInPicture": {
+      "type": "boolean",
+      "default": true
+    },
+    "enableKeyboardShortcuts": {
+      "type": "boolean",
+      "default": true
+    },
+    "customControlsColor": {
+      "type": "string",
+      "default": "#ffffff"
+    },
+    "accentColor": {
+      "type": "string",
+      "default": "#3b82f6"
+    },
+    "settings": {
+      "type": "object",
+      "default": {
+        "spacing": {
+          "base": {
+            "top": 8,
+            "right": 4,
+            "bottom": 8,
+            "left": 4
+          }
+        },
+        "margins": {
+          "base": {
+            "top": 0,
+            "right": 0,
+            "bottom": 0,
+            "left": 0
+          }
+        },
+        "typography": {
+          "base": {
+            "fontSize": "text-lg",
+            "fontWeight": "font-normal",
+            "textAlign": "text-left"
+          }
+        },
+        "backgroundColor": "bg-white",
+        "textColor": "text-gray-900",
+        "gradients": {},
+        "layout": {},
+        "effects": {}
+      }
+    },
+    "activeDevice": {
+      "type": "string",
+      "default": "base"
+    }
+  },
+  "textdomain": "tailwind-starter",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css",
+  "viewScript": "file:./frontend.js",
+  "presets": [
+    "modal-manager",
+    "animations",
+    "intersection-observer"
+  ],
+  "assetPriority": "normal"
+}

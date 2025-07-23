@@ -7,10 +7,18 @@
   "category": "tailwind-starter",
   "icon": "cover-image",
   "description": "Modern hero section with multiple layout options for SaaS and service websites",
-  "keywords": ["hero", "banner", "header", "cta"],
+  "keywords": [
+    "hero",
+    "banner",
+    "header",
+    "cta"
+  ],
   "supports": {
     "html": false,
-    "align": ["wide", "full"]
+    "align": [
+      "wide",
+      "full"
+    ]
   },
   "attributes": {
     "layout": {
@@ -54,7 +62,7 @@
       "default": "bg-white"
     },
     "textColor": {
-      "type": "string", 
+      "type": "string",
       "default": "text-gray-900"
     },
     "heroImage": {
@@ -84,10 +92,19 @@
       "type": "object",
       "default": {
         "spacing": {
-          "base": { "top": 8, "right": 4, "bottom": 8, "left": 4 }
+          "base": {
+            "top": 8,
+            "right": 4,
+            "bottom": 8,
+            "left": 4
+          }
         },
         "typography": {
-          "base": { "fontSize": "text-2xl", "fontWeight": "font-bold", "textAlign": "text-center" }
+          "base": {
+            "fontSize": "text-2xl",
+            "fontWeight": "font-bold",
+            "textAlign": "text-center"
+          }
         },
         "backgroundColor": "bg-white",
         "textColor": "text-gray-900"
