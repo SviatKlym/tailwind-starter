@@ -9,7 +9,7 @@
 @source "../inc/**/*.php";
 
 /* Include essential visual controls classes */
-@import "./visual-controls.css";
+/* Visual controls CSS now loaded via editor.css and PHP enqueue */
 
 /* Force include responsive grid classes for blocks */
 @media (min-width: 768px) {

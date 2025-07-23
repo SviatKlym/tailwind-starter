@@ -31,7 +31,8 @@
       "Bash(fi)",
       "Bash(done)",
       "WebFetch(domain:emaillistverify.com)",
-      "Bash(git checkout:*)"
+      "Bash(git checkout:*)",
+      "Bash(awk:*)"
     ],
     "deny": []
   }

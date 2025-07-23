@@ -1,21 +1,21 @@
 /**
  * Main entry point for theme assets
- * Loads performance framework and initializes optimizations
+ * Loads performance framework and progressive enhancements
  */
 
 // Import the modular performance framework
 import './utils/performance-framework.js'
 import './utils/custom-performance-plugins.js'
 
+// Import progressive loader for frontend blocks
+import './utils/progressive-loader.js'
+
 // Import existing block scripts
 import './index.js'
 
 // Initialize performance framework when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
-  // The performance framework auto-initializes via its own DOMContentLoaded listener
-  // but we can add any additional theme-specific initialization here
-  
-  console.log('🚀 Tailwind Starter Performance Framework Loaded')
+  console.log('🚀 Tailwind Starter Theme Loaded with Progressive Enhancement')
   
   // Optional: Add theme-specific performance monitoring
   if (window.location.hostname === 'localhost' || window.location.hostname.includes('dev')) {

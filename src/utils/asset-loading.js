@@ -135,18 +135,10 @@ class BlockAssetManager {
 
     /**
      * Load critical CSS immediately
+     * CSS has been moved to src/editor.css
      */
     loadCriticalCSS() {
-        const criticalCSS = `
-            .block-loading { display: flex; align-items: center; justify-content: center; padding: 2rem; }
-            .block-spinner { width: 2rem; height: 2rem; border: 4px solid #e5e7eb; border-top: 4px solid #3b82f6; border-radius: 50%; animation: spin 1s linear infinite; }
-            @keyframes spin { to { transform: rotate(360deg); } }
-            .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
-        `;
-        
-        const style = document.createElement('style');
-        style.textContent = criticalCSS;
-        document.head.appendChild(style);
+        // CSS is now loaded via editor.css
     }
 
     /**

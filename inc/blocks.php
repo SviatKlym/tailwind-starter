@@ -84,15 +84,14 @@ function my_tailwind_starter_editor_assets() {
         );
     }
     
-    // Enqueue the visual controls CSS for dynamic classes in editor
-    // This needs to be loaded with higher priority to avoid scoping issues
-    $visual_controls_css = get_template_directory() . '/src/visual-controls.css';
-    if (file_exists($visual_controls_css)) {
+    // Enqueue the editor CSS which contains all control styles
+    $editor_css = get_template_directory() . '/src/editor.css';
+    if (file_exists($editor_css)) {
         wp_enqueue_style(
-            'tailwind-starter-visual-controls-editor',
-            get_template_directory_uri() . '/src/visual-controls.css',
+            'tailwind-starter-editor-css',
+            get_template_directory_uri() . '/src/editor.css',
             [],
-            filemtime($visual_controls_css)
+            filemtime($editor_css)
         );
     }
 }
@@ -104,13 +103,13 @@ function my_tailwind_starter_admin_styles() {
     
     // Only load on post editor screens
     if ($screen && ($screen->base === 'post' || $screen->base === 'page')) {
-        $visual_controls_css = get_template_directory() . '/src/visual-controls.css';
-        if (file_exists($visual_controls_css)) {
+        $editor_css = get_template_directory() . '/src/editor.css';
+        if (file_exists($editor_css)) {
             wp_enqueue_style(
-                'tailwind-starter-visual-controls-admin',
-                get_template_directory_uri() . '/src/visual-controls.css',
+                'tailwind-starter-editor-css-admin',
+                get_template_directory_uri() . '/src/editor.css',
                 [],
-                filemtime($visual_controls_css)
+                filemtime($editor_css)
             );
         }
     }

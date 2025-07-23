@@ -1,16 +1,14 @@
 /**
  * Core Block Enhancements Editor Styles
  * 
- * This file imports the core block enhancement styles for the editor.
- * The visual controls CSS needs to be available globally in the editor.
+ * This file provides core block enhancement styles for the editor.
+ * Editor controls CSS is now loaded via PHP enqueue in blocks.php
  */
-
-/* Import visual controls CSS globally - not scoped to blocks */
-@import "../../visual-controls.css";
 
 /* Make visual controls work in all editor contexts */
 .editor-styles-wrapper {
   /* Ensure visual controls CSS is available everywhere in editor */
+  /* CSS is now loaded via blocks.php */
 }
 
 /* Hide the core-enhancements block from the inserter (it should never be inserted) */

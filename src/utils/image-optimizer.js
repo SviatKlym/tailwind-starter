@@ -303,61 +303,6 @@ export const isWebPSupported = async () => {
   return await imageOptimizer.checkWebPSupport()
 }
 
-// CSS for image loading states
-const imageOptimizerCSS = `
-.lazy-loading {
-  opacity: 0.5;
-  transition: opacity 0.3s ease;
-  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-  background-size: 200% 100%;
-  animation: shimmer 1.5s infinite;
-}
-
-.lazy-loaded {
-  opacity: 1;
-  transition: opacity 0.3s ease;
-}
-
-.lazy-error {
-  opacity: 0.7;
-  filter: grayscale(100%);
-  background: #f5f5f5;
-}
-
-@keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
-}
-
-/* Responsive image containers */
-.responsive-image {
-  position: relative;
-  overflow: hidden;
-}
-
-.responsive-image img {
-  width: 100%;
-  height: auto;
-  display: block;
-}
-
-/* Image loading placeholder */
-.image-placeholder {
-  background: #f8f9fa;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #6c757d;
-  font-size: 14px;
-  min-height: 200px;
-}
-`
-
-// Inject CSS
-if (typeof document !== 'undefined') {
-  const style = document.createElement('style')
-  style.textContent = imageOptimizerCSS
-  document.head.appendChild(style)
-}
+// CSS has been moved to src/editor.css
 
 export default imageOptimizer
