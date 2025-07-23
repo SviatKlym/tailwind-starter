@@ -315,26 +315,12 @@ export default function Edit({ attributes, setAttributes }) {
   const blockControls = (
     <>
       <PanelBody title={__('Layout Settings', 'tailwind-starter')} initialOpen={true}>
-        <SelectControl
-          label={__('Layout Type', 'tailwind-starter')}
-          value={layout}
-          options={layoutOptions}
-          onChange={(value) => setAttributes({ layout: value })}
-        />
-        
         <VStack spacing={4}>
           <SelectControl
-            label={__('Background Color', 'tailwind-starter')}
-            value={backgroundColor}
-            options={colorOptions}
-            onChange={(value) => setAttributes({ backgroundColor: value })}
-          />
-          
-          <SelectControl
-            label={__('Text Color', 'tailwind-starter')}
-            value={textColor}
-            options={textColorOptions}
-            onChange={(value) => setAttributes({ textColor: value })}
+            label={__('Layout Type', 'tailwind-starter')}
+            value={layout}
+            options={layoutOptions}
+            onChange={(value) => setAttributes({ layout: value })}
           />
           
           <SelectControl
@@ -444,135 +430,6 @@ export default function Edit({ attributes, setAttributes }) {
         )}
       </PanelBody>
 
-      <PanelBody title={__('🔤 Typography', 'tailwind-starter')} initialOpen={false}>
-        <SelectControl
-          label={__('Title Font Size', 'tailwind-starter')}
-          value={titleFontSize}
-          options={[
-            { label: 'Small (text-2xl md:text-4xl)', value: 'text-2xl md:text-4xl' },
-            { label: 'Medium (text-3xl md:text-5xl)', value: 'text-3xl md:text-5xl' }, 
-            { label: 'Large (text-4xl md:text-6xl)', value: 'text-4xl md:text-6xl' },
-            { label: 'X-Large (text-5xl md:text-7xl)', value: 'text-5xl md:text-7xl' }
-          ]}
-          onChange={(value) => setAttributes({ titleFontSize: value })}
-        />
-        
-        <SelectControl
-          label={__('Title Font Weight', 'tailwind-starter')}
-          value={titleFontWeight}
-          options={[
-            { label: 'Normal', value: 'font-normal' },
-            { label: 'Medium', value: 'font-medium' },
-            { label: 'Semibold', value: 'font-semibold' },
-            { label: 'Bold', value: 'font-bold' },
-            { label: 'Extra Bold', value: 'font-extrabold' }
-          ]}
-          onChange={(value) => setAttributes({ titleFontWeight: value })}
-        />
-
-        <SelectControl
-          label={__('Subtitle Font Size', 'tailwind-starter')}
-          value={subtitleFontSize}
-          options={[
-            { label: 'Small (text-lg md:text-xl)', value: 'text-lg md:text-xl' },
-            { label: 'Medium (text-xl md:text-2xl)', value: 'text-xl md:text-2xl' },
-            { label: 'Large (text-2xl md:text-3xl)', value: 'text-2xl md:text-3xl' }
-          ]}
-          onChange={(value) => setAttributes({ subtitleFontSize: value })}
-        />
-      </PanelBody>
-
-      <PanelBody title={__('📐 Spacing & Layout', 'tailwind-starter')} initialOpen={false}>
-        <SelectControl
-          label={__('Content Alignment', 'tailwind-starter')}
-          value={contentAlignment}
-          options={[
-            { label: 'Left', value: 'text-left' },
-            { label: 'Center', value: 'text-center' },
-            { label: 'Right', value: 'text-right' }
-          ]}
-          onChange={(value) => setAttributes({ contentAlignment: value })}
-        />
-
-        <SelectControl
-          label={__('Content Max Width', 'tailwind-starter')}
-          value={contentMaxWidth}
-          options={[
-            { label: 'Small (max-w-2xl)', value: 'max-w-2xl' },
-            { label: 'Medium (max-w-3xl)', value: 'max-w-3xl' },
-            { label: 'Large (max-w-4xl)', value: 'max-w-4xl' },
-            { label: 'X-Large (max-w-5xl)', value: 'max-w-5xl' },
-            { label: 'Full Width (max-w-none)', value: 'max-w-none' }
-          ]}
-          onChange={(value) => setAttributes({ contentMaxWidth: value })}
-        />
-
-        <SelectControl
-          label={__('Content Padding', 'tailwind-starter')}
-          value={contentPadding}
-          options={[
-            { label: 'Small (px-4 py-12)', value: 'px-4 py-12' },
-            { label: 'Medium (px-4 py-16)', value: 'px-4 py-16' },
-            { label: 'Large (px-4 py-24)', value: 'px-4 py-24' },
-            { label: 'X-Large (px-4 py-32)', value: 'px-4 py-32' }
-          ]}
-          onChange={(value) => setAttributes({ contentPadding: value })}
-        />
-
-        <SelectControl
-          label={__('Title Margin Bottom', 'tailwind-starter')}
-          value={titleMarginBottom}
-          options={[
-            { label: 'Small (mb-4)', value: 'mb-4' },
-            { label: 'Medium (mb-6)', value: 'mb-6' },
-            { label: 'Large (mb-8)', value: 'mb-8' }
-          ]}
-          onChange={(value) => setAttributes({ titleMarginBottom: value })}
-        />
-
-        <SelectControl
-          label={__('Subtitle Margin Bottom', 'tailwind-starter')}
-          value={subtitleMarginBottom}
-          options={[
-            { label: 'Small (mb-6)', value: 'mb-6' },
-            { label: 'Medium (mb-8)', value: 'mb-8' },
-            { label: 'Large (mb-12)', value: 'mb-12' }
-          ]}
-          onChange={(value) => setAttributes({ subtitleMarginBottom: value })}
-        />
-
-        <SelectControl
-          label={__('Button Spacing', 'tailwind-starter')}
-          value={buttonSpacing}
-          options={[
-            { label: 'Small (space-x-2)', value: 'space-x-2' },
-            { label: 'Medium (space-x-4)', value: 'space-x-4' },
-            { label: 'Large (space-x-6)', value: 'space-x-6' }
-          ]}
-          onChange={(value) => setAttributes({ buttonSpacing: value })}
-        />
-      </PanelBody>
-
-      <PanelBody title={__('🎭 Animation & Effects', 'tailwind-starter')} initialOpen={false}>
-        <SelectControl
-          label={__('Animation Duration', 'tailwind-starter')}
-          value={animationDuration}
-          options={[
-            { label: 'Fast (duration-150)', value: 'duration-150' },
-            { label: 'Normal (duration-200)', value: 'duration-200' },
-            { label: 'Slow (duration-300)', value: 'duration-300' },
-            { label: 'Very Slow (duration-500)', value: 'duration-500' }
-          ]}
-          onChange={(value) => setAttributes({ animationDuration: value })}
-        />
-
-        <ToggleControl
-          label={__('Enable Hover Effects', 'tailwind-starter')}
-          checked={hoverEffects}
-          onChange={(value) => setAttributes({ hoverEffects: value })}
-          help={hoverEffects ? __('Buttons will scale on hover', 'tailwind-starter') : __('No hover effects', 'tailwind-starter')}
-        />
-      </PanelBody>
     </>
   )
 

@@ -1,6 +1,6 @@
 import { addFilter } from '@wordpress/hooks'
-import { InspectorControls } from '@wordpress/block-editor'
-import { PanelBody } from '@wordpress/components'
+import { InspectorControls, MediaUpload, MediaUploadCheck } from '@wordpress/block-editor'
+import { PanelBody, ToggleControl, RangeControl, SelectControl, Button, __experimentalVStack as VStack } from '@wordpress/components'
 import { __ } from '@wordpress/i18n'
 import { Fragment, createElement } from '@wordpress/element'
 import { createHigherOrderComponent } from '@wordpress/compose'
@@ -28,6 +28,36 @@ const ENHANCED_BLOCKS = [
   'core/separator'
 ]
 
+// Image-specific enhancements for mobile support and WebP
+const IMAGE_ENHANCEMENTS = {
+  mobileImage: {
+    type: 'object',
+    default: null
+  },
+  webpSupport: {
+    type: 'boolean',
+    default: true
+  },
+  responsiveBreakpoint: {
+    type: 'string',
+    default: 'md'
+  }
+}
+
+// Spacer-specific responsive enhancements
+const SPACER_ENHANCEMENTS = {
+  responsiveHeight: {
+    type: 'object',
+    default: {
+      base: 50,
+      sm: 50, 
+      md: 50,
+      lg: 50,
+      xl: 50
+    }
+  }
+}
+
 /**
  * Add visual enhancement attributes to core blocks
  */
@@ -38,10 +68,23 @@ function addVisualAttributes(settings, name) {
 
   console.log(`📝 Adding visual attributes to ${name}`)
 
+  let additionalAttributes = {}
+  
+  // Add image-specific enhancements
+  if (name === 'core/image') {
+    additionalAttributes = { ...additionalAttributes, ...IMAGE_ENHANCEMENTS }
+  }
+  
+  // Add spacer-specific enhancements
+  if (name === 'core/spacer') {
+    additionalAttributes = { ...additionalAttributes, ...SPACER_ENHANCEMENTS }
+  }
+
   return {
     ...settings,
     attributes: {
       ...settings.attributes,
+      ...additionalAttributes,
       visualSettings: {
         type: 'object',
         default: {
@@ -313,7 +356,14 @@ const withVisualControls = createHigherOrderComponent((BlockEdit) => {
 
     console.log(`🎨 Adding visual controls panel to ${name}`)
 
-    const { visualSettings = {}, activeDevice = 'base' } = attributes
+    const { 
+      visualSettings = {}, 
+      activeDevice = 'base',
+      mobileImage,
+      webpSupport = true,
+      responsiveBreakpoint = 'md',
+      responsiveHeight = { base: 50, sm: 50, md: 50, lg: 50, xl: 50 }
+    } = attributes
 
     // Get block-specific presets
     const presets = getBlockPresets(name)
@@ -338,6 +388,147 @@ const withVisualControls = createHigherOrderComponent((BlockEdit) => {
       
       // Add our visual controls as additional inspector controls
       createElement(InspectorControls, null,
+        
+        // Image-specific enhancements
+        name === 'core/image' && createElement(PanelBody, {
+          title: __('📱 Enhanced Image Controls', 'tailwind-starter'),
+          initialOpen: false
+        },
+          createElement(VStack, { spacing: 4 },
+            createElement(ToggleControl, {
+              label: __('WebP Support', 'tailwind-starter'),
+              checked: webpSupport,
+              onChange: (value) => setAttributes({ webpSupport: value }),
+              help: __('Enable modern WebP format for better performance', 'tailwind-starter')
+            }),
+            
+            createElement(SelectControl, {
+              label: __('Mobile Breakpoint', 'tailwind-starter'),
+              value: responsiveBreakpoint,
+              options: [
+                { label: 'Small (640px+)', value: 'sm' },
+                { label: 'Medium (768px+)', value: 'md' },
+                { label: 'Large (1024px+)', value: 'lg' }
+              ],
+              onChange: (value) => setAttributes({ responsiveBreakpoint: value }),
+              help: __('Switch to mobile image at this breakpoint', 'tailwind-starter')
+            }),
+            
+            createElement(MediaUploadCheck, null,
+              createElement(MediaUpload, {
+                onSelect: (media) => setAttributes({ mobileImage: media }),
+                allowedTypes: ['image'],
+                value: mobileImage?.id,
+                render: ({ open }) => createElement(Button, {
+                  onClick: open,
+                  variant: 'secondary',
+                  style: {
+                    marginTop: '8px',
+                    width: '100%',
+                    justifyContent: 'center'
+                  }
+                }, mobileImage ? __('Replace Mobile Image', 'tailwind-starter') : __('Set Mobile Image', 'tailwind-starter'))
+              })
+            ),
+            
+            mobileImage && createElement('div', {
+              style: {
+                marginTop: '12px',
+                padding: '8px',
+                background: '#f0f9ff',
+                borderRadius: '6px',
+                border: '1px solid #bae6fd'
+              }
+            },
+              createElement('img', {
+                src: mobileImage.url,
+                alt: mobileImage.alt || '',
+                style: {
+                  width: '100%',
+                  height: 'auto',
+                  borderRadius: '4px'
+                }
+              }),
+              createElement('p', {
+                style: {
+                  fontSize: '12px',
+                  color: '#1e40af',
+                  margin: '8px 0 0 0',
+                  textAlign: 'center'
+                }
+              }, `📱 Mobile: ${mobileImage.alt || 'Mobile image'}`)
+            )
+          )
+        ),
+        
+        // Spacer-specific enhancements  
+        name === 'core/spacer' && createElement(PanelBody, {
+          title: __('📐 Responsive Spacing Controls', 'tailwind-starter'),
+          initialOpen: true
+        },
+          createElement(UltimateDeviceSelector, {
+            activeDevice: activeDevice,
+            onChange: (device) => setAttributes({ activeDevice: device })
+          }),
+          
+          createElement('div', {
+            style: {
+              margin: '16px 0',
+              padding: '12px',
+              background: '#f9fafb',
+              borderRadius: '8px',
+              border: '1px solid #e5e7eb'
+            }
+          },
+            createElement('label', {
+              style: {
+                display: 'block',
+                fontSize: '12px',
+                fontWeight: '600',
+                color: '#374151',
+                marginBottom: '8px'
+              }
+            }, `Height for ${activeDevice === 'base' ? 'All Devices' : activeDevice.toUpperCase()}`),
+            
+            createElement(RangeControl, {
+              value: responsiveHeight[activeDevice] || 50,
+              onChange: (value) => setAttributes({
+                responsiveHeight: {
+                  ...responsiveHeight,
+                  [activeDevice]: value
+                }
+              }),
+              min: 10,
+              max: 500,
+              step: 5,
+              help: `${responsiveHeight[activeDevice] || 50}px height`
+            })
+          ),
+          
+          createElement('div', {
+            style: {
+              background: '#f0f9ff',
+              border: '1px solid #bae6fd',
+              borderRadius: '6px',
+              padding: '8px',
+              fontSize: '11px',
+              color: '#1e40af'
+            }
+          },
+            createElement('strong', null, '💡 Responsive Preview:'),
+            createElement('div', {
+              style: { marginTop: '4px' }
+            },
+              Object.entries(responsiveHeight).map(([device, height]) =>
+                createElement('div', {
+                  key: device,
+                  style: { fontSize: '10px', marginBottom: '2px' }
+                }, `${device}: ${height}px`)
+              )
+            )
+          )
+        ),
+        
         createElement(PanelBody, {
           title: __('📱 Visual Design Controls', 'tailwind-starter'),
           initialOpen: false,
@@ -460,7 +651,33 @@ const withVisualControls = createHigherOrderComponent((BlockEdit) => {
               }),
               device: activeDevice,
               presets: presets,
-              onPresetApply: handlePresetApply
+              onPresetApply: handlePresetApply,
+              onResetAll: () => {
+                setAttributes({ 
+                  visualSettings: {
+                    spacing: {
+                      base: { top: 0, right: 0, bottom: 0, left: 0 },
+                      sm: { top: 0, right: 0, bottom: 0, left: 0 },
+                      md: { top: 0, right: 0, bottom: 0, left: 0 },
+                      lg: { top: 0, right: 0, bottom: 0, left: 0 },
+                      xl: { top: 0, right: 0, bottom: 0, left: 0 }
+                    },
+                    margins: {
+                      base: { top: 0, right: 0, bottom: 0, left: 0 },
+                      sm: { top: 0, right: 0, bottom: 0, left: 0 },
+                      md: { top: 0, right: 0, bottom: 0, left: 0 },
+                      lg: { top: 0, right: 0, bottom: 0, left: 0 },
+                      xl: { top: 0, right: 0, bottom: 0, left: 0 }
+                    },
+                    typography: {},
+                    layout: {},
+                    effects: {},
+                    gradients: {},
+                    backgroundColor: '',
+                    textColor: ''
+                  }
+                })
+              }
             })
           ),
 
@@ -509,13 +726,29 @@ function addVisualClasses(BlockListBlock) {
       return createElement(BlockListBlock, props)
     }
 
-    const { visualSettings = {} } = attributes
+    const { 
+      visualSettings = {},
+      responsiveHeight = { base: 50, sm: 50, md: 50, lg: 50, xl: 50 }
+    } = attributes
+    
     const allClasses = generateAllClasses(visualSettings)
     const inlineStyles = generateAllInlineStyles(visualSettings)
     
+    // Add responsive height classes for spacer blocks
+    let additionalClasses = ''
+    if (name === 'core/spacer') {
+      const spacerClasses = Object.entries(responsiveHeight)
+        .map(([device, height]) => {
+          const prefix = device === 'base' ? '' : `${device}:`
+          return `${prefix}h-[${height}px]`
+        })
+        .join(' ')
+      additionalClasses = spacerClasses
+    }
+    
     const newProps = {
       ...props,
-      className: `${props.className || ''} ${allClasses || ''}`.trim(),
+      className: `${props.className || ''} ${allClasses || ''} ${additionalClasses}`.trim(),
       style: {
         ...(props.style || {}),
         ...inlineStyles
@@ -534,13 +767,29 @@ function addVisualClassesToSave(element, blockType, attributes) {
     return element
   }
 
-  const { visualSettings = {} } = attributes
+  const { 
+    visualSettings = {},
+    responsiveHeight = { base: 50, sm: 50, md: 50, lg: 50, xl: 50 }
+  } = attributes
+  
   const allClasses = generateAllClasses(visualSettings)
   const inlineStyles = generateAllInlineStyles(visualSettings)
   
-  if ((allClasses || Object.keys(inlineStyles).length > 0) && element && element.props) {
+  // Add responsive height classes for spacer blocks
+  let additionalClasses = ''
+  if (blockType.name === 'core/spacer') {
+    const spacerClasses = Object.entries(responsiveHeight)
+      .map(([device, height]) => {
+        const prefix = device === 'base' ? '' : `${device}:`
+        return `${prefix}h-[${height}px]`
+      })
+      .join(' ')
+    additionalClasses = spacerClasses
+  }
+  
+  if ((allClasses || additionalClasses || Object.keys(inlineStyles).length > 0) && element && element.props) {
     const existingClassName = element.props.className || ''
-    const newClassName = `${existingClassName} ${allClasses || ''}`.trim()
+    const newClassName = `${existingClassName} ${allClasses || ''} ${additionalClasses}`.trim()
     
     return {
       ...element,

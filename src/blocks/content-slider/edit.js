@@ -12,6 +12,7 @@ import {
 	__experimentalDivider as Divider
 } from '@wordpress/components';
 import { UltimateControlTabs, UltimateDeviceSelector, generateAllClasses, generateTailwindClasses } from '../../utils/visual-controls.js';
+import { SimpleInspectorTabs } from '../../components/InspectorTabs.js';
 import { useState } from '@wordpress/element';
 
 export default function Edit({ attributes, setAttributes }) {
@@ -284,42 +285,26 @@ export default function Edit({ attributes, setAttributes }) {
 		}
 	};
 
-	return (
+	// Block-specific controls
+	const blockControls = (
 		<>
-			<InspectorControls>
-				<PanelBody title={__('📐 Layout Variations', 'tailwind-starter')} initialOpen={true}>
-					<div className="preset-grid">
-						{layoutPresets.map(preset => (
-							<div
-								key={preset.key}
-								className={`preset-button ${layout === preset.key ? 'active' : ''}`}
-								onClick={() => setAttributes({ layout: preset.key })}
-							>
-								<div className="preset-icon">{preset.icon}</div>
-								<div className="preset-name">{preset.name}</div>
-								<div className="preset-desc">{preset.desc}</div>
-							</div>
-						))}
-					</div>
-				</PanelBody>
+			<PanelBody title={__('📐 Layout Variations', 'tailwind-starter')} initialOpen={true}>
+				<div className="preset-grid">
+					{layoutPresets.map(preset => (
+						<div
+							key={preset.key}
+							className={`preset-button ${layout === preset.key ? 'active' : ''}`}
+							onClick={() => setAttributes({ layout: preset.key })}
+						>
+							<div className="preset-icon">{preset.icon}</div>
+							<div className="preset-name">{preset.name}</div>
+							<div className="preset-desc">{preset.desc}</div>
+						</div>
+					))}
+				</div>
+			</PanelBody>
 
-				<PanelBody title={__('🎨 Visual Presets', 'tailwind-starter')} initialOpen={false}>
-					<div className="preset-grid">
-						{Object.keys(presets).map(presetName => (
-							<div
-								key={presetName}
-								className="preset-button"
-								onClick={() => handlePresetApply(presetName)}
-							>
-								<div className="preset-icon">🎨</div>
-								<div className="preset-name">{presetName.charAt(0).toUpperCase() + presetName.slice(1)}</div>
-								<div className="preset-desc">Apply {presetName} styling</div>
-							</div>
-						))}
-					</div>
-				</PanelBody>
-
-				<PanelBody title={__('⚙️ Slider Settings', 'tailwind-starter')} initialOpen={false}>
+			<PanelBody title={__('⚙️ Slider Settings', 'tailwind-starter')} initialOpen={false}>
 					<ToggleControl
 						label={__('Show Section Header', 'tailwind-starter')}
 						checked={showSectionHeader}
@@ -419,9 +404,9 @@ export default function Edit({ attributes, setAttributes }) {
 							{ label: '600px', value: '600px' }
 						]}
 					/>
-				</PanelBody>
+			</PanelBody>
 
-				<PanelBody title={__('📊 Slides Management', 'tailwind-starter')} initialOpen={false}>
+			<PanelBody title={__('📊 Slides Management', 'tailwind-starter')} initialOpen={false}>
 					<div className="mb-4">
 						<label className="block text-sm font-medium mb-2">Current Slide Preview</label>
 						<div className="flex space-x-2 mb-4">
@@ -573,51 +558,114 @@ export default function Edit({ attributes, setAttributes }) {
 					>
 						Add Slide
 					</Button>
-				</PanelBody>
+			</PanelBody>
+		</>
+	)
 
+	// General visual controls
+	const generalControls = (
+		<>
+			<PanelBody title={__('📱 Responsive Design', 'tailwind-starter')} initialOpen={true}>
 				<UltimateDeviceSelector
 					activeDevice={activeDevice}
 					onChange={(device) => setAttributes({ activeDevice: device })}
 				/>
+				<div style={{ 
+					background: '#f0f9ff', 
+					border: '1px solid #bae6fd', 
+					borderRadius: '8px', 
+					padding: '12px', 
+					margin: '12px 0',
+					fontSize: '12px',
+					color: '#1e40af'
+				}}>
+					<strong>💡 Pro Tip:</strong> Start with "All" devices for your base design, then customize for mobile/tablet as needed!
+				</div>
+			</PanelBody>
 
-				<UltimateControlTabs
-					spacing={settings.spacing || {}}
-					onSpacingChange={(spacing) => setAttributes({
-						settings: { ...settings, spacing }
-					})}
-					margins={settings.margins || {}}
-					onMarginsChange={(margins) => setAttributes({
-						settings: { ...settings, margins }
-					})}
-					background={settings.backgroundColor || 'bg-gray-50'}
-					onBackgroundChange={(backgroundColor) => setAttributes({
-						settings: { ...settings, backgroundColor }
-					})}
-					textColor={settings.textColor || 'text-gray-900'}
-					onTextColorChange={(textColor) => setAttributes({
-						settings: { ...settings, textColor }
-					})}
-					gradients={settings.gradients || {}}
-					onGradientsChange={(gradients) => setAttributes({
-						settings: { ...settings, gradients }
-					})}
-					typography={settings.typography || {}}
-					onTypographyChange={(typography) => setAttributes({
-						settings: { ...settings, typography }
-					})}
-					layout={settings.layout || {}}
-					onLayoutChange={(layout) => setAttributes({
-						settings: { ...settings, layout }
-					})}
-					effects={settings.effects || {}}
-					onEffectsChange={(effects) => setAttributes({
-						settings: { ...settings, effects }
-					})}
-					device={activeDevice}
-					presets={{}}
-					onPresetApply={(preset) => {
-						console.log('Applying preset:', preset);
-					}}
+			<UltimateControlTabs
+				spacing={settings.spacing || {}}
+				onSpacingChange={(spacing) => setAttributes({
+					settings: { ...settings, spacing }
+				})}
+				margins={settings.margins || {}}
+				onMarginsChange={(margins) => setAttributes({
+					settings: { ...settings, margins }
+				})}
+				blockSpacing={settings.blockSpacing || {}}
+				onBlockSpacingChange={(blockSpacing) => setAttributes({
+					settings: { ...settings, blockSpacing }
+				})}
+				background={settings.backgroundColor}
+				onBackgroundChange={(backgroundColor) => setAttributes({
+					settings: { ...settings, backgroundColor }
+				})}
+				textColor={settings.textColor}
+				onTextColorChange={(textColor) => setAttributes({
+					settings: { ...settings, textColor }
+				})}
+				gradients={settings.gradients || {}}
+				onGradientsChange={(gradients) => setAttributes({
+					settings: { ...settings, gradients }
+				})}
+				typography={settings.typography || {}}
+				onTypographyChange={(typography) => setAttributes({
+					settings: { ...settings, typography }
+				})}
+				layout={settings.layout || {}}
+				onLayoutChange={(layout) => setAttributes({
+					settings: { ...settings, layout }
+				})}
+				effects={settings.effects || {}}
+				onEffectsChange={(effects) => setAttributes({
+					settings: { ...settings, effects }
+				})}
+				device={activeDevice}
+				presets={presets}
+				onPresetApply={handlePresetApply}
+				onResetAll={() => {
+					setAttributes({ 
+						settings: {
+							spacing: {},
+							margins: {},
+							blockSpacing: {},
+							typography: {},
+							layout: {},
+							effects: {},
+							gradients: {},
+							backgroundColor: '',
+							textColor: ''
+						}
+					})
+				}}
+			/>
+
+			<PanelBody title={__('🚀 Advanced', 'tailwind-starter')} initialOpen={false}>
+				<div style={{
+					background: '#f0f9ff',
+					border: '1px solid #bae6fd',
+					borderRadius: '6px',
+					padding: '12px',
+					fontSize: '12px'
+				}}>
+					<strong>💎 Generated Classes:</strong>
+					<br />
+					<code style={{ wordBreak: 'break-all', fontSize: '10px' }}>
+						{allClasses || 'No custom styles yet'}
+					</code>
+				</div>
+			</PanelBody>
+		</>
+	)
+
+	return (
+		<>
+			<InspectorControls>
+				<SimpleInspectorTabs
+					variant="horizontal"
+					blockControls={blockControls}
+					generalControls={generalControls}
+					initialTab="block"
 				/>
 			</InspectorControls>
 
@@ -682,10 +730,6 @@ export default function Edit({ attributes, setAttributes }) {
 					)}
 				</div>
 
-				<div className="generated-classes mt-4 p-3 bg-gray-100 rounded text-xs">
-					<strong>Preview Classes:</strong> {previewClasses}<br />
-					<strong>All Device Classes:</strong> {allClasses}
-				</div>
 			</div>
 		</>
 	);

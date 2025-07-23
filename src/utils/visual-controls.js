@@ -1816,7 +1816,8 @@ export const UltimateControlTabs = ({
   onEffectsChange,
   device,
   presets,
-  onPresetApply
+  onPresetApply,
+  onResetAll
 }) => {
   const tabs = [
     {
@@ -1866,8 +1867,70 @@ export const UltimateControlTabs = ({
     { key: 'quote', icon: '💬', name: 'Quote', desc: 'Testimonial style' }
   ]
 
+  // Global reset function
+  const handleResetAll = () => {
+    if (typeof onResetAll === 'function') {
+      onResetAll()
+    } else {
+      // Fallback: reset individual settings
+      if (onSpacingChange) onSpacingChange({})
+      if (onMarginsChange) onMarginsChange({})
+      if (onBlockSpacingChange) onBlockSpacingChange({})
+      if (onBackgroundChange) onBackgroundChange('')
+      if (onTextColorChange) onTextColorChange('')
+      if (onGradientsChange) onGradientsChange({})
+      if (onTypographyChange) onTypographyChange({})
+      if (onLayoutChange) onLayoutChange({})
+      if (onEffectsChange) onEffectsChange({})
+    }
+  }
+
   return (
     <div className="ultimate-control-tabs">
+      {/* Global Reset Button */}
+      <div style={{ 
+        display: 'flex', 
+        justifyContent: 'center', 
+        marginBottom: '16px',
+        padding: '8px',
+        backgroundColor: '#fee2e2',
+        borderRadius: '8px',
+        border: '1px solid #fecaca'
+      }}>
+        <button 
+          onClick={handleResetAll}
+          style={{
+            padding: '10px 20px',
+            backgroundColor: '#dc2626',
+            color: 'white',
+            border: 'none',
+            borderRadius: '8px',
+            fontSize: '14px',
+            fontWeight: '700',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            transition: 'all 0.2s ease',
+            textTransform: 'uppercase',
+            letterSpacing: '0.5px'
+          }}
+          onMouseOver={(e) => {
+            e.target.style.backgroundColor = '#b91c1c'
+            e.target.style.transform = 'translateY(-1px)'
+            e.target.style.boxShadow = '0 4px 12px rgba(220, 38, 38, 0.3)'
+          }}
+          onMouseOut={(e) => {
+            e.target.style.backgroundColor = '#dc2626'
+            e.target.style.transform = 'translateY(0)'
+            e.target.style.boxShadow = 'none'
+          }}
+          title="Reset all visual controls to default values"
+        >
+          🔄 Reset All Visual Controls
+        </button>
+      </div>
+      
       <TabPanel
         className="ultimate-control-tabs-panel"
         activeClass="is-active"

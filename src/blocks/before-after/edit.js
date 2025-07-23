@@ -12,6 +12,7 @@ import {
 	__experimentalDivider as Divider
 } from '@wordpress/components';
 import { UltimateControlTabs, UltimateDeviceSelector, generateAllClasses, generateTailwindClasses } from '../../utils/visual-controls.js';
+import { SimpleInspectorTabs } from '../../components/InspectorTabs.js';
 import { useState, useEffect } from '@wordpress/element';
 
 export default function Edit({ attributes, setAttributes }) {
@@ -333,306 +334,335 @@ export default function Edit({ attributes, setAttributes }) {
 		}
 	};
 
-	return (
+	// Block-specific controls
+	const blockControls = (
 		<>
-			<InspectorControls>
-				<PanelBody title={__('📐 Layout Variations', 'tailwind-starter')} initialOpen={true}>
-					<div className="preset-grid">
-						{layoutPresets.map(preset => (
-							<div
-								key={preset.key}
-								className={`preset-button ${layout === preset.key ? 'active' : ''}`}
-								onClick={() => setAttributes({ layout: preset.key })}
-							>
-								<div className="preset-icon">{preset.icon}</div>
-								<div className="preset-name">{preset.name}</div>
-								<div className="preset-desc">{preset.desc}</div>
-							</div>
-						))}
-					</div>
-				</PanelBody>
+			<PanelBody title={__('📐 Layout Variations', 'tailwind-starter')} initialOpen={true}>
+				<div className="preset-grid">
+					{layoutPresets.map(preset => (
+						<div
+							key={preset.key}
+							className={`preset-button ${layout === preset.key ? 'active' : ''}`}
+							onClick={() => setAttributes({ layout: preset.key })}
+						>
+							<div className="preset-icon">{preset.icon}</div>
+							<div className="preset-name">{preset.name}</div>
+							<div className="preset-desc">{preset.desc}</div>
+						</div>
+					))}
+				</div>
+			</PanelBody>
 
-				<PanelBody title={__('🎨 Visual Presets', 'tailwind-starter')} initialOpen={false}>
-					<div className="preset-grid">
-						{Object.keys(presets).map(presetName => (
-							<div
-								key={presetName}
-								className="preset-button"
-								onClick={() => handlePresetApply(presetName)}
-							>
-								<div className="preset-icon">🎨</div>
-								<div className="preset-name">{presetName.charAt(0).toUpperCase() + presetName.slice(1)}</div>
-								<div className="preset-desc">Apply {presetName} styling</div>
-							</div>
-						))}
-					</div>
-				</PanelBody>
+			<PanelBody title={__('🖼️ Images', 'tailwind-starter')} initialOpen={false}>
+				<h4 className="font-medium mb-3">Before Image</h4>
+				{renderImagePlaceholder('Before', beforeImage, (media) => 
+					setAttributes({ 
+						beforeImage: { 
+							url: media.url, 
+							alt: media.alt || beforeLabel, 
+							id: media.id 
+						} 
+					})
+				)}
+				<TextControl
+					label={__('Before Image Alt Text', 'tailwind-starter')}
+					value={beforeImage.alt}
+					onChange={(value) => setAttributes({ 
+						beforeImage: { ...beforeImage, alt: value } 
+					})}
+					className="mt-2 mb-4"
+				/>
 
-				<PanelBody title={__('🖼️ Images', 'tailwind-starter')} initialOpen={false}>
-					<h4 className="font-medium mb-3">Before Image</h4>
-					{renderImagePlaceholder('Before', beforeImage, (media) => 
-						setAttributes({ 
-							beforeImage: { 
-								url: media.url, 
-								alt: media.alt || beforeLabel, 
-								id: media.id 
-							} 
-						})
-					)}
-					<TextControl
-						label={__('Before Image Alt Text', 'tailwind-starter')}
-						value={beforeImage.alt}
-						onChange={(value) => setAttributes({ 
-							beforeImage: { ...beforeImage, alt: value } 
-						})}
-						className="mt-2 mb-4"
-					/>
+				<h4 className="font-medium mb-3">After Image</h4>
+				{renderImagePlaceholder('After', afterImage, (media) => 
+					setAttributes({ 
+						afterImage: { 
+							url: media.url, 
+							alt: media.alt || afterLabel, 
+							id: media.id 
+						} 
+					})
+				)}
+				<TextControl
+					label={__('After Image Alt Text', 'tailwind-starter')}
+					value={afterImage.alt}
+					onChange={(value) => setAttributes({ 
+						afterImage: { ...afterImage, alt: value } 
+					})}
+					className="mt-2"
+				/>
+			</PanelBody>
 
-					<h4 className="font-medium mb-3">After Image</h4>
-					{renderImagePlaceholder('After', afterImage, (media) => 
-						setAttributes({ 
-							afterImage: { 
-								url: media.url, 
-								alt: media.alt || afterLabel, 
-								id: media.id 
-							} 
-						})
-					)}
-					<TextControl
-						label={__('After Image Alt Text', 'tailwind-starter')}
-						value={afterImage.alt}
-						onChange={(value) => setAttributes({ 
-							afterImage: { ...afterImage, alt: value } 
-						})}
-						className="mt-2"
-					/>
-				</PanelBody>
+			<PanelBody title={__('⚙️ Comparison Settings', 'tailwind-starter')} initialOpen={false}>
+				<ToggleControl
+					label={__('Show Section Header', 'tailwind-starter')}
+					checked={showSectionHeader}
+					onChange={(value) => setAttributes({ showSectionHeader: value })}
+				/>
 
-				<PanelBody title={__('⚙️ Comparison Settings', 'tailwind-starter')} initialOpen={false}>
-					<ToggleControl
-						label={__('Show Section Header', 'tailwind-starter')}
-						checked={showSectionHeader}
-						onChange={(value) => setAttributes({ showSectionHeader: value })}
-					/>
+				<Divider />
 
-					<Divider />
+				<ToggleControl
+					label={__('Show Labels', 'tailwind-starter')}
+					checked={showLabels}
+					onChange={(value) => setAttributes({ showLabels: value })}
+				/>
 
-					<ToggleControl
-						label={__('Show Labels', 'tailwind-starter')}
-						checked={showLabels}
-						onChange={(value) => setAttributes({ showLabels: value })}
-					/>
+				{showLabels && (
+					<>
+						<TextControl
+							label={__('Before Label', 'tailwind-starter')}
+							value={beforeLabel}
+							onChange={(value) => setAttributes({ beforeLabel: value })}
+						/>
 
-					{showLabels && (
-						<>
-							<TextControl
-								label={__('Before Label', 'tailwind-starter')}
-								value={beforeLabel}
-								onChange={(value) => setAttributes({ beforeLabel: value })}
+						<TextControl
+							label={__('After Label', 'tailwind-starter')}
+							value={afterLabel}
+							onChange={(value) => setAttributes({ afterLabel: value })}
+						/>
+
+						<SelectControl
+							label={__('Label Position', 'tailwind-starter')}
+							value={labelPosition}
+							onChange={(value) => setAttributes({ labelPosition: value })}
+							options={[
+								{ label: 'Overlay', value: 'overlay' },
+								{ label: 'Below', value: 'below' }
+							]}
+						/>
+					</>
+				)}
+
+				<SelectControl
+					label={__('Aspect Ratio', 'tailwind-starter')}
+					value={aspectRatio}
+					onChange={(value) => setAttributes({ aspectRatio: value })}
+					options={[
+						{ label: '16:9', value: '16:9' },
+						{ label: '4:3', value: '4:3' },
+						{ label: '1:1', value: '1:1' },
+						{ label: '3:2', value: '3:2' }
+					]}
+				/>
+
+				{layout === 'slider-comparison' && (
+					<>
+						<Divider />
+						<h4 className="font-medium mb-3">Slider Settings</h4>
+						
+						<RangeControl
+							label={__('Initial Slider Position (%)', 'tailwind-starter')}
+							value={sliderPosition}
+							onChange={(value) => {
+								setAttributes({ sliderPosition: value });
+								setSliderPos(value);
+							}}
+							min={0}
+							max={100}
+						/>
+
+						<div className="color-picker-wrapper mb-4">
+							<label className="block text-sm font-medium mb-2">Slider Color</label>
+							<ColorPicker
+								color={sliderColor}
+								onChange={(value) => setAttributes({ sliderColor: value })}
 							/>
+						</div>
 
-							<TextControl
-								label={__('After Label', 'tailwind-starter')}
-								value={afterLabel}
-								onChange={(value) => setAttributes({ afterLabel: value })}
-							/>
+						<RangeControl
+							label={__('Slider Thickness (px)', 'tailwind-starter')}
+							value={sliderThickness}
+							onChange={(value) => setAttributes({ sliderThickness: value })}
+							min={1}
+							max={10}
+						/>
 
-							<SelectControl
-								label={__('Label Position', 'tailwind-starter')}
-								value={labelPosition}
-								onChange={(value) => setAttributes({ labelPosition: value })}
-								options={[
-									{ label: 'Overlay', value: 'overlay' },
-									{ label: 'Below', value: 'below' }
-								]}
-							/>
-						</>
-					)}
+						<SelectControl
+							label={__('Handle Style', 'tailwind-starter')}
+							value={handleStyle}
+							onChange={(value) => setAttributes({ handleStyle: value })}
+							options={[
+								{ label: 'Circle', value: 'circle' },
+								{ label: 'Square', value: 'square' }
+							]}
+						/>
 
-					<SelectControl
-						label={__('Aspect Ratio', 'tailwind-starter')}
-						value={aspectRatio}
-						onChange={(value) => setAttributes({ aspectRatio: value })}
-						options={[
-							{ label: '16:9', value: '16:9' },
-							{ label: '4:3', value: '4:3' },
-							{ label: '1:1', value: '1:1' },
-							{ label: '3:2', value: '3:2' }
-						]}
-					/>
+						<RangeControl
+							label={__('Handle Size (px)', 'tailwind-starter')}
+							value={handleSize}
+							onChange={(value) => setAttributes({ handleSize: value })}
+							min={30}
+							max={60}
+						/>
+					</>
+				)}
 
-					<RangeControl
-						label={__('Border Radius', 'tailwind-starter')}
-						value={borderRadius}
-						onChange={(value) => setAttributes({ borderRadius: value })}
-						min={0}
-						max={20}
-					/>
+				{layout === 'toggle-switch' && (
+					<>
+						<Divider />
+						<TextControl
+							label={__('Toggle Button Text', 'tailwind-starter')}
+							value={toggleButtonText}
+							onChange={(value) => setAttributes({ toggleButtonText: value })}
+						/>
+					</>
+				)}
 
-					<ToggleControl
-						label={__('Enable Shadow', 'tailwind-starter')}
-						checked={enableShadow}
-						onChange={(value) => setAttributes({ enableShadow: value })}
-					/>
+				<RangeControl
+					label={__('Animation Speed (ms)', 'tailwind-starter')}
+					value={animationSpeed}
+					onChange={(value) => setAttributes({ animationSpeed: value })}
+					min={100}
+					max={1000}
+				/>
 
-					{layout === 'slider-comparison' && (
-						<>
-							<Divider />
-							<h4 className="font-medium mb-3">Slider Settings</h4>
-							
-							<RangeControl
-								label={__('Initial Slider Position (%)', 'tailwind-starter')}
-								value={sliderPosition}
-								onChange={(value) => {
-									setAttributes({ sliderPosition: value });
-									setSliderPos(value);
-								}}
-								min={0}
-								max={100}
-							/>
+				<ToggleControl
+					label={__('Enable Keyboard Navigation', 'tailwind-starter')}
+					checked={enableKeyboard}
+					onChange={(value) => setAttributes({ enableKeyboard: value })}
+				/>
 
-							<div className="color-picker-wrapper mb-4">
-								<label className="block text-sm font-medium mb-2">Slider Color</label>
-								<ColorPicker
-									color={sliderColor}
-									onChange={(value) => setAttributes({ sliderColor: value })}
-								/>
-							</div>
+				<ToggleControl
+					label={__('Enable Touch/Swipe', 'tailwind-starter')}
+					checked={enableTouch}
+					onChange={(value) => setAttributes({ enableTouch: value })}
+				/>
 
-							<RangeControl
-								label={__('Slider Thickness (px)', 'tailwind-starter')}
-								value={sliderThickness}
-								onChange={(value) => setAttributes({ sliderThickness: value })}
-								min={1}
-								max={10}
-							/>
+				<ToggleControl
+					label={__('Show Description', 'tailwind-starter')}
+					checked={showDescription}
+					onChange={(value) => setAttributes({ showDescription: value })}
+				/>
 
-							<SelectControl
-								label={__('Handle Style', 'tailwind-starter')}
-								value={handleStyle}
-								onChange={(value) => setAttributes({ handleStyle: value })}
-								options={[
-									{ label: 'Circle', value: 'circle' },
-									{ label: 'Square', value: 'square' }
-								]}
-							/>
+				{showDescription && (
+					<>
+						<TextareaControl
+							label={__('Description', 'tailwind-starter')}
+							value={description}
+							onChange={(value) => setAttributes({ description: value })}
+							rows={3}
+						/>
 
-							<RangeControl
-								label={__('Handle Size (px)', 'tailwind-starter')}
-								value={handleSize}
-								onChange={(value) => setAttributes({ handleSize: value })}
-								min={30}
-								max={60}
-							/>
-						</>
-					)}
+						<SelectControl
+							label={__('Description Position', 'tailwind-starter')}
+							value={descriptionPosition}
+							onChange={(value) => setAttributes({ descriptionPosition: value })}
+							options={[
+								{ label: 'Above', value: 'top' },
+								{ label: 'Below', value: 'bottom' }
+							]}
+						/>
+					</>
+				)}
+			</PanelBody>
+		</>
+	)
 
-					{layout === 'toggle-switch' && (
-						<>
-							<Divider />
-							<TextControl
-								label={__('Toggle Button Text', 'tailwind-starter')}
-								value={toggleButtonText}
-								onChange={(value) => setAttributes({ toggleButtonText: value })}
-							/>
-						</>
-					)}
-
-					<RangeControl
-						label={__('Animation Speed (ms)', 'tailwind-starter')}
-						value={animationSpeed}
-						onChange={(value) => setAttributes({ animationSpeed: value })}
-						min={100}
-						max={1000}
-					/>
-
-					<ToggleControl
-						label={__('Enable Keyboard Navigation', 'tailwind-starter')}
-						checked={enableKeyboard}
-						onChange={(value) => setAttributes({ enableKeyboard: value })}
-					/>
-
-					<ToggleControl
-						label={__('Enable Touch/Swipe', 'tailwind-starter')}
-						checked={enableTouch}
-						onChange={(value) => setAttributes({ enableTouch: value })}
-					/>
-
-					<ToggleControl
-						label={__('Show Description', 'tailwind-starter')}
-						checked={showDescription}
-						onChange={(value) => setAttributes({ showDescription: value })}
-					/>
-
-					{showDescription && (
-						<>
-							<TextareaControl
-								label={__('Description', 'tailwind-starter')}
-								value={description}
-								onChange={(value) => setAttributes({ description: value })}
-								rows={3}
-							/>
-
-							<SelectControl
-								label={__('Description Position', 'tailwind-starter')}
-								value={descriptionPosition}
-								onChange={(value) => setAttributes({ descriptionPosition: value })}
-								options={[
-									{ label: 'Above', value: 'top' },
-									{ label: 'Below', value: 'bottom' }
-								]}
-							/>
-						</>
-					)}
-				</PanelBody>
-
+	// General visual controls
+	const generalControls = (
+		<>
+			<PanelBody title={__('📱 Responsive Design', 'tailwind-starter')} initialOpen={true}>
 				<UltimateDeviceSelector
 					activeDevice={activeDevice}
 					onChange={(device) => setAttributes({ activeDevice: device })}
 				/>
+				<div style={{ 
+					background: '#f0f9ff', 
+					border: '1px solid #bae6fd', 
+					borderRadius: '8px', 
+					padding: '12px', 
+					margin: '12px 0',
+					fontSize: '12px',
+					color: '#1e40af'
+				}}>
+					<strong>💡 Pro Tip:</strong> Start with "All" devices for your base design, then customize for mobile/tablet as needed!
+				</div>
+			</PanelBody>
 
-				<UltimateControlTabs
-					spacing={settings.spacing || {}}
-					onSpacingChange={(spacing) => setAttributes({
-						settings: { ...settings, spacing }
-					})}
-					margins={settings.margins || {}}
-					onMarginsChange={(margins) => setAttributes({
-						settings: { ...settings, margins }
-					})}
-					background={settings.backgroundColor || 'bg-white'}
-					onBackgroundChange={(backgroundColor) => setAttributes({
-						settings: { ...settings, backgroundColor }
-					})}
-					textColor={settings.textColor || 'text-gray-900'}
-					onTextColorChange={(textColor) => setAttributes({
-						settings: { ...settings, textColor }
-					})}
-					gradients={settings.gradients || {}}
-					onGradientsChange={(gradients) => setAttributes({
-						settings: { ...settings, gradients }
-					})}
-					typography={settings.typography || {}}
-					onTypographyChange={(typography) => setAttributes({
-						settings: { ...settings, typography }
-					})}
-					layout={settings.layout || {}}
-					onLayoutChange={(layout) => setAttributes({
-						settings: { ...settings, layout }
-					})}
-					effects={settings.effects || {}}
-					onEffectsChange={(effects) => setAttributes({
-						settings: { ...settings, effects }
-					})}
-					device={activeDevice}
-					presets={presets}
-					onPresetApply={(preset) => {
-						if (presets[preset]) {
-							setAttributes({
-								settings: { ...settings, ...presets[preset] }
-							});
+			<UltimateControlTabs
+				spacing={settings.spacing || {}}
+				onSpacingChange={(spacing) => setAttributes({
+					settings: { ...settings, spacing }
+				})}
+				margins={settings.margins || {}}
+				onMarginsChange={(margins) => setAttributes({
+					settings: { ...settings, margins }
+				})}
+				blockSpacing={settings.blockSpacing || {}}
+				onBlockSpacingChange={(blockSpacing) => setAttributes({
+					settings: { ...settings, blockSpacing }
+				})}
+				background={settings.backgroundColor}
+				onBackgroundChange={(backgroundColor) => setAttributes({
+					settings: { ...settings, backgroundColor }
+				})}
+				textColor={settings.textColor}
+				onTextColorChange={(textColor) => setAttributes({
+					settings: { ...settings, textColor }
+				})}
+				gradients={settings.gradients || {}}
+				onGradientsChange={(gradients) => setAttributes({
+					settings: { ...settings, gradients }
+				})}
+				typography={settings.typography || {}}
+				onTypographyChange={(typography) => setAttributes({
+					settings: { ...settings, typography }
+				})}
+				layout={settings.layout || {}}
+				onLayoutChange={(layout) => setAttributes({
+					settings: { ...settings, layout }
+				})}
+				effects={settings.effects || {}}
+				onEffectsChange={(effects) => setAttributes({
+					settings: { ...settings, effects }
+				})}
+				device={activeDevice}
+				presets={presets}
+				onPresetApply={handlePresetApply}
+				onResetAll={() => {
+					setAttributes({ 
+						settings: {
+							spacing: {},
+							margins: {},
+							blockSpacing: {},
+							typography: {},
+							layout: {},
+							effects: {},
+							gradients: {},
+							backgroundColor: '',
+							textColor: ''
 						}
-					}}
+					})
+				}}
+			/>
+
+			<PanelBody title={__('🚀 Advanced', 'tailwind-starter')} initialOpen={false}>
+				<div style={{
+					background: '#f0f9ff',
+					border: '1px solid #bae6fd',
+					borderRadius: '6px',
+					padding: '12px',
+					fontSize: '12px'
+				}}>
+					<strong>💎 Generated Classes:</strong>
+					<br />
+					<code style={{ wordBreak: 'break-all', fontSize: '10px' }}>
+						{allClasses || 'No custom styles yet'}
+					</code>
+				</div>
+			</PanelBody>
+		</>
+	)
+
+	return (
+		<>
+			<InspectorControls>
+				<SimpleInspectorTabs
+					variant="horizontal"
+					blockControls={blockControls}
+					generalControls={generalControls}
+					initialTab="block"
 				/>
 			</InspectorControls>
 

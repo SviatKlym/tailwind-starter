@@ -9,8 +9,8 @@ import {
 	TextControl,
 	__experimentalDivider as Divider
 } from '@wordpress/components';
-import { UltimateControlTabs, generateAllClasses, generateTailwindClasses, generateAllInlineStyles } from '../../utils/visual-controls.js';
-import { InspectorTabs } from '../../components/InspectorTabs.js';
+import { UltimateControlTabs, UltimateDeviceSelector, generateAllClasses, generateTailwindClasses, generateAllInlineStyles } from '../../utils/visual-controls.js';
+import { SimpleInspectorTabs } from '../../components/InspectorTabs.js';
 
 export default function Edit({ attributes, setAttributes }) {
 	const {
@@ -25,7 +25,8 @@ export default function Edit({ attributes, setAttributes }) {
 		hasOverlay,
 		overlayOpacity,
 		textAlignment,
-		visualSettings
+		visualSettings,
+		activeDevice
 	} = attributes;
 
 	// Generate visual classes from settings
@@ -50,86 +51,108 @@ export default function Edit({ attributes, setAttributes }) {
 		{ label: __('Right', 'tailwind-starter'), value: 'right' }
 	];
 
-	return (
+	// Enhanced preset styles for hero with CTA
+	const presets = {
+		modern: {
+			spacing: { base: { top: 12, right: 6, bottom: 12, left: 6 } },
+			typography: { base: { fontSize: 'text-2xl', fontWeight: 'font-bold', textAlign: 'text-center' } },
+			backgroundColor: 'bg-blue-600',
+			textColor: 'text-white'
+		},
+		minimal: {
+			spacing: { base: { top: 8, right: 4, bottom: 8, left: 4 } },
+			typography: { base: { fontSize: 'text-xl', fontWeight: 'font-normal', textAlign: 'text-left' } },
+			backgroundColor: 'bg-gray-50',
+			textColor: 'text-gray-900'
+		},
+		bold: {
+			spacing: { base: { top: 16, right: 8, bottom: 16, left: 8 } },
+			typography: { base: { fontSize: 'text-3xl', fontWeight: 'font-bold', textAlign: 'text-center' } },
+			backgroundColor: 'bg-black',
+			textColor: 'text-white'
+		}
+	}
+
+	const handlePresetApply = (presetName) => {
+		const preset = presets[presetName]
+		if (preset) {
+			setAttributes({ visualSettings: preset })
+		}
+	}
+
+	// Block-specific controls
+	const blockControls = (
 		<>
-			<InspectorControls>
-				<PanelBody title={__('Hero Settings', 'tailwind-starter')} initialOpen={true}>
-					<SelectControl
-						label={__('Layout', 'tailwind-starter')}
-						value={layout}
-						options={layoutOptions}
-						onChange={(value) => setAttributes({ layout: value })}
-					/>
-					
-					<SelectControl
-						label={__('Text Alignment', 'tailwind-starter')}
-						value={textAlignment}
-						options={alignmentOptions}
-						onChange={(value) => setAttributes({ textAlignment: value })}
-					/>
+			<PanelBody title={__('Hero Settings', 'tailwind-starter')} initialOpen={true}>
+				<SelectControl
+					label={__('Layout', 'tailwind-starter')}
+					value={layout}
+					options={layoutOptions}
+					onChange={(value) => setAttributes({ layout: value })}
+				/>
 
-					<Divider />
+				<Divider />
 
-					<h4>{__('Primary CTA', 'tailwind-starter')}</h4>
-					<TextControl
-						label={__('Button Text', 'tailwind-starter')}
-						value={primaryCta.text}
-						onChange={(value) => setAttributes({ 
-							primaryCta: { ...primaryCta, text: value }
-						})}
-					/>
-					<TextControl
-						label={__('Button URL', 'tailwind-starter')}
-						value={primaryCta.url}
-						onChange={(value) => setAttributes({ 
-							primaryCta: { ...primaryCta, url: value }
-						})}
-					/>
-					<ToggleControl
-						label={__('Open in new tab', 'tailwind-starter')}
-						checked={primaryCta.opensInNewTab}
-						onChange={(value) => setAttributes({ 
-							primaryCta: { ...primaryCta, opensInNewTab: value }
-						})}
-					/>
+				<h4>{__('Primary CTA', 'tailwind-starter')}</h4>
+				<TextControl
+					label={__('Button Text', 'tailwind-starter')}
+					value={primaryCta.text}
+					onChange={(value) => setAttributes({ 
+						primaryCta: { ...primaryCta, text: value }
+					})}
+				/>
+				<TextControl
+					label={__('Button URL', 'tailwind-starter')}
+					value={primaryCta.url}
+					onChange={(value) => setAttributes({ 
+						primaryCta: { ...primaryCta, url: value }
+					})}
+				/>
+				<ToggleControl
+					label={__('Open in new tab', 'tailwind-starter')}
+					checked={primaryCta.opensInNewTab}
+					onChange={(value) => setAttributes({ 
+						primaryCta: { ...primaryCta, opensInNewTab: value }
+					})}
+				/>
 
-					<Divider />
+				<Divider />
 
-					<ToggleControl
-						label={__('Show Secondary CTA', 'tailwind-starter')}
-						checked={showSecondaryCta}
-						onChange={(value) => setAttributes({ showSecondaryCta: value })}
-					/>
+				<ToggleControl
+					label={__('Show Secondary CTA', 'tailwind-starter')}
+					checked={showSecondaryCta}
+					onChange={(value) => setAttributes({ showSecondaryCta: value })}
+				/>
 
-					{showSecondaryCta && (
-						<>
-							<h4>{__('Secondary CTA', 'tailwind-starter')}</h4>
-							<TextControl
-								label={__('Button Text', 'tailwind-starter')}
-								value={secondaryCta.text}
-								onChange={(value) => setAttributes({ 
-									secondaryCta: { ...secondaryCta, text: value }
-								})}
-							/>
-							<TextControl
-								label={__('Button URL', 'tailwind-starter')}
-								value={secondaryCta.url}
-								onChange={(value) => setAttributes({ 
-									secondaryCta: { ...secondaryCta, url: value }
-								})}
-							/>
-							<ToggleControl
-								label={__('Open in new tab', 'tailwind-starter')}
-								checked={secondaryCta.opensInNewTab}
-								onChange={(value) => setAttributes({ 
-									secondaryCta: { ...secondaryCta, opensInNewTab: value }
-								})}
-							/>
-						</>
-					)}
-				</PanelBody>
+				{showSecondaryCta && (
+					<>
+						<h4>{__('Secondary CTA', 'tailwind-starter')}</h4>
+						<TextControl
+							label={__('Button Text', 'tailwind-starter')}
+							value={secondaryCta.text}
+							onChange={(value) => setAttributes({ 
+								secondaryCta: { ...secondaryCta, text: value }
+							})}
+						/>
+						<TextControl
+							label={__('Button URL', 'tailwind-starter')}
+							value={secondaryCta.url}
+							onChange={(value) => setAttributes({ 
+								secondaryCta: { ...secondaryCta, url: value }
+							})}
+						/>
+						<ToggleControl
+							label={__('Open in new tab', 'tailwind-starter')}
+							checked={secondaryCta.opensInNewTab}
+							onChange={(value) => setAttributes({ 
+								secondaryCta: { ...secondaryCta, opensInNewTab: value }
+							})}
+						/>
+					</>
+				)}
+			</PanelBody>
 
-				<PanelBody title={__('Background', 'tailwind-starter')} initialOpen={false}>
+			<PanelBody title={__('Background', 'tailwind-starter')} initialOpen={false}>
 					{layout === 'video' ? (
 						<>
 							<h4>{__('Background Video', 'tailwind-starter')}</h4>
@@ -206,54 +229,115 @@ export default function Edit({ attributes, setAttributes }) {
 							)}
 						</>
 					)}
-				</PanelBody>
+			</PanelBody>
+		</>
+	)
 
-				<PanelBody title={__('🎨 Visual Design Studio', 'tailwind-starter')} initialOpen={false}>
-					<UltimateControlTabs
-						spacing={visualSettings.spacing || {}}
-						onSpacingChange={(spacing) => setAttributes({
-							visualSettings: { ...visualSettings, spacing }
-						})}
-						margins={visualSettings.margins || {}}
-						onMarginsChange={(margins) => setAttributes({
-							visualSettings: { ...visualSettings, margins }
-						})}
-						blockSpacing={visualSettings.blockSpacing || {}}
-						onBlockSpacingChange={(blockSpacing) => setAttributes({
-							visualSettings: { ...visualSettings, blockSpacing }
-						})}
-						background={visualSettings.backgroundColor}
-						onBackgroundChange={(backgroundColor) => setAttributes({
-							visualSettings: { ...visualSettings, backgroundColor }
-						})}
-						textColor={visualSettings.textColor}
-						onTextColorChange={(textColor) => setAttributes({
-							visualSettings: { ...visualSettings, textColor }
-						})}
-						gradients={visualSettings.gradients || {}}
-						onGradientsChange={(gradients) => setAttributes({
-							visualSettings: { ...visualSettings, gradients }
-						})}
-						typography={visualSettings.typography || {}}
-						onTypographyChange={(typography) => setAttributes({
-							visualSettings: { ...visualSettings, typography }
-						})}
-						layout={visualSettings.layout || {}}
-						onLayoutChange={(layout) => setAttributes({
-							visualSettings: { ...visualSettings, layout }
-						})}
-						effects={visualSettings.effects || {}}
-						onEffectsChange={(effects) => setAttributes({
-							visualSettings: { ...visualSettings, effects }
-						})}
-						device="base"
-						presets={{}}
-						onPresetApply={(preset) => {
-							// Handle preset application
-							console.log('Applying preset:', preset);
-						}}
-					/>
-				</PanelBody>
+	// General visual controls
+	const generalControls = (
+		<>
+			<PanelBody title={__('📱 Responsive Design', 'tailwind-starter')} initialOpen={true}>
+				<UltimateDeviceSelector
+					activeDevice={activeDevice}
+					onChange={(device) => setAttributes({ activeDevice: device })}
+				/>
+				<div style={{ 
+					background: '#f0f9ff', 
+					border: '1px solid #bae6fd', 
+					borderRadius: '8px', 
+					padding: '12px', 
+					margin: '12px 0',
+					fontSize: '12px',
+					color: '#1e40af'
+				}}>
+					<strong>💡 Pro Tip:</strong> Start with "All" devices for your base design, then customize for mobile/tablet as needed!
+				</div>
+			</PanelBody>
+
+			<UltimateControlTabs
+				spacing={visualSettings.spacing || {}}
+				onSpacingChange={(spacing) => setAttributes({
+					visualSettings: { ...visualSettings, spacing }
+				})}
+				margins={visualSettings.margins || {}}
+				onMarginsChange={(margins) => setAttributes({
+					visualSettings: { ...visualSettings, margins }
+				})}
+				blockSpacing={visualSettings.blockSpacing || {}}
+				onBlockSpacingChange={(blockSpacing) => setAttributes({
+					visualSettings: { ...visualSettings, blockSpacing }
+				})}
+				background={visualSettings.backgroundColor}
+				onBackgroundChange={(backgroundColor) => setAttributes({
+					visualSettings: { ...visualSettings, backgroundColor }
+				})}
+				textColor={visualSettings.textColor}
+				onTextColorChange={(textColor) => setAttributes({
+					visualSettings: { ...visualSettings, textColor }
+				})}
+				gradients={visualSettings.gradients || {}}
+				onGradientsChange={(gradients) => setAttributes({
+					visualSettings: { ...visualSettings, gradients }
+				})}
+				typography={visualSettings.typography || {}}
+				onTypographyChange={(typography) => setAttributes({
+					visualSettings: { ...visualSettings, typography }
+				})}
+				layout={visualSettings.layout || {}}
+				onLayoutChange={(layout) => setAttributes({
+					visualSettings: { ...visualSettings, layout }
+				})}
+				effects={visualSettings.effects || {}}
+				onEffectsChange={(effects) => setAttributes({
+					visualSettings: { ...visualSettings, effects }
+				})}
+				device={activeDevice}
+				presets={presets}
+				onPresetApply={handlePresetApply}
+				onResetAll={() => {
+					setAttributes({ 
+						visualSettings: {
+							spacing: {},
+							margins: {},
+							blockSpacing: {},
+							typography: {},
+							layout: {},
+							effects: {},
+							gradients: {},
+							backgroundColor: '',
+							textColor: ''
+						}
+					})
+				}}
+			/>
+
+			<PanelBody title={__('🚀 Advanced', 'tailwind-starter')} initialOpen={false}>
+				<div style={{
+					background: '#f0f9ff',
+					border: '1px solid #bae6fd',
+					borderRadius: '6px',
+					padding: '12px',
+					fontSize: '12px'
+				}}>
+					<strong>💎 Generated Classes:</strong>
+					<br />
+					<code style={{ wordBreak: 'break-all', fontSize: '10px' }}>
+						{visualClasses || 'No custom styles yet'}
+					</code>
+				</div>
+			</PanelBody>
+		</>
+	)
+
+	return (
+		<>
+			<InspectorControls>
+				<SimpleInspectorTabs
+					variant="horizontal"
+					blockControls={blockControls}
+					generalControls={generalControls}
+					initialTab="block"
+				/>
 			</InspectorControls>
 
 			<div {...blockProps}>
