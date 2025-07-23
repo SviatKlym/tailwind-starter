@@ -22,7 +22,7 @@ import {
   generateAllClasses,
   generateTailwindClasses
 } from '../../utils/visual-controls.js'
-import { SimpleInspectorTabs } from '../../components/InspectorTabs.js'
+import { InspectorTabs } from '../../components/InspectorTabs.js'
 
 export default function Edit({ attributes, setAttributes }) {
   const {
@@ -660,7 +660,7 @@ export default function Edit({ attributes, setAttributes }) {
   return (
     <>
       <InspectorControls>
-        <SimpleInspectorTabs
+        <InspectorTabs
           variant="horizontal"
           blockControls={blockControls}
           generalControls={generalControls}

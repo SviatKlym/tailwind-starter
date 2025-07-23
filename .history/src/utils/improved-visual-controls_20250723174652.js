@@ -102,7 +102,7 @@ const improvedControlsCSS = `
   box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 .control-tabs .components-tab-panel__tabs .inspector-tabs__description{
-  padding: 0 8px 8px;
+  padding: 0 8px 8px
 }
 
 .spacing-grid {

@@ -10,6 +10,7 @@ import {
 	__experimentalDivider as Divider
 } from '@wordpress/components';
 import { UltimateControlTabs, generateAllClasses, generateTailwindClasses, generateAllInlineStyles } from '../../utils/visual-controls.js';
+import { InspectorTabs } from '../../components/InspectorTabs.js';
 
 export default function Edit({ attributes, setAttributes }) {
 	const {
