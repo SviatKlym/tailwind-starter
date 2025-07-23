@@ -1,0 +1,129 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "tailwind-starter/hero-section",
+  "version": "1.0.0",
+  "title": "Hero Section",
+  "category": "tailwind-starter",
+  "icon": "cover-image",
+  "description": "Modern hero section with multiple layout options for SaaS and service websites",
+  "keywords": [
+    "hero",
+    "banner",
+    "header",
+    "cta"
+  ],
+  "supports": {
+    "html": false,
+    "align": [
+      "wide",
+      "full"
+    ]
+  },
+  "attributes": {
+    "layout": {
+      "type": "string",
+      "default": "centered"
+    },
+    "headline": {
+      "type": "string",
+      "default": "Build Something Amazing"
+    },
+    "subheadline": {
+      "type": "string",
+      "default": "Join thousands of customers who trust our platform to grow their business faster and more efficiently."
+    },
+    "primaryCTA": {
+      "type": "object",
+      "default": {
+        "text": "Get Started Free",
+        "url": "#",
+        "style": "primary"
+      }
+    },
+    "secondaryCTA": {
+      "type": "object",
+      "default": {
+        "text": "Watch Demo",
+        "url": "#",
+        "style": "secondary"
+      }
+    },
+    "showSecondaryCTA": {
+      "type": "boolean",
+      "default": true
+    },
+    "backgroundImage": {
+      "type": "object",
+      "default": null
+    },
+    "backgroundColor": {
+      "type": "string",
+      "default": "bg-white"
+    },
+    "textColor": {
+      "type": "string",
+      "default": "text-gray-900"
+    },
+    "heroImage": {
+      "type": "object",
+      "default": null
+    },
+    "showTrustBar": {
+      "type": "boolean",
+      "default": false
+    },
+    "trustLogos": {
+      "type": "array",
+      "default": []
+    },
+    "trustText": {
+      "type": "string",
+      "default": "Trusted by 10,000+ companies worldwide"
+    },
+    "padding": {
+      "type": "object",
+      "default": {
+        "top": "large",
+        "bottom": "large"
+      }
+    },
+    "settings": {
+      "type": "object",
+      "default": {
+        "spacing": {
+          "base": {
+            "top": 8,
+            "right": 4,
+            "bottom": 8,
+            "left": 4
+          }
+        },
+        "typography": {
+          "base": {
+            "fontSize": "text-2xl",
+            "fontWeight": "font-bold",
+            "textAlign": "text-center"
+          }
+        },
+        "backgroundColor": "bg-white",
+        "textColor": "text-gray-900"
+      }
+    },
+    "activeDevice": {
+      "type": "string",
+      "default": "base"
+    }
+  },
+  "example": {
+    "attributes": {
+      "headline": "Transform Your Business Today",
+      "subheadline": "The all-in-one platform that helps businesses scale faster with powerful automation and insights.",
+      "layout": "split"
+    }
+  },
+  "textdomain": "tailwind-starter",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css"
+}

@@ -1,0 +1,191 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "tailwind-starter/before-after",
+  "version": "0.1.0",
+  "title": "Before After",
+  "category": "tailwind-starter",
+  "icon": "image-flip-horizontal",
+  "description": "Show comparison between two states with interactive slider or toggle functionality.",
+  "example": {},
+  "supports": {
+    "html": false,
+    "anchor": true
+  },
+  "attributes": {
+    "layout": {
+      "type": "string",
+      "default": "slider-comparison"
+    },
+    "beforeImage": {
+      "type": "object",
+      "default": {
+        "url": "",
+        "alt": "Before image",
+        "id": 0
+      }
+    },
+    "afterImage": {
+      "type": "object",
+      "default": {
+        "url": "",
+        "alt": "After image",
+        "id": 0
+      }
+    },
+    "beforeLabel": {
+      "type": "string",
+      "default": "Before"
+    },
+    "afterLabel": {
+      "type": "string",
+      "default": "After"
+    },
+    "showLabels": {
+      "type": "boolean",
+      "default": true
+    },
+    "labelPosition": {
+      "type": "string",
+      "default": "overlay"
+    },
+    "sliderPosition": {
+      "type": "number",
+      "default": 50
+    },
+    "sliderColor": {
+      "type": "string",
+      "default": "#ffffff"
+    },
+    "sliderThickness": {
+      "type": "number",
+      "default": 3
+    },
+    "handleStyle": {
+      "type": "string",
+      "default": "circle"
+    },
+    "handleSize": {
+      "type": "number",
+      "default": 40
+    },
+    "aspectRatio": {
+      "type": "string",
+      "default": "16:9"
+    },
+    "borderRadius": {
+      "type": "number",
+      "default": 8
+    },
+    "enableShadow": {
+      "type": "boolean",
+      "default": true
+    },
+    "animationSpeed": {
+      "type": "number",
+      "default": 300
+    },
+    "autoSlide": {
+      "type": "boolean",
+      "default": false
+    },
+    "autoSlideDelay": {
+      "type": "number",
+      "default": 3000
+    },
+    "toggleButtonText": {
+      "type": "string",
+      "default": "Toggle View"
+    },
+    "fadeDirection": {
+      "type": "string",
+      "default": "horizontal"
+    },
+    "enableKeyboard": {
+      "type": "boolean",
+      "default": true
+    },
+    "enableTouch": {
+      "type": "boolean",
+      "default": true
+    },
+    "sectionTitle": {
+      "type": "string",
+      "default": "Before & After"
+    },
+    "sectionSubtitle": {
+      "type": "string",
+      "default": "See the amazing transformation"
+    },
+    "showSectionHeader": {
+      "type": "boolean",
+      "default": true
+    },
+    "description": {
+      "type": "string",
+      "default": ""
+    },
+    "showDescription": {
+      "type": "boolean",
+      "default": false
+    },
+    "descriptionPosition": {
+      "type": "string",
+      "default": "bottom"
+    },
+    "enableFullscreen": {
+      "type": "boolean",
+      "default": false
+    },
+    "overlayOpacity": {
+      "type": "number",
+      "default": 80
+    },
+    "hoverEffect": {
+      "type": "string",
+      "default": "none"
+    },
+    "settings": {
+      "type": "object",
+      "default": {
+        "spacing": {
+          "base": {
+            "top": 8,
+            "right": 4,
+            "bottom": 8,
+            "left": 4
+          }
+        },
+        "margins": {
+          "base": {
+            "top": 0,
+            "right": 0,
+            "bottom": 0,
+            "left": 0
+          }
+        },
+        "typography": {
+          "base": {
+            "fontSize": "text-lg",
+            "fontWeight": "font-normal",
+            "textAlign": "text-center"
+          }
+        },
+        "backgroundColor": "bg-white",
+        "textColor": "text-gray-900",
+        "gradients": {},
+        "layout": {},
+        "effects": {}
+      }
+    },
+    "activeDevice": {
+      "type": "string",
+      "default": "base"
+    }
+  },
+  "textdomain": "tailwind-starter",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css",
+  "viewScript": "file:./frontend.js"
+}

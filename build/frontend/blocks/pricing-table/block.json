@@ -1,0 +1,143 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "tailwind-starter/pricing-table",
+  "version": "0.1.0",
+  "title": "Pricing Table",
+  "category": "tailwind-starter",
+  "icon": "money-alt",
+  "description": "Present pricing plans with features, highlighting, and call-to-action buttons.",
+  "example": {},
+  "supports": {
+    "html": false,
+    "anchor": true
+  },
+  "render": "file:./render.php",
+  "attributes": {
+    "layout": {
+      "type": "string",
+      "default": "three-tier"
+    },
+    "showToggle": {
+      "type": "boolean",
+      "default": false
+    },
+    "toggleLabel1": {
+      "type": "string",
+      "default": "Monthly"
+    },
+    "toggleLabel2": {
+      "type": "string",
+      "default": "Annual"
+    },
+    "currentToggle": {
+      "type": "string",
+      "default": "monthly"
+    },
+    "plans": {
+      "type": "array",
+      "default": [
+        {
+          "id": "basic",
+          "name": "Basic",
+          "description": "Perfect for getting started",
+          "monthlyPrice": "19",
+          "annualPrice": "190",
+          "currency": "$",
+          "period": "month",
+          "isPopular": false,
+          "features": [
+            "5 Projects",
+            "10GB Storage",
+            "Email Support",
+            "Basic Analytics"
+          ],
+          "ctaText": "Get Started",
+          "ctaUrl": "#"
+        },
+        {
+          "id": "pro",
+          "name": "Professional",
+          "description": "Best for growing businesses",
+          "monthlyPrice": "49",
+          "annualPrice": "490",
+          "currency": "$",
+          "period": "month",
+          "isPopular": true,
+          "features": [
+            "25 Projects",
+            "100GB Storage",
+            "Priority Support",
+            "Advanced Analytics",
+            "Team Collaboration",
+            "Custom Integrations"
+          ],
+          "ctaText": "Start Free Trial",
+          "ctaUrl": "#"
+        },
+        {
+          "id": "enterprise",
+          "name": "Enterprise",
+          "description": "For large organizations",
+          "monthlyPrice": "99",
+          "annualPrice": "990",
+          "currency": "$",
+          "period": "month",
+          "isPopular": false,
+          "features": [
+            "Unlimited Projects",
+            "1TB Storage",
+            "24/7 Phone Support",
+            "Custom Analytics",
+            "Advanced Security",
+            "API Access",
+            "Dedicated Manager"
+          ],
+          "ctaText": "Contact Sales",
+          "ctaUrl": "#"
+        }
+      ]
+    },
+    "settings": {
+      "type": "object",
+      "default": {
+        "spacing": {
+          "base": {
+            "top": 8,
+            "right": 4,
+            "bottom": 8,
+            "left": 4
+          }
+        },
+        "margins": {
+          "base": {
+            "top": 0,
+            "right": 0,
+            "bottom": 0,
+            "left": 0
+          }
+        },
+        "typography": {
+          "base": {
+            "fontSize": "text-lg",
+            "fontWeight": "font-normal",
+            "textAlign": "text-center"
+          }
+        },
+        "backgroundColor": "bg-white",
+        "textColor": "text-gray-900",
+        "gradients": {},
+        "layout": {},
+        "effects": {}
+      }
+    },
+    "activeDevice": {
+      "type": "string",
+      "default": "base"
+    }
+  },
+  "textdomain": "tailwind-starter",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css"
+}

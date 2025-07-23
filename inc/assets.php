@@ -10,6 +10,18 @@ function my_tailwind_starter_enqueue_assets() {
         file_exists($css_file) ? filemtime($css_file) : '1.0.0'
     );
     
+    // Enqueue frontend JavaScript with performance framework
+    $js_file = get_template_directory() . '/build/main.js';
+    if (file_exists($js_file)) {
+        wp_enqueue_script(
+            'tailwind-starter-frontend',
+            get_template_directory_uri() . '/build/main.js',
+            [],
+            filemtime($js_file),
+            true
+        );
+    }
+    
     // Visual controls styles are now included in the main Tailwind build
     // No need to load separate visual-controls.css
 }

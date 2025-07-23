@@ -1,0 +1,91 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "tailwind-starter/cta-section",
+  "version": "0.1.0",
+  "title": "CTA Section",
+  "category": "tailwind-starter",
+  "icon": "megaphone",
+  "description": "Design focused call-to-action sections with headlines, descriptions, and buttons.",
+  "example": {},
+  "supports": {
+    "html": false,
+    "anchor": true
+  },
+  "attributes": {
+    "layout": {
+      "type": "string",
+      "default": "centered"
+    },
+    "headline": {
+      "type": "string",
+      "default": "Ready to Get Started?"
+    },
+    "description": {
+      "type": "string",
+      "default": "Join thousands of satisfied customers who have transformed their business with our solution."
+    },
+    "primaryButton": {
+      "type": "object",
+      "default": {
+        "text": "Start Free Trial",
+        "url": "#",
+        "opensInNewTab": false,
+        "style": "primary"
+      }
+    },
+    "secondaryButton": {
+      "type": "object",
+      "default": {
+        "text": "Learn More",
+        "url": "#",
+        "opensInNewTab": false,
+        "style": "secondary"
+      }
+    },
+    "showSecondaryButton": {
+      "type": "boolean",
+      "default": true
+    },
+    "backgroundColor": {
+      "type": "string",
+      "default": "#3b82f6"
+    },
+    "backgroundImage": {
+      "type": "object",
+      "default": null
+    },
+    "hasOverlay": {
+      "type": "boolean",
+      "default": true
+    },
+    "overlayOpacity": {
+      "type": "number",
+      "default": 80
+    },
+    "textColor": {
+      "type": "string",
+      "default": "#ffffff"
+    },
+    "alignment": {
+      "type": "string",
+      "default": "center"
+    },
+    "visualElement": {
+      "type": "object",
+      "default": null
+    },
+    "showVisualElement": {
+      "type": "boolean",
+      "default": false
+    },
+    "visualSettings": {
+      "type": "object",
+      "default": {}
+    }
+  },
+  "textdomain": "tailwind-starter",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css"
+}

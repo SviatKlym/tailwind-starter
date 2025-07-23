@@ -1,0 +1,121 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "tailwind-starter/feature-grid",
+  "version": "1.0.0",
+  "title": "Feature Grid",
+  "category": "tailwind-starter",
+  "icon": "grid-view",
+  "description": "Showcase product features and benefits in an organized grid layout",
+  "keywords": [
+    "features",
+    "benefits",
+    "grid",
+    "services"
+  ],
+  "supports": {
+    "html": false,
+    "align": [
+      "wide",
+      "full"
+    ]
+  },
+  "attributes": {
+    "features": {
+      "type": "array",
+      "default": [
+        {
+          "id": "1",
+          "icon": "⚡",
+          "title": "Lightning Fast",
+          "description": "Get results in seconds, not minutes. Our optimized infrastructure ensures peak performance."
+        },
+        {
+          "id": "2",
+          "icon": "🔒",
+          "title": "Secure & Reliable",
+          "description": "Enterprise-grade security with 99.9% uptime guarantee. Your data is always protected."
+        },
+        {
+          "id": "3",
+          "icon": "📊",
+          "title": "Powerful Analytics",
+          "description": "Deep insights and real-time reporting to help you make data-driven decisions."
+        }
+      ]
+    },
+    "columns": {
+      "type": "number",
+      "default": 3
+    },
+    "iconStyle": {
+      "type": "string",
+      "default": "emoji"
+    },
+    "alignment": {
+      "type": "string",
+      "default": "center"
+    },
+    "layout": {
+      "type": "string",
+      "default": "card"
+    },
+    "backgroundColor": {
+      "type": "string",
+      "default": "bg-white"
+    },
+    "sectionTitle": {
+      "type": "string",
+      "default": ""
+    },
+    "sectionSubtitle": {
+      "type": "string",
+      "default": ""
+    },
+    "showSection": {
+      "type": "boolean",
+      "default": false
+    },
+    "padding": {
+      "type": "string",
+      "default": "large"
+    },
+    "settings": {
+      "type": "object",
+      "default": {
+        "spacing": {
+          "base": {
+            "top": 6,
+            "right": 6,
+            "bottom": 6,
+            "left": 6
+          }
+        },
+        "typography": {
+          "base": {
+            "fontSize": "text-lg",
+            "fontWeight": "font-medium",
+            "textAlign": "text-center"
+          }
+        },
+        "backgroundColor": "bg-white",
+        "textColor": "text-gray-900"
+      }
+    },
+    "activeDevice": {
+      "type": "string",
+      "default": "base"
+    }
+  },
+  "example": {
+    "attributes": {
+      "sectionTitle": "Why Choose Our Platform",
+      "sectionSubtitle": "Everything you need to succeed in one powerful solution",
+      "showSection": true
+    }
+  },
+  "textdomain": "tailwind-starter",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css"
+}

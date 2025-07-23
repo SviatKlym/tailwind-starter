@@ -1,5 +1,6 @@
 import { useBlockProps, RichText } from '@wordpress/block-editor'
 import { generateAllClasses, generateAllInlineStyles } from '../../utils/visual-controls.js'
+import { generatePerformanceConfig, generateDataAttributes } from '../../utils/block-config-generator.js'
 
 export default function Save({ attributes }) {
   const {
@@ -27,10 +28,23 @@ export default function Save({ attributes }) {
   const visualClasses = visualSettings ? generateAllClasses(visualSettings) : ''
   const visualStyles = visualSettings ? generateAllInlineStyles(visualSettings) : {}
 
+  // Generate performance configuration for the block
+  const performanceConfig = generatePerformanceConfig('hero-section', {
+    analytics: {
+      enabled: true,
+      trackViews: true,
+      trackClicks: true,
+      viewData: { section: 'hero-cta', layout },
+      clickData: { conversion_point: true }
+    }
+  })
+  const performanceAttrs = generateDataAttributes(performanceConfig)
+
   const blockProps = useBlockProps.save({
     className: `hero-with-cta hero-with-cta--${layout} ${backgroundColor} ${textColor} ${visualClasses}`.trim(),
     style: visualStyles,
-    'data-conversion-tracking': 'enabled'
+    'data-conversion-tracking': 'enabled',
+    ...performanceAttrs
   })
 
   // Helper function to generate optimized image URLs
