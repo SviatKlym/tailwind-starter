@@ -255,7 +255,7 @@ function format_animated_number($item, $enable_animations = true) {
     }
     
     return sprintf(
-        '<span class="animated-number-wrapper" %s>%s<span class="animated-number-value">%s</span>%s</span>',
+        '<span class="animated-number-wrapper" %s>%s<span class="counter-value">%s</span>%s</span>',
         $data_attrs,
         esc_html($prefix),
         esc_html($number),

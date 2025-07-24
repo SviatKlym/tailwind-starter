@@ -43,16 +43,19 @@ $show_section_header = (bool) ($attributes['showSectionHeader'] ?? false);
 $auto_rotate = (bool) ($attributes['autoRotate'] ?? false);
 $rotation_speed = intval($attributes['rotationSpeed'] ?? 5000);
 
+// Prepare block wrapper with visual controls integration
+$wrapper_data = prepare_block_wrapper($attributes, 'testimonial-showcase-block');
+
 // Handle empty testimonials
 if (empty($testimonials)) {
-    echo '<div class="testimonial-showcase-block no-testimonials text-center py-8">';
-    echo '<p class="text-gray-500">No testimonials to display.</p>';
+    echo '<div class="' . esc_attr($wrapper_data['classes']) . ' no-testimonials text-center py-8">';
+    echo '<p class="opacity-75">No testimonials to display.</p>';
     echo '</div>';
     return;
 }
 
-// Prepare block wrapper with visual controls integration
-$wrapper_data = prepare_block_wrapper($attributes, 'testimonial-showcase-block layout-' . esc_attr($layout) . ' text-' . esc_attr($text_alignment));
+// Update wrapper classes
+$wrapper_data['classes'] .= ' layout-' . esc_attr($layout) . ' text-' . esc_attr($text_alignment);
 
 // Determine grid columns classes
 $grid_classes = 'grid gap-8 ';
@@ -87,7 +90,7 @@ switch ($columns) {
                 </h2>
             <?php endif; ?>
             <?php if ($section_subtitle): ?>
-                <p class="section-subtitle text-gray-600 text-lg max-w-3xl mx-auto">
+                <p class="section-subtitle text-lg max-w-3xl mx-auto opacity-75">
                     <?php echo esc_html($section_subtitle); ?>
                 </p>
             <?php endif; ?>
@@ -107,19 +110,19 @@ switch ($columns) {
             // Apply card styling
             switch ($card_style) {
                 case 'elevated':
-                    $card_classes .= 'bg-white rounded-lg shadow-lg hover:shadow-xl p-6';
+                    $card_classes .= 'testimonial-card-elevated rounded-lg shadow-lg hover:shadow-xl p-6';
                     break;
                 case 'bordered':
-                    $card_classes .= 'bg-white rounded-lg border-2 border-gray-200 hover:border-blue-300 p-6';
+                    $card_classes .= 'testimonial-card-bordered rounded-lg border-2 p-6';
                     break;
                 case 'minimal':
                     $card_classes .= 'p-6';
                     break;
                 case 'gradient':
-                    $card_classes .= 'bg-gradient-to-br from-white to-gray-50 rounded-lg shadow-md hover:shadow-lg p-6';
+                    $card_classes .= 'testimonial-card-gradient rounded-lg shadow-md hover:shadow-lg p-6';
                     break;
                 default:
-                    $card_classes .= 'bg-white rounded-lg shadow-md hover:shadow-lg p-6';
+                    $card_classes .= 'rounded-lg shadow-md hover:shadow-lg p-6';
             }
             
             $testimonial_id = $testimonial['id'] ?? 'testimonial-' . $index;
@@ -128,7 +131,7 @@ switch ($columns) {
             $is_verified = (bool) ($testimonial['verified'] ?? false);
             
             if ($is_featured) {
-                $card_classes .= ' ring-2 ring-yellow-400 bg-yellow-50 relative';
+                $card_classes .= ' featured-badge ring-2 relative';
             }
             ?>
             
@@ -137,7 +140,7 @@ switch ($columns) {
                 
                 <?php if ($is_featured): ?>
                     <div class="absolute -top-2 -right-2">
-                        <span class="inline-flex items-center px-2 py-1 text-xs font-bold bg-yellow-400 text-yellow-900 rounded-full">
+                        <span class="featured-badge inline-flex items-center px-2 py-1 text-xs font-bold rounded-full">
                             ⭐ Featured
                         </span>
                     </div>
@@ -151,11 +154,11 @@ switch ($columns) {
                 
                 <div class="testimonial-content mb-6">
                     <?php if ($quote_style === 'blockquote'): ?>
-                        <blockquote class="text-lg text-gray-700 italic leading-relaxed">
+                        <blockquote class="text-lg italic leading-relaxed opacity-85">
                             "<?php echo esc_html($testimonial['content'] ?? ''); ?>"
                         </blockquote>
                     <?php else: ?>
-                        <div class="text-lg text-gray-700 leading-relaxed">
+                        <div class="text-lg leading-relaxed opacity-85">
                             "<?php echo esc_html($testimonial['content'] ?? ''); ?>"
                         </div>
                     <?php endif; ?>
@@ -171,10 +174,10 @@ switch ($columns) {
                     <?php endif; ?>
                     
                     <div class="author-details">
-                        <div class="author-name font-semibold text-gray-900 flex items-center">
+                        <div class="author-name font-semibold flex items-center">
                             <?php echo esc_html($testimonial['authorName'] ?? ''); ?>
                             <?php if ($show_verified_badge && $is_verified): ?>
-                                <span class="ml-2 text-blue-500" title="Verified Customer">
+                                <span class="ml-2" title="Verified Customer" style="color: currentColor; opacity: 0.8;">
                                     <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
                                         <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
                                     </svg>
@@ -183,19 +186,19 @@ switch ($columns) {
                         </div>
                         
                         <?php if ($show_company && !empty($testimonial['company'])): ?>
-                            <div class="author-company text-sm text-gray-600">
+                            <div class="author-company text-sm opacity-75">
                                 <?php echo esc_html($testimonial['company']); ?>
                             </div>
                         <?php endif; ?>
                         
                         <?php if ($show_location && !empty($testimonial['location'])): ?>
-                            <div class="author-location text-sm text-gray-500">
+                            <div class="author-location text-sm opacity-60">
                                 📍 <?php echo esc_html($testimonial['location']); ?>
                             </div>
                         <?php endif; ?>
                         
                         <?php if ($show_date && !empty($testimonial['date'])): ?>
-                            <div class="testimonial-date text-sm text-gray-500">
+                            <div class="testimonial-date text-sm opacity-60">
                                 <?php echo esc_html(date('M j, Y', strtotime($testimonial['date']))); ?>
                             </div>
                         <?php endif; ?>

@@ -191,14 +191,14 @@ export default function Edit({ attributes, setAttributes }) {
             value={subheadline}
             onChange={(value) => setAttributes({ subheadline: value })}
             placeholder={__('Enter subheadline...', 'tailwind-starter')}
-            className="text-lg sm:text-xl text-gray-600 mb-8 leading-relaxed max-w-3xl mx-auto"
+            className="text-lg sm:text-xl opacity-75 mb-8 leading-relaxed max-w-3xl mx-auto"
           />
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <button className="btn btn-primary btn-lg px-8 py-4">
+            <button className="btn-primary px-8 py-4 rounded-lg text-lg font-semibold inline-flex items-center">
               {primaryCTA.text}
             </button>
             {showSecondaryCTA && (
-              <button className="btn btn-secondary text-blue-500 border-b-blue-500 btn-lg px-8 py-4">
+              <button className="btn-outline px-8 py-4 rounded-lg text-lg font-semibold inline-flex items-center">
                 {secondaryCTA.text}
               </button>
             )}

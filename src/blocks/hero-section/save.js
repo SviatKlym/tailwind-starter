@@ -54,7 +54,7 @@ export default function save({ attributes }) {
   const allClasses = generateAllClasses(settings || {})
   
   const blockProps = useBlockProps.save({
-    className: `hero-section hero-section--${layout || 'centered'} ${backgroundColor || 'bg-white'} ${textColor || 'text-gray-900'} ${allClasses}`,
+    className: `hero-section hero-section--${layout || 'centered'} ${allClasses}`,
     'data-classes': allClasses,
     'data-all-classes': allClasses,
     ...generateDataAttributes(performanceConfig)
@@ -105,7 +105,7 @@ export default function save({ attributes }) {
           <RichText.Content
             tagName="h1"
             value={headline}
-            className={`hero-title ${titleFontSize || 'text-4xl md:text-6xl'} ${titleFontWeight || 'font-bold'} ${titleMarginBottom || 'mb-6'} ${textColor || 'text-gray-900'}`}
+            className={`hero-title ${titleFontSize || 'text-4xl md:text-6xl'} ${titleFontWeight || 'font-bold'} ${titleMarginBottom || 'mb-6'}`}
             data-animate="title"
           />
         )}
@@ -114,7 +114,7 @@ export default function save({ attributes }) {
           <RichText.Content
             tagName="h2"
             value={subheadline}
-            className={`hero-subtitle ${subtitleFontSize || 'text-xl md:text-2xl'} ${subtitleMarginBottom || 'mb-8'} ${contentMaxWidth || 'max-w-3xl'} mx-auto ${textColor === 'text-white' ? 'text-gray-200' : 'text-gray-600'}`}
+            className={`hero-subtitle ${subtitleFontSize || 'text-xl md:text-2xl'} ${subtitleMarginBottom || 'mb-8'} ${contentMaxWidth || 'max-w-3xl'} mx-auto opacity-75`}
             data-animate="subtitle"
             data-animate-delay="200"
           />
@@ -124,7 +124,7 @@ export default function save({ attributes }) {
           {primaryCTA?.text && primaryCTA?.url && (
             <a
               href={primaryCTA.url}
-              className={`hero-cta-primary inline-flex items-center ${primaryButtonStyle?.padding || 'px-8 py-4'} ${primaryButtonStyle?.backgroundColor || 'bg-blue-600'} ${primaryButtonStyle?.hoverBackgroundColor || 'hover:bg-blue-700'} ${primaryButtonStyle?.textColor || 'text-white'} ${primaryButtonStyle?.fontSize || 'text-lg'} ${primaryButtonStyle?.fontWeight || 'font-semibold'} ${primaryButtonStyle?.borderRadius || 'rounded-lg'} transition-all ${animationDuration || 'duration-200'} ${hoverEffects ? 'hover:scale-105' : ''} focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50`}
+              className={`hero-cta-primary btn-primary inline-flex items-center ${primaryButtonStyle?.padding || 'px-8 py-4'} ${primaryButtonStyle?.fontSize || 'text-lg'} ${primaryButtonStyle?.fontWeight || 'font-semibold'} ${primaryButtonStyle?.borderRadius || 'rounded-lg'} transition-all ${animationDuration || 'duration-200'} ${hoverEffects ? 'hover:scale-105' : ''} focus:outline-none focus:ring-4 focus:ring-opacity-50`}
               data-animate="cta"
               data-animate-delay="400"
               data-track-click="primary-cta"
@@ -139,7 +139,7 @@ export default function save({ attributes }) {
           {showSecondaryCTA && secondaryCTA?.text && secondaryCTA?.url && (
             <a
               href={secondaryCTA.url}
-              className={`hero-cta-secondary inline-flex items-center ${secondaryButtonStyle?.padding || 'px-8 py-4'} ${secondaryButtonStyle?.backgroundColor || 'bg-transparent'} ${secondaryButtonStyle?.borderStyle || 'border border-gray-300'} ${secondaryButtonStyle?.hoverBackgroundColor || 'hover:bg-gray-50'} ${secondaryButtonStyle?.textColor || 'text-gray-700'} ${secondaryButtonStyle?.fontSize || 'text-lg'} ${secondaryButtonStyle?.fontWeight || 'font-semibold'} ${secondaryButtonStyle?.borderRadius || 'rounded-lg'} transition-all ${animationDuration || 'duration-200'} focus:outline-none focus:ring-4 focus:ring-gray-500 focus:ring-opacity-50`}
+              className={`hero-cta-secondary btn-outline inline-flex items-center ${secondaryButtonStyle?.padding || 'px-8 py-4'} ${secondaryButtonStyle?.fontSize || 'text-lg'} ${secondaryButtonStyle?.fontWeight || 'font-semibold'} ${secondaryButtonStyle?.borderRadius || 'rounded-lg'} transition-all ${animationDuration || 'duration-200'} focus:outline-none focus:ring-4 focus:ring-opacity-50`}
               data-animate="cta"
               data-animate-delay="500"
               data-track-click="secondary-cta"

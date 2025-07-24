@@ -45,7 +45,7 @@ $section_subtitle = $attributes['sectionSubtitle'] ?? '';
                 </h2>
             <?php endif; ?>
             <?php if ($section_subtitle): ?>
-                <p class="section-subtitle text-gray-600 text-lg max-w-3xl mx-auto">
+                <p class="section-subtitle text-lg max-w-3xl mx-auto opacity-75">
                     <?php echo esc_html($section_subtitle); ?>
                 </p>
             <?php endif; ?>
@@ -127,19 +127,19 @@ $section_subtitle = $attributes['sectionSubtitle'] ?? '';
             $card_classes = 'post-card h-full flex flex-col transition-all duration-300 ';
             switch ($card_style) {
                 case 'elevated':
-                    $card_classes .= 'bg-white rounded-lg shadow-md hover:shadow-lg';
+                    $card_classes .= 'rounded-lg shadow-md hover:shadow-lg';
                     break;
                 case 'bordered':
-                    $card_classes .= 'bg-white rounded-lg border-2 border-gray-200 hover:border-blue-300';
+                    $card_classes .= 'rounded-lg border-2 hover:border-opacity-60';
                     break;
                 case 'minimal':
-                    $card_classes .= 'bg-white';
+                    $card_classes .= '';
                     break;
                 case 'gradient':
-                    $card_classes .= 'bg-gradient-to-br from-white to-gray-50 rounded-lg shadow-sm hover:shadow-md';
+                    $card_classes .= 'rounded-lg shadow-sm hover:shadow-md';
                     break;
                 default:
-                    $card_classes .= 'bg-white rounded-lg shadow-md hover:shadow-lg';
+                    $card_classes .= 'rounded-lg shadow-md hover:shadow-lg';
             }
 
             // Add hover effects
@@ -170,7 +170,7 @@ $section_subtitle = $attributes['sectionSubtitle'] ?? '';
                                     if (!empty($categories)) :
                                         foreach ($categories as $category) :
                                     ?>
-                                        <span class="inline-block px-2 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded-full mr-2">
+                                        <span class="inline-block px-2 py-1 text-xs font-medium rounded-full mr-2" style="background-color: currentColor; opacity: 0.1; color: currentColor;">
                                             <?php echo esc_html($category->name); ?>
                                         </span>
                                     <?php 
@@ -181,13 +181,13 @@ $section_subtitle = $attributes['sectionSubtitle'] ?? '';
                             <?php endif; ?>
 
                             <h3 class="post-title text-xl font-bold mb-3 text-<?php echo esc_attr($text_alignment); ?>">
-                                <a href="<?php the_permalink(); ?>" class="text-gray-900 hover:text-blue-600 transition-colors">
+                                <a href="<?php the_permalink(); ?>" class="hover:opacity-80 transition-colors" style="color: currentColor;">
                                     <?php the_title(); ?>
                                 </a>
                             </h3>
 
                             <?php if ($show_excerpt) : ?>
-                                <div class="post-excerpt text-gray-600 mb-4 flex-1 text-<?php echo esc_attr($text_alignment); ?>">
+                                <div class="post-excerpt mb-4 flex-1 text-<?php echo esc_attr($text_alignment); ?>" style="opacity: 0.75;">
                                     <?php 
                                     $excerpt = get_the_excerpt();
                                     if (strlen($excerpt) > $excerpt_length) {
@@ -198,7 +198,7 @@ $section_subtitle = $attributes['sectionSubtitle'] ?? '';
                                 </div>
                             <?php endif; ?>
 
-                            <div class="post-meta flex items-center justify-between text-sm text-gray-500 mt-auto">
+                            <div class="post-meta flex items-center justify-between text-sm mt-auto" style="opacity: 0.6;">
                                 <div class="meta-left flex items-center space-x-4">
                                     <?php if ($show_author) : ?>
                                         <span class="post-author flex items-center">
@@ -215,7 +215,7 @@ $section_subtitle = $attributes['sectionSubtitle'] ?? '';
                                 </div>
 
                                 <?php if ($show_read_more) : ?>
-                                    <a href="<?php the_permalink(); ?>" class="read-more-link text-blue-600 hover:text-blue-800 font-medium transition-colors">
+                                    <a href="<?php the_permalink(); ?>" class="read-more-link font-medium transition-colors hover:opacity-80" style="color: currentColor;">
                                         <?php echo esc_html($read_more_text); ?> →
                                     </a>
                                 <?php endif; ?>
@@ -228,8 +228,8 @@ $section_subtitle = $attributes['sectionSubtitle'] ?? '';
         else : 
         ?>
             <div class="no-posts text-center py-12">
-                <div class="text-gray-400 text-6xl mb-4">📝</div>
-                <p class="text-gray-500 text-lg"><?php echo esc_html($no_posts_message); ?></p>
+                <div class="text-6xl mb-4" style="opacity: 0.4;">📝</div>
+                <p class="text-lg" style="opacity: 0.5;"><?php echo esc_html($no_posts_message); ?></p>
             </div>
         <?php 
         endif;

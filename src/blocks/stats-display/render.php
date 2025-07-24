@@ -96,7 +96,7 @@ foreach ($stats as $stat) {
 // Handle empty stats
 if (empty($enhanced_stats)) {
     echo '<div class="stats-display-block no-stats text-center py-8">';
-    echo '<p class="text-gray-500">No statistics to display.</p>';
+    echo '<p class="opacity-60">No statistics to display.</p>';
     echo '</div>';
     return;
 }
@@ -148,7 +148,9 @@ switch ($number_size) {
 ?>
 
 <div class="<?php echo esc_attr($wrapper_data['classes']); ?>" 
-     <?php echo $wrapper_data['styles'] ? 'style="' . esc_attr($wrapper_data['styles']) . '"' : ''; ?>>
+     <?php echo $wrapper_data['styles'] ? 'style="' . esc_attr($wrapper_data['styles']) . '"' : ''; ?>
+     data-enable-animations="<?php echo $enable_animations ? 'true' : 'false'; ?>"
+     data-animation-trigger="<?php echo esc_attr($animation_trigger); ?>">
     
     <?php if ($show_section_header && ($section_title || $section_subtitle)): ?>
         <div class="section-header text-center mb-12">
@@ -158,7 +160,7 @@ switch ($number_size) {
                 </h2>
             <?php endif; ?>
             <?php if ($section_subtitle): ?>
-                <p class="section-subtitle text-gray-600 text-lg max-w-3xl mx-auto">
+                <p class="section-subtitle text-lg max-w-3xl mx-auto opacity-75">
                     <?php echo esc_html($section_subtitle); ?>
                 </p>
             <?php endif; ?>
@@ -169,46 +171,41 @@ switch ($number_size) {
         <?php foreach ($enhanced_stats as $index => $stat): ?>
             <?php 
             $is_highlighted = ($highlighted_stat === ($stat['id'] ?? ''));
-            $card_classes = 'stat-card transition-all duration-300 ';
+            $card_classes = ($is_highlighted ? 'stat-item-highlighted' : 'stat-item') . ' transition-all duration-300 ';
             
             // Apply card styling
             switch ($card_style) {
                 case 'elevated':
-                    $card_classes .= 'bg-white rounded-lg shadow-lg hover:shadow-xl p-6';
+                    $card_classes .= 'rounded-lg shadow-lg hover:shadow-xl p-6';
                     break;
                 case 'bordered':
-                    $card_classes .= 'bg-white rounded-lg border-2 border-gray-200 hover:border-blue-300 p-6';
+                    $card_classes .= 'rounded-lg border-2 hover:border-opacity-60 p-6';
                     break;
                 case 'minimal':
                     $card_classes .= 'p-6';
                     break;
                 case 'gradient':
-                    $card_classes .= 'bg-gradient-to-br from-white to-gray-50 rounded-lg shadow-md hover:shadow-lg p-6';
+                    $card_classes .= 'rounded-lg shadow-md hover:shadow-lg p-6';
                     break;
                 default:
-                    $card_classes .= 'bg-white rounded-lg p-6';
+                    $card_classes .= 'rounded-lg p-6';
             }
             
             if ($is_highlighted) {
-                $card_classes .= ' ring-2 ring-blue-500 bg-blue-50 relative overflow-hidden';
+                $card_classes .= ' ring-2 relative overflow-hidden featured-badge';
             }
             
-            // Apply color theme
-            $color_theme = $stat['color'] ?? 'blue';
-            $color_classes = [
-                'blue' => 'text-blue-600',
-                'green' => 'text-green-600',
-                'purple' => 'text-purple-600',
-                'red' => 'text-red-600',
-                'orange' => 'text-orange-600',
-                'gray' => 'text-gray-600'
-            ];
-            $stat_color_class = $color_classes[$color_theme] ?? $color_classes['blue'];
+            // Use currentColor for theming
+            $stat_color_class = '';
             ?>
             
             <div class="<?php echo esc_attr($card_classes); ?>" 
                  data-stat-id="<?php echo esc_attr($stat['id'] ?? ''); ?>"
-                 data-realtime="<?php echo ($stat['realtime'] ?? false) ? 'true' : 'false'; ?>">
+                 data-realtime="<?php echo ($stat['realtime'] ?? false) ? 'true' : 'false'; ?>"
+                 data-target-number="<?php echo esc_attr($stat['number'] ?? '0'); ?>"
+                 data-prefix="<?php echo esc_attr($stat['prefix'] ?? ''); ?>"
+                 data-suffix="<?php echo esc_attr($stat['suffix'] ?? ''); ?>"
+                 data-animation-duration="<?php echo esc_attr($stat['animationDuration'] ?? 2000); ?>">
                 
                 <?php if ($is_highlighted): ?>
                     <div class="absolute top-0 right-0 w-16 h-16 opacity-10">
@@ -225,7 +222,7 @@ switch ($number_size) {
                                  alt="<?php echo esc_attr($stat['label'] ?? ''); ?>" 
                                  class="w-12 h-12 object-contain">
                         <?php else: ?>
-                            <div class="icon-emoji text-4xl <?php echo esc_attr($stat_color_class); ?>">
+                            <div class="icon-emoji text-4xl" style="color: currentColor;">
                                 <?php echo esc_html($stat['icon']); ?>
                             </div>
                         <?php endif; ?>
@@ -233,24 +230,24 @@ switch ($number_size) {
                 <?php endif; ?>
                 
                 <div class="stat-content text-center">
-                    <div class="<?php echo esc_attr($number_classes . ' ' . $stat_color_class); ?>">
+                    <div class="<?php echo esc_attr($number_classes); ?>" style="color: currentColor;">
                         <?php echo format_animated_number($stat, $enable_animations); ?>
                     </div>
                     
-                    <div class="stat-label text-lg font-semibold text-gray-900 mt-2 mb-2">
+                    <div class="stat-label text-lg font-semibold mt-2 mb-2">
                         <?php echo esc_html($stat['label'] ?? ''); ?>
                     </div>
                     
                     <?php if ($show_descriptions && !empty($stat['description'])): ?>
-                        <div class="stat-description text-gray-600 text-sm leading-relaxed">
+                        <div class="stat-description text-sm leading-relaxed opacity-75">
                             <?php echo esc_html($stat['description']); ?>
                         </div>
                     <?php endif; ?>
                     
                     <?php if (isset($stat['realtime']) && $stat['realtime']): ?>
                         <div class="realtime-indicator mt-3">
-                            <span class="inline-flex items-center px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded-full">
-                                <span class="w-1.5 h-1.5 bg-green-400 rounded-full mr-1 animate-pulse"></span>
+                            <span class="inline-flex items-center px-2 py-1 text-xs font-medium rounded-full" style="background-color: currentColor; opacity: 0.1; color: currentColor;">
+                                <span class="w-1.5 h-1.5 rounded-full mr-1 animate-pulse" style="background-color: currentColor;"></span>
                                 Live Data
                             </span>
                         </div>

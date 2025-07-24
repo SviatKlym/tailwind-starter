@@ -6,22 +6,25 @@ export default function save({ attributes }) {
   const {
     slides,
     autoplay,
-    autoplaySpeed,
-    slidesPerView,
-    slidesPerGroup,
-    spaceBetween,
-    infinite,
+    autoplayDelay,
     showNavigation,
     showPagination,
-    enableLazyLoading,
-    enableTouchGestures,
-    enableKeyboard,
-    fadeTransition,
+    showScrollbar,
+    loop,
+    slidesPerView,
+    spaceBetween,
+    effect,
+    speed,
     pauseOnHover,
-    adaptiveHeight,
     centeredSlides,
-    title,
-    subtitle,
+    freeMode,
+    sliderHeight,
+    navigationStyle,
+    paginationStyle,
+    sectionTitle,
+    sectionSubtitle,
+    showSectionHeader,
+    enableLazyLoading,
     backgroundColor,
     settings
   } = attributes
@@ -58,17 +61,21 @@ export default function save({ attributes }) {
     style: visualStyles,
     ...generateDataAttributes(performanceConfig),
     'data-autoplay': autoplay || false,
-    'data-autoplay-speed': autoplaySpeed || 3000,
+    'data-autoplay-delay': autoplayDelay || 5000,
+    'data-show-navigation': showNavigation || true,
+    'data-show-pagination': showPagination || true,
+    'data-show-scrollbar': showScrollbar || false,
+    'data-loop': loop !== false,
     'data-slides-per-view': slidesPerView || 1,
-    'data-slides-per-group': slidesPerGroup || 1,
-    'data-space-between': spaceBetween || 0,
-    'data-infinite': infinite !== false,
-    'data-fade-transition': fadeTransition || false,
+    'data-space-between': spaceBetween || 30,
+    'data-effect': effect || 'slide',
+    'data-speed': speed || 600,
     'data-pause-on-hover': pauseOnHover !== false,
-    'data-adaptive-height': adaptiveHeight || false,
     'data-centered-slides': centeredSlides || false,
-    'data-enable-touch': enableTouchGestures !== false,
-    'data-enable-keyboard': enableKeyboard !== false
+    'data-free-mode': freeMode || false,
+    'data-slider-height': sliderHeight || 'auto',
+    'data-navigation-style': navigationStyle || 'arrows',
+    'data-pagination-style': paginationStyle || 'bullets'
   })
 
   // Helper function for optimized slide images
@@ -190,21 +197,17 @@ export default function save({ attributes }) {
   return (
     <section {...blockProps}>
       {/* Header */}
-      {(title || subtitle) && (
+      {showSectionHeader && (sectionTitle || sectionSubtitle) && (
         <div className="slider-header text-center mb-12" data-animate="header">
-          {title && (
-            <RichText.Content
-              tagName="h2"
-              value={title}
-              className="slider-title text-3xl md:text-4xl font-bold text-gray-900 mb-4"
-            />
+          {sectionTitle && (
+            <h2 className="slider-title text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              {sectionTitle}
+            </h2>
           )}
-          {subtitle && (
-            <RichText.Content
-              tagName="p"
-              value={subtitle}
-              className="slider-subtitle text-lg text-gray-600 max-w-2xl mx-auto"
-            />
+          {sectionSubtitle && (
+            <p className="slider-subtitle text-lg text-gray-600 max-w-2xl mx-auto">
+              {sectionSubtitle}
+            </p>
           )}
         </div>
       )}
@@ -212,23 +215,13 @@ export default function save({ attributes }) {
       {/* Slider container */}
       <div className="slider-container relative" data-animate="slider" data-animate-delay="200">
         
-        {/* Slides wrapper */}
-        <div 
-          className="slider-wrapper relative overflow-hidden"
-          data-slider-track
-        >
-          <div className="slider-track flex transition-transform duration-300 ease-out">
+        {/* Swiper container */}
+        <div className="swiper">
+          <div className="swiper-wrapper">
             {slides.map((slide, index) => (
               <div
                 key={slide.id || index}
-                className={`slide-wrapper flex-shrink-0 ${
-                  slidesPerView === 1 ? 'w-full' :
-                  slidesPerView === 2 ? 'w-1/2' :
-                  slidesPerView === 3 ? 'w-1/3' :
-                  slidesPerView === 4 ? 'w-1/4' :
-                  'w-full'
-                }`}
-                style={{ paddingRight: spaceBetween ? `${spaceBetween}px` : undefined }}
+                className="swiper-slide"
               >
                 {renderSlide(slide, index)}
               </div>
@@ -239,53 +232,21 @@ export default function save({ attributes }) {
         {/* Navigation arrows */}
         {showNavigation && slides.length > (slidesPerView || 1) && (
           <>
-            <button 
-              className="slider-prev absolute left-4 top-1/2 transform -translate-y-1/2 w-12 h-12 bg-white hover:bg-gray-50 rounded-full shadow-lg flex items-center justify-center text-gray-600 hover:text-gray-900 transition-all duration-200 z-10"
-              aria-label="Previous slide"
-              data-slider-prev
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
-              </svg>
-            </button>
-            <button 
-              className="slider-next absolute right-4 top-1/2 transform -translate-y-1/2 w-12 h-12 bg-white hover:bg-gray-50 rounded-full shadow-lg flex items-center justify-center text-gray-600 hover:text-gray-900 transition-all duration-200 z-10"
-              aria-label="Next slide"
-              data-slider-next
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
-              </svg>
-            </button>
+            <div className="swiper-button-prev"></div>
+            <div className="swiper-button-next"></div>
           </>
         )}
+        
+        {/* Pagination */}
+        {showPagination && (
+          <div className="swiper-pagination"></div>
+        )}
+        
+        {/* Scrollbar */}
+        {showScrollbar && (
+          <div className="swiper-scrollbar"></div>
+        )}
       </div>
-
-      {/* Pagination dots */}
-      {showPagination && slides.length > 1 && (
-        <div className="slider-pagination flex justify-center mt-8 gap-2" data-slider-pagination>
-          {slides.map((_, index) => (
-            <button
-              key={index}
-              className="pagination-dot w-3 h-3 rounded-full bg-gray-300 hover:bg-blue-600 transition-colors duration-200"
-              aria-label={`Go to slide ${index + 1}`}
-              data-slide-index={index}
-            />
-          ))}
-        </div>
-      )}
-
-      {/* Progress bar (for autoplay) */}
-      {autoplay && (
-        <div className="slider-progress mt-4">
-          <div className="progress-track w-full h-1 bg-gray-200 rounded-full overflow-hidden">
-            <div 
-              className="progress-fill h-full bg-blue-600 rounded-full transition-all ease-linear"
-              data-slider-progress
-            />
-          </div>
-        </div>
-      )}
     </section>
   )
 } 

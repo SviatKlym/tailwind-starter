@@ -20,7 +20,7 @@
 	}
 
 	// Counter Animation Layout
-	&.stats-counter-animation {
+	&.layout-counter-animation {
 		.stat-item {
 			background: white;
 			border-radius: 0.5rem;
@@ -48,7 +48,7 @@
 	}
 
 	// Icon Stats Layout
-	&.stats-icon-stats {
+	&.layout-icon-stats {
 		.stat-item {
 			background: white;
 			border-radius: 0.5rem;
@@ -76,7 +76,7 @@
 	}
 
 	// Simple Grid Layout
-	&.stats-simple-grid {
+	&.layout-simple-grid {
 		.stat-item {
 			transition: all 0.3s ease;
 			border-radius: 0.5rem;
@@ -94,7 +94,7 @@
 	}
 
 	// Highlighted Single Layout
-	&.stats-highlighted-single {
+	&.layout-highlighted-single {
 		.stat-item-highlighted {
 			background: white;
 			border-radius: 1rem;

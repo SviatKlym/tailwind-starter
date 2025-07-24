@@ -39,7 +39,16 @@
       "Bash(if grep -q \"\\.\\.\\.settings\" \"$file\")",
       "Bash(echo:*)",
       "Bash(if grep -q \"settings: { ...settings,\" \"$file\")",
-      "Bash(chmod:*)"
+      "Bash(chmod:*)",
+      "Bash(npm uninstall:*)",
+      "Bash(npm cache clean:*)",
+      "Bash(npx wp-scripts:*)",
+      "Bash(npm:*)",
+      "Bash(npx @wordpress/scripts:*)",
+      "Bash(cmd.exe /C \"npx tailwindcss -i src\\style.css -o build\\main.css --minify\")",
+      "Bash(do if [ -f \"src/blocks/$block/index.js\" ])",
+      "Bash(then cp \"src/blocks/$block/index.js\" \"build/blocks/$block/index.js\")",
+      "Bash(true)"
     ],
     "deny": []
   }

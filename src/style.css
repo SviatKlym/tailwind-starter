@@ -84,6 +84,39 @@ h1, h2, h3, h4, h5, h6 {
   opacity: 0.1;
 }
 
+/* Testimonial card styles that inherit colors */
+.testimonial-card-elevated {
+  background-color: white;
+}
+
+.testimonial-card-bordered {
+  background-color: white;
+  border-color: currentColor;
+  opacity: 0.3;
+}
+
+.testimonial-card-bordered:hover {
+  opacity: 0.6;
+}
+
+.testimonial-card-gradient {
+  background: linear-gradient(135deg, white, currentColor);
+  background-color: white;
+}
+
+/* Featured testimonial cards */
+.testimonial-card.featured-badge {
+  background-color: currentColor;
+  opacity: 0.05;
+  border-color: currentColor;
+}
+
+.testimonial-card .featured-badge {
+  background-color: currentColor;
+  color: white;
+  opacity: 1;
+}
+
 /* WordPress block alignment fixes */
 .alignfull {
   width: 100vw !important;

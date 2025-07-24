@@ -82,13 +82,13 @@ $section_subtitle = $attributes['sectionSubtitle'] ?? '';
             }
         ?>
             <?php if ($show_toggle) : ?>
-                <div class="billing-toggle flex justify-center mb-12">
+                <div class="billing-toggle flex justify-center mb-12" data-toggle-pricing>
                     <div class="relative bg-gray-100 rounded-lg p-1">
                         <div class="flex space-x-1">
-                            <button class="<?php echo $current_toggle === 'monthly' ? 'toggle-active shadow-sm' : 'opacity-75'; ?> px-4 py-2 text-sm font-medium rounded-md transition-all">
+                            <button class="<?php echo $current_toggle === 'monthly' ? 'toggle-active bg-white text-blue-600 shadow' : 'text-gray-600'; ?> px-4 py-2 text-sm font-medium rounded-md transition-all" data-period="monthly">
                                 <?php echo esc_html($toggle_label1); ?>
                             </button>
-                            <button class="<?php echo $current_toggle === 'annual' ? 'toggle-active shadow-sm' : 'opacity-75'; ?> px-4 py-2 text-sm font-medium rounded-md transition-all">
+                            <button class="<?php echo $current_toggle === 'annual' ? 'toggle-active bg-white text-blue-600 shadow' : 'text-gray-600'; ?> px-4 py-2 text-sm font-medium rounded-md transition-all" data-period="annual">
                                 <?php echo esc_html($toggle_label2); ?>
                                 <span class="ml-1 text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">Save 20%</span>
                             </button>
@@ -149,10 +149,14 @@ $section_subtitle = $attributes['sectionSubtitle'] ?? '';
                                     <span class="currency text-2xl font-semibold text-gray-900">
                                         <?php echo esc_html($currency); ?>
                                     </span>
-                                    <span class="price text-5xl font-bold text-gray-900">
+                                    <span class="price text-5xl font-bold text-gray-900" 
+                                          data-monthly-price="<?php echo esc_attr($monthly_price); ?>" 
+                                          data-annual-price="<?php echo esc_attr($annual_price); ?>">
                                         <?php echo esc_html($display_price); ?>
                                     </span>
-                                    <span class="period text-lg text-gray-600">
+                                    <span class="period text-lg text-gray-600" 
+                                          data-monthly-period="<?php echo esc_attr($period); ?>" 
+                                          data-annual-period="year">
                                         /<?php echo esc_html($display_period); ?>
                                     </span>
                                 </div>

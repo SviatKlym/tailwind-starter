@@ -52,7 +52,21 @@ export default function save({ attributes }) {
   const blockProps = useBlockProps.save({
     className: `before-after-block orientation-${orientation || 'horizontal'} ${backgroundColor || ''} ${visualClasses}`.trim(),
     style: visualStyles,
-    ...generateDataAttributes(performanceConfig)
+    ...generateDataAttributes(performanceConfig),
+    'data-attributes': JSON.stringify({
+      layout: attributes.layout || 'slider-comparison',
+      sliderPosition: sliderPosition || 50,
+      sliderColor: attributes.sliderColor,
+      sliderThickness: attributes.sliderThickness,
+      handleSize: attributes.handleSize,
+      handleStyle: attributes.handleStyle,
+      enableKeyboard: enableKeyboard !== false,
+      enableTouch: enableTouch !== false,
+      enableFullscreen: attributes.enableFullscreen,
+      autoSlide: attributes.autoSlide,
+      autoSlideDelay: attributes.autoSlideDelay,
+      toggleButtonText: attributes.toggleButtonText
+    })
   })
 
   // Helper function for optimized images
@@ -118,21 +132,13 @@ export default function save({ attributes }) {
 
       {/* Comparison container */}
       <div 
-        className="before-after-container relative max-w-4xl mx-auto bg-gray-200 rounded-lg overflow-hidden cursor-grab active:cursor-grabbing"
+        className="comparison-container relative max-w-4xl mx-auto bg-gray-200 rounded-lg overflow-hidden cursor-grab active:cursor-grabbing"
         data-animate="comparison"
         data-animate-delay="400"
-        data-slider-position={sliderPosition || 50}
-        data-animation-speed={animationSpeed || 300}
-        data-enable-keyboard={enableKeyboard !== false}
-        data-enable-touch={enableTouch !== false}
-        data-enable-zoom={enableZoom || false}
-        tabIndex="0"
-        role="img"
-        aria-label="Before and after image comparison"
       >
         
         {/* Before image */}
-        <div className="before-image-container absolute inset-0">
+        <div className="before-image absolute inset-0">
           {renderOptimizedImage(beforeImage, beforeImage?.alt || 'Before image', 'before')}
           
           {/* Before label */}
@@ -145,8 +151,7 @@ export default function save({ attributes }) {
 
         {/* After image (clipped) */}
         <div 
-          className="after-image-container absolute inset-0"
-          data-after-container
+          className="after-image absolute inset-0"
           style={{ clipPath: `inset(0 ${100 - (sliderPosition || 50)}% 0 0)` }}
         >
           {renderOptimizedImage(afterImage, afterImage?.alt || 'After image', 'after')}
@@ -159,20 +164,20 @@ export default function save({ attributes }) {
           )}
         </div>
 
+        {/* Slider line */}
+        <div 
+          className="slider-line absolute top-0 bottom-0 w-1 bg-white shadow-lg z-10"
+          style={{ left: `${sliderPosition || 50}%` }}
+        />
+        
         {/* Slider handle */}
         <div 
-          className={`slider-handle absolute top-0 bottom-0 w-1 bg-white shadow-lg cursor-col-resize z-10 ${
-            handleStyle === 'circle' ? 'rounded-full' : ''
-          }`}
-          data-handle
-          style={{ left: `${sliderPosition || 50}%`, transform: 'translateX(-50%)' }}
+          className="slider-handle absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-white rounded-full shadow-lg flex items-center justify-center cursor-col-resize z-20"
+          style={{ left: `${sliderPosition || 50}%` }}
         >
-          {/* Handle icon */}
-          <div className="handle-icon absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-white rounded-full shadow-lg flex items-center justify-center">
-            <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 9l4-4 4 4m0 6l-4 4-4-4" />
-            </svg>
-          </div>
+          <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 9l4-4 4 4m0 6l-4 4-4-4" />
+          </svg>
         </div>
 
         {/* Fullscreen button */}
