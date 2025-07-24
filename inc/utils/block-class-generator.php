@@ -184,7 +184,20 @@ function generate_tailwind_classes($settings, $device = 'base') {
  */
 function generate_all_classes($settings) {
     if (!is_array($settings)) {
-        return '';
+        $settings = [];
+    }
+    
+    // Apply default settings if empty to ensure proper styling
+    if (empty($settings) || (!isset($settings['spacing']) && !isset($settings['blockSpacing']))) {
+        $settings = array_merge([
+            'blockSpacing' => [
+                'base' => [
+                    'variation' => 'balanced'  // This provides default mb-10 p-5 classes
+                ]
+            ],
+            'backgroundColor' => $settings['backgroundColor'] ?? '',
+            'textColor' => $settings['textColor'] ?? ''
+        ], $settings);
     }
     
     $all_classes = [];

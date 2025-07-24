@@ -53,9 +53,189 @@ $section_subtitle = $attributes['sectionSubtitle'] ?? '';
     <?php endif; ?>
     
     <div class="recent-posts-content">
-        <\!-- Block-specific content will be implemented based on block requirements -->
-        <p class="text-center text-gray-500">
-            Enhanced recent-posts block rendering - Ready for customization
-        </p>
+        <?php
+        // Extract additional attributes
+        $posts_per_page = intval($attributes['postsPerPage'] ?? 6);
+        $columns = intval($attributes['columns'] ?? 3);
+        $categories = $attributes['categories'] ?? [];
+        $tags = $attributes['tags'] ?? [];
+        $show_featured_image = (bool) ($attributes['showFeaturedImage'] ?? true);
+        $show_excerpt = (bool) ($attributes['showExcerpt'] ?? true);
+        $show_author = (bool) ($attributes['showAuthor'] ?? true);
+        $show_date = (bool) ($attributes['showDate'] ?? true);
+        $show_categories = (bool) ($attributes['showCategories'] ?? true);
+        $show_read_more = (bool) ($attributes['showReadMore'] ?? true);
+        $exclude_current = (bool) ($attributes['excludeCurrentPost'] ?? true);
+        $order_by = $attributes['orderBy'] ?? 'date';
+        $order = $attributes['order'] ?? 'desc';
+        $card_style = $attributes['cardStyle'] ?? 'elevated';
+        $hover_effect = $attributes['hoverEffect'] ?? 'lift';
+        $text_alignment = $attributes['textAlignment'] ?? 'left';
+        $excerpt_length = intval($attributes['excerptLength'] ?? 150);
+        $read_more_text = $attributes['readMoreText'] ?? 'Read More';
+        $no_posts_message = $attributes['noPostsMessage'] ?? 'No posts found.';
+
+        // Build query arguments
+        $query_args = [
+            'post_type' => 'post',
+            'post_status' => 'publish',
+            'posts_per_page' => $posts_per_page,
+            'orderby' => $order_by,
+            'order' => $order,
+            'ignore_sticky_posts' => true,
+        ];
+
+        // Exclude current post if on single post page
+        if ($exclude_current && is_single()) {
+            $query_args['post__not_in'] = [get_the_ID()];
+        }
+
+        // Add category filter
+        if (!empty($categories)) {
+            $query_args['category__in'] = array_map('intval', $categories);
+        }
+
+        // Add tag filter
+        if (!empty($tags)) {
+            $query_args['tag__in'] = array_map('intval', $tags);
+        }
+
+        // Execute query
+        $recent_posts = new WP_Query($query_args);
+
+        if ($recent_posts->have_posts()) :
+            // Determine grid classes
+            $grid_classes = 'grid gap-6 ';
+            switch ($columns) {
+                case 1:
+                    $grid_classes .= 'grid-cols-1';
+                    break;
+                case 2:
+                    $grid_classes .= 'grid-cols-1 md:grid-cols-2';
+                    break;
+                case 3:
+                    $grid_classes .= 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3';
+                    break;
+                case 4:
+                    $grid_classes .= 'grid-cols-1 md:grid-cols-2 lg:grid-cols-4';
+                    break;
+                default:
+                    $grid_classes .= 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3';
+            }
+
+            // Card styling classes
+            $card_classes = 'post-card h-full flex flex-col transition-all duration-300 ';
+            switch ($card_style) {
+                case 'elevated':
+                    $card_classes .= 'bg-white rounded-lg shadow-md hover:shadow-lg';
+                    break;
+                case 'bordered':
+                    $card_classes .= 'bg-white rounded-lg border-2 border-gray-200 hover:border-blue-300';
+                    break;
+                case 'minimal':
+                    $card_classes .= 'bg-white';
+                    break;
+                case 'gradient':
+                    $card_classes .= 'bg-gradient-to-br from-white to-gray-50 rounded-lg shadow-sm hover:shadow-md';
+                    break;
+                default:
+                    $card_classes .= 'bg-white rounded-lg shadow-md hover:shadow-lg';
+            }
+
+            // Add hover effects
+            if ($hover_effect === 'lift') {
+                $card_classes .= ' hover:-translate-y-2';
+            } elseif ($hover_effect === 'scale') {
+                $card_classes .= ' hover:scale-105';
+            }
+        ?>
+            <div class="<?php echo esc_attr($grid_classes); ?>">
+                <?php while ($recent_posts->have_posts()) : $recent_posts->the_post(); ?>
+                    <article class="<?php echo esc_attr($card_classes); ?>">
+                        <?php if ($show_featured_image && has_post_thumbnail()) : ?>
+                            <div class="post-thumbnail">
+                                <a href="<?php the_permalink(); ?>" class="block overflow-hidden rounded-t-lg">
+                                    <?php the_post_thumbnail('large', [
+                                        'class' => 'w-full h-48 object-cover transition-transform duration-300 hover:scale-110'
+                                    ]); ?>
+                                </a>
+                            </div>
+                        <?php endif; ?>
+
+                        <div class="post-content p-6 flex-1 flex flex-col">
+                            <?php if ($show_categories) : ?>
+                                <div class="post-categories mb-3">
+                                    <?php 
+                                    $categories = get_the_category();
+                                    if (!empty($categories)) :
+                                        foreach ($categories as $category) :
+                                    ?>
+                                        <span class="inline-block px-2 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded-full mr-2">
+                                            <?php echo esc_html($category->name); ?>
+                                        </span>
+                                    <?php 
+                                        endforeach;
+                                    endif; 
+                                    ?>
+                                </div>
+                            <?php endif; ?>
+
+                            <h3 class="post-title text-xl font-bold mb-3 text-<?php echo esc_attr($text_alignment); ?>">
+                                <a href="<?php the_permalink(); ?>" class="text-gray-900 hover:text-blue-600 transition-colors">
+                                    <?php the_title(); ?>
+                                </a>
+                            </h3>
+
+                            <?php if ($show_excerpt) : ?>
+                                <div class="post-excerpt text-gray-600 mb-4 flex-1 text-<?php echo esc_attr($text_alignment); ?>">
+                                    <?php 
+                                    $excerpt = get_the_excerpt();
+                                    if (strlen($excerpt) > $excerpt_length) {
+                                        $excerpt = substr($excerpt, 0, $excerpt_length) . '...';
+                                    }
+                                    echo esc_html($excerpt);
+                                    ?>
+                                </div>
+                            <?php endif; ?>
+
+                            <div class="post-meta flex items-center justify-between text-sm text-gray-500 mt-auto">
+                                <div class="meta-left flex items-center space-x-4">
+                                    <?php if ($show_author) : ?>
+                                        <span class="post-author flex items-center">
+                                            <?php echo get_avatar(get_the_author_meta('ID'), 24, '', '', ['class' => 'w-6 h-6 rounded-full mr-2']); ?>
+                                            <?php the_author(); ?>
+                                        </span>
+                                    <?php endif; ?>
+
+                                    <?php if ($show_date) : ?>
+                                        <time class="post-date" datetime="<?php echo get_the_date('c'); ?>">
+                                            <?php echo get_the_date(); ?>
+                                        </time>
+                                    <?php endif; ?>
+                                </div>
+
+                                <?php if ($show_read_more) : ?>
+                                    <a href="<?php the_permalink(); ?>" class="read-more-link text-blue-600 hover:text-blue-800 font-medium transition-colors">
+                                        <?php echo esc_html($read_more_text); ?> →
+                                    </a>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    </article>
+                <?php endwhile; ?>
+            </div>
+        <?php 
+        else : 
+        ?>
+            <div class="no-posts text-center py-12">
+                <div class="text-gray-400 text-6xl mb-4">📝</div>
+                <p class="text-gray-500 text-lg"><?php echo esc_html($no_posts_message); ?></p>
+            </div>
+        <?php 
+        endif;
+        
+        // Reset post data
+        wp_reset_postdata();
+        ?>
     </div>
 </div>

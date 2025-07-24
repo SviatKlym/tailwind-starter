@@ -10,6 +10,9 @@ import './utils/custom-performance-plugins.js'
 // Import progressive loader for frontend blocks
 import './utils/progressive-loader.js'
 
+// Import frontend animations system
+import './frontend-animations.js'
+
 // Import existing block scripts
 import './index.js'
 

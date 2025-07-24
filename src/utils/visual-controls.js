@@ -2229,14 +2229,27 @@ export const generateAllInlineStyles = (settings) => {
 export const generateAllClasses = (settings) => {
   // Use performance tracking
   return trackClassGeneration(settings, () => {
+    // Apply default settings if empty to ensure proper styling
+    let finalSettings = settings || {}
+    if (!settings || (!settings.spacing && !settings.blockSpacing)) {
+      finalSettings = {
+        ...settings,
+        blockSpacing: {
+          base: {
+            variation: 'balanced'  // This provides default mb-10 p-5 classes
+          }
+        }
+      }
+    }
+    
     const allClasses = []
     
-    const baseClasses = generateTailwindClasses(settings, 'base')
+    const baseClasses = generateTailwindClasses(finalSettings, 'base')
     if (baseClasses) allClasses.push(baseClasses)
     
     const breakpoints = ['sm', 'md', 'lg', 'xl']
     breakpoints.forEach(device => {
-      const deviceClasses = generateTailwindClasses(settings, device)
+      const deviceClasses = generateTailwindClasses(finalSettings, device)
       if (deviceClasses) allClasses.push(deviceClasses)
     })
     

@@ -10,11 +10,22 @@ function my_tailwind_starter_enqueue_assets() {
         file_exists($theme_css_file) ? filemtime($theme_css_file) : '1.0.0'
     );
     
-    // Frontend JavaScript is handled by individual blocks via viewScript in block.json
+    // Enqueue frontend animations script (from source, not built)
+    $frontend_animations_file = get_template_directory() . '/src/frontend-animations.js';
+    if (file_exists($frontend_animations_file)) {
+        wp_enqueue_script(
+            'tailwind-starter-animations',
+            get_template_directory_uri() . '/src/frontend-animations.js',
+            [],
+            filemtime($frontend_animations_file),
+            true // Load in footer
+        );
+    }
     
     // Debug: Log what files are being loaded (remove in production)
     if (WP_DEBUG) {
         error_log('Theme CSS: ' . (file_exists($theme_css_file) ? 'EXISTS' : 'MISSING'));
+        error_log('Frontend Animations: ' . (file_exists($frontend_animations_file) ? 'EXISTS' : 'MISSING'));
     }
 }
 add_action('wp_enqueue_scripts', 'my_tailwind_starter_enqueue_assets');

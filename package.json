@@ -7,13 +7,13 @@
     "dev": "wp-scripts start",
     "build": "npm run blocks:build && npm run theme:build",
     "blocks:build": "wp-scripts build",
-    "theme:build": "tailwindcss -i ./src/style.css -o ./build/main.css --minify",
+    "theme:build": "npx tailwindcss -i ./src/style.css -o ./build/main.css --minify",
     "clean": "rimraf build"
   },
   "devDependencies": {
-    "@tailwindcss/cli": "^4.1.1",
     "@wordpress/scripts": "^30.19.0",
     "tailwindcss": "^4.1.11",
+    "@tailwindcss/cli": "^4.1.11",
     "rimraf": "^5.0.1"
   },
   "dependencies": {
@@ -27,6 +27,7 @@
     "@wordpress/i18n": "^5.9.0",
     "ajv": "^8.17.1",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "react-refresh": "^0.17.0"
   }
 }
