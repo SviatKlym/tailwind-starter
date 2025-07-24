@@ -10,7 +10,7 @@ import {
 	ColorPicker,
 	TextareaControl,
 	TabPanel,
-	__experimentalDivider as Divider
+	
 } from '@wordpress/components';
 
 // Import fixed visual controls
@@ -233,7 +233,7 @@ export default function Edit({ attributes, setAttributes }) {
 					onChange={(value) => setAttributes({ showSectionHeader: value })}
 				/>
 
-				<Divider />
+
 
 				{(layout === 'grid' || layout === 'carousel') && (
 					<RangeControl
@@ -320,7 +320,7 @@ export default function Edit({ attributes, setAttributes }) {
 
 				{enableCategories && (
 					<>
-						<Divider />
+		
 						<ToggleControl
 							label={__('Enable Categories', 'tailwind-starter')}
 							checked={enableCategories}

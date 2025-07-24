@@ -9,7 +9,7 @@ import {
 	Button,
 	ColorPicker,
 	TextareaControl,
-	__experimentalDivider as Divider
+	
 } from '@wordpress/components';
 import { UltimateControlTabs, UltimateDeviceSelector, generateAllClasses, generateTailwindClasses } from '../../utils/visual-controls.js';
 import { SimpleInspectorTabs } from '../../components/InspectorTabs.js';
@@ -400,7 +400,7 @@ export default function Edit({ attributes, setAttributes }) {
 					onChange={(value) => setAttributes({ showSectionHeader: value })}
 				/>
 
-				<Divider />
+
 
 				<ToggleControl
 					label={__('Show Labels', 'tailwind-starter')}
@@ -448,7 +448,7 @@ export default function Edit({ attributes, setAttributes }) {
 
 				{layout === 'slider-comparison' && (
 					<>
-						<Divider />
+		
 						<h4 className="font-medium mb-3">Slider Settings</h4>
 						
 						<RangeControl
@@ -500,7 +500,7 @@ export default function Edit({ attributes, setAttributes }) {
 
 				{layout === 'toggle-switch' && (
 					<>
-						<Divider />
+		
 						<TextControl
 							label={__('Toggle Button Text', 'tailwind-starter')}
 							value={toggleButtonText}

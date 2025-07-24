@@ -8,7 +8,7 @@ import {
 	RangeControl,
 	Button,
 	TextareaControl,
-	__experimentalDivider as Divider
+	
 } from '@wordpress/components';
 import { UltimateControlTabs, UltimateDeviceSelector, generateAllClasses, generateTailwindClasses } from '../../utils/visual-controls.js';
 import { SimpleInspectorTabs } from '../../components/InspectorTabs.js';
@@ -334,7 +334,7 @@ export default function Edit({ attributes, setAttributes }) {
 						onChange={(value) => setAttributes({ showSectionHeader: value })}
 					/>
 
-					<Divider />
+	
 
 					<RangeControl
 						label={__('Columns', 'tailwind-starter')}
@@ -437,7 +437,7 @@ export default function Edit({ attributes, setAttributes }) {
 
 					{layout === 'carousel-scroll' && (
 						<>
-							<Divider />
+			
 							<ToggleControl
 								label={__('Auto Scroll', 'tailwind-starter')}
 								checked={autoScroll}

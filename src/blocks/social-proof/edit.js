@@ -7,7 +7,7 @@ import {
 	RangeControl,
 	TextControl,
 	Button,
-	__experimentalDivider as Divider
+	
 } from '@wordpress/components';
 import { UltimateControlTabs, UltimateDeviceSelector, generateAllClasses, generateTailwindClasses } from '../../utils/visual-controls.js';
 import { SimpleInspectorTabs } from '../../components/InspectorTabs.js';
@@ -194,7 +194,7 @@ export default function Edit({ attributes, setAttributes }) {
 					onChange={(value) => setAttributes({ showSectionHeader: value })}
 				/>
 
-				<Divider />
+
 
 				{(layout === 'testimonial-carousel' || layout === 'review-cards') && (
 					<>
@@ -223,7 +223,7 @@ export default function Edit({ attributes, setAttributes }) {
 
 				{layout === 'testimonial-carousel' && (
 					<>
-						<Divider />
+		
 						<ToggleControl
 							label={__('Autoplay', 'tailwind-starter')}
 							checked={autoplay}

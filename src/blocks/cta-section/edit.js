@@ -1,14 +1,13 @@
 import { __ } from '@wordpress/i18n';
 import { useBlockProps, InspectorControls, RichText, MediaUpload } from '@wordpress/block-editor';
-import { 
-	PanelBody, 
-	SelectControl, 
+import {
+	PanelBody,
+	SelectControl,
 	ToggleControl,
 	RangeControl,
 	TextControl,
 	ColorPalette,
 	Button,
-	__experimentalDivider as Divider
 } from '@wordpress/components';
 import { UltimateControlTabs, UltimateDeviceSelector, generateAllClasses, generateTailwindClasses } from '../../utils/visual-controls.js';
 import { SimpleInspectorTabs } from '../../components/InspectorTabs.js';
@@ -159,8 +158,6 @@ export default function Edit({ attributes, setAttributes }) {
 					onChange={(value) => setAttributes({ showSectionHeader: value })}
 				/>
 
-				<Divider />
-
 				<SelectControl
 					label={__('Text Alignment', 'tailwind-starter')}
 					value={alignment}
@@ -222,14 +219,14 @@ export default function Edit({ attributes, setAttributes }) {
 				<TextControl
 					label={__('Button Text', 'tailwind-starter')}
 					value={primaryButton.text}
-					onChange={(value) => setAttributes({ 
+					onChange={(value) => setAttributes({
 						primaryButton: { ...primaryButton, text: value }
 					})}
 				/>
 				<TextControl
 					label={__('Button URL', 'tailwind-starter')}
 					value={primaryButton.url}
-					onChange={(value) => setAttributes({ 
+					onChange={(value) => setAttributes({
 						primaryButton: { ...primaryButton, url: value }
 					})}
 				/>
@@ -237,19 +234,17 @@ export default function Edit({ attributes, setAttributes }) {
 					label={__('Button Style', 'tailwind-starter')}
 					value={primaryButton.style}
 					options={buttonStyleOptions}
-					onChange={(value) => setAttributes({ 
+					onChange={(value) => setAttributes({
 						primaryButton: { ...primaryButton, style: value }
 					})}
 				/>
 				<ToggleControl
 					label={__('Open in new tab', 'tailwind-starter')}
 					checked={primaryButton.opensInNewTab}
-					onChange={(value) => setAttributes({ 
+					onChange={(value) => setAttributes({
 						primaryButton: { ...primaryButton, opensInNewTab: value }
 					})}
 				/>
-
-				<Divider />
 
 				<ToggleControl
 					label={__('Show Secondary Button', 'tailwind-starter')}
@@ -263,14 +258,14 @@ export default function Edit({ attributes, setAttributes }) {
 						<TextControl
 							label={__('Button Text', 'tailwind-starter')}
 							value={secondaryButton.text}
-							onChange={(value) => setAttributes({ 
+							onChange={(value) => setAttributes({
 								secondaryButton: { ...secondaryButton, text: value }
 							})}
 						/>
 						<TextControl
 							label={__('Button URL', 'tailwind-starter')}
 							value={secondaryButton.url}
-							onChange={(value) => setAttributes({ 
+							onChange={(value) => setAttributes({
 								secondaryButton: { ...secondaryButton, url: value }
 							})}
 						/>
@@ -278,21 +273,21 @@ export default function Edit({ attributes, setAttributes }) {
 							label={__('Button Style', 'tailwind-starter')}
 							value={secondaryButton.style}
 							options={buttonStyleOptions}
-							onChange={(value) => setAttributes({ 
+							onChange={(value) => setAttributes({
 								secondaryButton: { ...secondaryButton, style: value }
 							})}
 						/>
 						<ToggleControl
 							label={__('Open in new tab', 'tailwind-starter')}
 							checked={secondaryButton.opensInNewTab}
-							onChange={(value) => setAttributes({ 
+							onChange={(value) => setAttributes({
 								secondaryButton: { ...secondaryButton, opensInNewTab: value }
 							})}
 						/>
 					</>
 				)}
 
-				<Divider />
+
 
 				<SelectControl
 					label={__('Button Size', 'tailwind-starter')}
@@ -331,7 +326,7 @@ export default function Edit({ attributes, setAttributes }) {
 					/>
 				</div>
 
-				<Divider />
+
 
 				<h4>{__('Background Image', 'tailwind-starter')}</h4>
 				<MediaUpload
@@ -359,7 +354,7 @@ export default function Edit({ attributes, setAttributes }) {
 
 				{backgroundImage && (
 					<>
-						<Divider />
+
 						<ToggleControl
 							label={__('Add Overlay', 'tailwind-starter')}
 							checked={hasOverlay}
@@ -378,7 +373,6 @@ export default function Edit({ attributes, setAttributes }) {
 					</>
 				)}
 
-				<Divider />
 
 				{layout === 'split' && (
 					<>
@@ -405,10 +399,10 @@ export default function Edit({ attributes, setAttributes }) {
 					</>
 				)}
 			</PanelBody>
-		</>  
+		</>
 	);
 
-	// Design tab controls - visual styling only  
+	// Design tab controls - visual styling only
 	const generalControls = (
 		<>
 			<UltimateDeviceSelector
@@ -492,7 +486,7 @@ export default function Edit({ attributes, setAttributes }) {
 					<strong>All Device Classes:</strong> {allClasses}
 				</div>
 			</PanelBody>
-		</>  
+		</>
 	);
 
 	return (
@@ -527,7 +521,7 @@ export default function Edit({ attributes, setAttributes }) {
 
 				<div className="cta-wrapper relative py-16 px-4" style={sectionStyle}>
 					{hasOverlay && backgroundImage && (
-						<div 
+						<div
 							className="absolute inset-0 bg-black"
 							style={{ opacity: overlayOpacity / 100 }}
 						/>
@@ -545,7 +539,7 @@ export default function Edit({ attributes, setAttributes }) {
 								placeholder={__('Enter headline...', 'tailwind-starter')}
 								style={{ color: textColor }}
 							/>
-							
+
 							<RichText
 								tagName="p"
 								className="cta-description text-lg lg:text-xl mb-8 opacity-90"
@@ -574,7 +568,7 @@ export default function Edit({ attributes, setAttributes }) {
 								>
 									{primaryButton.text}
 								</div>
-								
+
 								{showSecondaryButton && (
 									<div
 										className={`cta-secondary-button rounded-lg font-semibold transition-all cursor-pointer ${
@@ -598,8 +592,8 @@ export default function Edit({ attributes, setAttributes }) {
 						{layout === 'split' && showVisualElement && (
 							<div className="cta-visual">
 								{visualElement ? (
-									<img 
-										src={visualElement.url} 
+									<img
+										src={visualElement.url}
 										alt="CTA Visual"
 										className="w-full rounded-lg shadow-lg"
 									/>

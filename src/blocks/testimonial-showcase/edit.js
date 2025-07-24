@@ -8,7 +8,7 @@ import {
 	Button,
 	RangeControl,
 	TextareaControl,
-	__experimentalDivider as Divider
+	
 } from '@wordpress/components';
 import { UltimateControlTabs, UltimateDeviceSelector, generateAllClasses, generateTailwindClasses } from '../../utils/visual-controls.js';
 import { SimpleInspectorTabs } from '../../components/InspectorTabs.js';
@@ -290,7 +290,7 @@ export default function Edit({ attributes, setAttributes }) {
 
 					{showAverageRating && (
 						<>
-							<Divider />
+			
 							<RangeControl
 								label={__('Average Rating', 'tailwind-starter')}
 								value={averageRating}
@@ -309,7 +309,7 @@ export default function Edit({ attributes, setAttributes }) {
 						</>
 					)}
 
-					<Divider />
+	
 
 					<RangeControl
 						label={__('Columns', 'tailwind-starter')}

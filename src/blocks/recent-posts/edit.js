@@ -6,7 +6,7 @@ import {
 	ToggleControl,
 	TextControl,
 	RangeControl,
-	__experimentalDivider as Divider
+	
 } from '@wordpress/components';
 import { UltimateControlTabs, UltimateDeviceSelector, generateAllClasses, generateTailwindClasses } from '../../utils/visual-controls.js';
 import { SimpleInspectorTabs } from '../../components/InspectorTabs.js';
@@ -403,7 +403,7 @@ export default function Edit({ attributes, setAttributes }) {
 
 				{allCategories.length > 0 && (
 					<>
-						<Divider />
+		
 						<p className="text-sm font-medium">Filter by Categories:</p>
 						{allCategories.map(category => (
 							<ToggleControl
@@ -435,7 +435,7 @@ export default function Edit({ attributes, setAttributes }) {
 					onChange={(value) => setAttributes({ showSectionHeader: value })}
 				/>
 
-				<Divider />
+
 
 				<RangeControl
 					label={__('Columns', 'tailwind-starter')}

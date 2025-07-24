@@ -6,7 +6,6 @@ import {
 	ToggleControl,
 	TextControl,
 	Button,
-	__experimentalDivider as Divider
 } from '@wordpress/components';
 import { UltimateControlTabs, UltimateDeviceSelector, generateAllClasses, generateTailwindClasses } from '../../utils/visual-controls.js';
 import { SimpleInspectorTabs } from '../../components/InspectorTabs.js';
@@ -232,7 +231,7 @@ export default function Edit({ attributes, setAttributes }) {
 						onChange={(value) => setAttributes({ showSectionHeader: value })}
 					/>
 
-					<Divider />
+	
 
 					<ToggleControl
 						label={__('Show Numbers', 'tailwind-starter')}

@@ -7,7 +7,7 @@ import {
 	RangeControl,
 	Button,
 	TextControl,
-	__experimentalDivider as Divider
+	
 } from '@wordpress/components';
 import { UltimateControlTabs, UltimateDeviceSelector, generateAllClasses, generateTailwindClasses, generateAllInlineStyles } from '../../utils/visual-controls.js';
 import { SimpleInspectorTabs } from '../../components/InspectorTabs.js';
@@ -91,7 +91,7 @@ export default function Edit({ attributes, setAttributes }) {
 					onChange={(value) => setAttributes({ layout: value })}
 				/>
 
-				<Divider />
+
 
 				<h4>{__('Primary CTA', 'tailwind-starter')}</h4>
 				<TextControl
@@ -116,7 +116,7 @@ export default function Edit({ attributes, setAttributes }) {
 					})}
 				/>
 
-				<Divider />
+
 
 				<ToggleControl
 					label={__('Show Secondary CTA', 'tailwind-starter')}
@@ -209,7 +209,7 @@ export default function Edit({ attributes, setAttributes }) {
 
 				{(backgroundImage || backgroundVideo) && (
 					<>
-						<Divider />
+		
 						<ToggleControl
 							label={__('Add Overlay', 'tailwind-starter')}
 							checked={hasOverlay}
