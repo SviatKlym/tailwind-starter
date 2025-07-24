@@ -9,6 +9,7 @@ import {
   TabPanel,
   Tooltip,
   TextControl,
+  TextareaControl,
   Modal,
   __experimentalHStack as HStack,
   __experimentalVStack as VStack,
@@ -2726,6 +2727,538 @@ export const SlidesManagementModal = ({
             <li>Use consistent styling across all slides</li>
           </ul>
         </div>
+      </div>
+    </UltimateManagementModal>
+  )
+}
+
+// Team Members Management Modal Component
+export const TeamManagementModal = ({ 
+  isOpen, 
+  onClose, 
+  members = [], 
+  onMembersChange 
+}) => {
+  const [editingIndex, setEditingIndex] = useState(null)
+  const [localMembers, setLocalMembers] = useState(members)
+
+  const addMember = () => {
+    const newMember = {
+      id: Date.now(),
+      name: 'Team Member',
+      role: 'Position',
+      bio: 'Short bio about this team member.',
+      image: null,
+      social: { linkedin: '', twitter: '', email: '' }
+    }
+    const updatedMembers = [...localMembers, newMember]
+    setLocalMembers(updatedMembers)
+    onMembersChange(updatedMembers)
+  }
+
+  const updateMember = (index, field, value) => {
+    const updatedMembers = [...localMembers]
+    if (field.includes('.')) {
+      const [parent, child] = field.split('.')
+      updatedMembers[index][parent] = { ...updatedMembers[index][parent], [child]: value }
+    } else {
+      updatedMembers[index][field] = value
+    }
+    setLocalMembers(updatedMembers)
+    onMembersChange(updatedMembers)
+  }
+
+  const removeMember = (index) => {
+    const updatedMembers = localMembers.filter((_, i) => i !== index)
+    setLocalMembers(updatedMembers)
+    onMembersChange(updatedMembers)
+  }
+
+  return (
+    <UltimateManagementModal
+      isOpen={isOpen}
+      onClose={onClose}
+      title="👥 Team Members Management"
+      size="large"
+    >
+      <div style={{ maxHeight: '70vh', overflowY: 'auto', padding: '16px' }}>
+        {localMembers.map((member, index) => (
+          <Card key={member.id} style={{ marginBottom: '16px' }}>
+            <CardBody>
+              <VStack spacing={3}>
+                <HStack justify="space-between">
+                  <Text weight="600">Team Member {index + 1}</Text>
+                  <Button isDestructive isSmall onClick={() => removeMember(index)}>
+                    Remove
+                  </Button>
+                </HStack>
+                
+                <HStack>
+                  <TextControl
+                    label="Name"
+                    value={member.name}
+                    onChange={(value) => updateMember(index, 'name', value)}
+                    style={{ flex: 1 }}
+                  />
+                  <TextControl
+                    label="Role/Position"
+                    value={member.role}
+                    onChange={(value) => updateMember(index, 'role', value)}
+                    style={{ flex: 1 }}
+                  />
+                </HStack>
+
+                <TextareaControl
+                  label="Bio"
+                  value={member.bio}
+                  onChange={(value) => updateMember(index, 'bio', value)}
+                  rows={3}
+                />
+
+                <div>
+                  <Text size="14px" weight="600" style={{ marginBottom: '8px' }}>Social Links</Text>
+                  <HStack>
+                    <TextControl
+                      label="LinkedIn"
+                      value={member.social?.linkedin || ''}
+                      onChange={(value) => updateMember(index, 'social.linkedin', value)}
+                      placeholder="https://linkedin.com/in/username"
+                      style={{ flex: 1 }}
+                    />
+                    <TextControl
+                      label="Twitter"
+                      value={member.social?.twitter || ''}
+                      onChange={(value) => updateMember(index, 'social.twitter', value)}
+                      placeholder="https://twitter.com/username"
+                      style={{ flex: 1 }}
+                    />
+                    <TextControl
+                      label="Email"
+                      value={member.social?.email || ''}
+                      onChange={(value) => updateMember(index, 'social.email', value)}
+                      placeholder="email@domain.com"
+                      style={{ flex: 1 }}
+                    />
+                  </HStack>
+                </div>
+              </VStack>
+            </CardBody>
+          </Card>
+        ))}
+
+        <Button isPrimary onClick={addMember} style={{ width: '100%', marginTop: '16px' }}>
+          ➕ Add Team Member
+        </Button>
+      </div>
+    </UltimateManagementModal>
+  )
+}
+
+// Testimonials Management Modal Component
+export const TestimonialsManagementModal = ({ 
+  isOpen, 
+  onClose, 
+  testimonials = [], 
+  onTestimonialsChange 
+}) => {
+  const [localTestimonials, setLocalTestimonials] = useState(testimonials)
+
+  const addTestimonial = () => {
+    const newTestimonial = {
+      id: Date.now(),
+      content: 'Great testimonial content here...',
+      author: 'Customer Name',
+      role: 'Customer Title',
+      company: 'Company Name',
+      rating: 5,
+      featured: false
+    }
+    const updatedTestimonials = [...localTestimonials, newTestimonial]
+    setLocalTestimonials(updatedTestimonials)
+    onTestimonialsChange(updatedTestimonials)
+  }
+
+  const updateTestimonial = (index, field, value) => {
+    const updatedTestimonials = [...localTestimonials]
+    updatedTestimonials[index][field] = value
+    setLocalTestimonials(updatedTestimonials)
+    onTestimonialsChange(updatedTestimonials)
+  }
+
+  const removeTestimonial = (index) => {
+    const updatedTestimonials = localTestimonials.filter((_, i) => i !== index)
+    setLocalTestimonials(updatedTestimonials)
+    onTestimonialsChange(updatedTestimonials)
+  }
+
+  return (
+    <UltimateManagementModal
+      isOpen={isOpen}
+      onClose={onClose}
+      title="💬 Testimonials Management"
+      size="large"
+    >
+      <div style={{ maxHeight: '70vh', overflowY: 'auto', padding: '16px' }}>
+        {localTestimonials.map((testimonial, index) => (
+          <Card key={testimonial.id} style={{ marginBottom: '16px' }}>
+            <CardBody>
+              <VStack spacing={3}>
+                <HStack justify="space-between">
+                  <Text weight="600">Testimonial {index + 1}</Text>
+                  <div>
+                    <Button 
+                      isSecondary 
+                      isSmall 
+                      onClick={() => updateTestimonial(index, 'featured', !testimonial.featured)}
+                      style={{ marginRight: '8px' }}
+                    >
+                      {testimonial.featured ? 'Unfeature' : 'Feature'}
+                    </Button>
+                    <Button isDestructive isSmall onClick={() => removeTestimonial(index)}>
+                      Remove
+                    </Button>
+                  </div>
+                </HStack>
+                
+                <TextareaControl
+                  label="Testimonial Content"
+                  value={testimonial.content}
+                  onChange={(value) => updateTestimonial(index, 'content', value)}
+                  rows={4}
+                />
+
+                <HStack>
+                  <TextControl
+                    label="Author Name"
+                    value={testimonial.author}
+                    onChange={(value) => updateTestimonial(index, 'author', value)}
+                    style={{ flex: 1 }}
+                  />
+                  <TextControl
+                    label="Role/Title"
+                    value={testimonial.role}
+                    onChange={(value) => updateTestimonial(index, 'role', value)}
+                    style={{ flex: 1 }}
+                  />
+                  <TextControl
+                    label="Company"
+                    value={testimonial.company}
+                    onChange={(value) => updateTestimonial(index, 'company', value)}
+                    style={{ flex: 1 }}
+                  />
+                </HStack>
+
+                <RangeControl
+                  label="Rating"
+                  value={testimonial.rating}
+                  onChange={(value) => updateTestimonial(index, 'rating', value)}
+                  min={1}
+                  max={5}
+                />
+              </VStack>
+            </CardBody>
+          </Card>
+        ))}
+
+        <Button isPrimary onClick={addTestimonial} style={{ width: '100%', marginTop: '16px' }}>
+          ➕ Add Testimonial
+        </Button>
+      </div>
+    </UltimateManagementModal>
+  )
+}
+
+// FAQ Management Modal Component
+export const FAQManagementModal = ({ 
+  isOpen, 
+  onClose, 
+  faqs = [], 
+  onFAQsChange 
+}) => {
+  const [localFAQs, setLocalFAQs] = useState(faqs)
+
+  const addFAQ = () => {
+    const newFAQ = {
+      id: Date.now(),
+      question: 'Frequently Asked Question?',
+      answer: 'Answer to the question goes here...',
+      category: 'General',
+      featured: false
+    }
+    const updatedFAQs = [...localFAQs, newFAQ]
+    setLocalFAQs(updatedFAQs)
+    onFAQsChange(updatedFAQs)
+  }
+
+  const updateFAQ = (index, field, value) => {
+    const updatedFAQs = [...localFAQs]
+    updatedFAQs[index][field] = value
+    setLocalFAQs(updatedFAQs)
+    onFAQsChange(updatedFAQs)
+  }
+
+  const removeFAQ = (index) => {
+    const updatedFAQs = localFAQs.filter((_, i) => i !== index)
+    setLocalFAQs(updatedFAQs)
+    onFAQsChange(updatedFAQs)
+  }
+
+  return (
+    <UltimateManagementModal
+      isOpen={isOpen}
+      onClose={onClose}
+      title="📝 FAQ Management"
+      size="large"
+    >
+      <div style={{ maxHeight: '70vh', overflowY: 'auto', padding: '16px' }}>
+        {localFAQs.map((faq, index) => (
+          <Card key={faq.id} style={{ marginBottom: '16px' }}>
+            <CardBody>
+              <VStack spacing={3}>
+                <HStack justify="space-between">
+                  <Text weight="600">FAQ {index + 1}</Text>
+                  <div>
+                    <Button 
+                      isSecondary 
+                      isSmall 
+                      onClick={() => updateFAQ(index, 'featured', !faq.featured)}
+                      style={{ marginRight: '8px' }}
+                    >
+                      {faq.featured ? 'Unfeature' : 'Feature'}
+                    </Button>
+                    <Button isDestructive isSmall onClick={() => removeFAQ(index)}>
+                      Remove
+                    </Button>
+                  </div>
+                </HStack>
+                
+                <TextControl
+                  label="Question"
+                  value={faq.question}
+                  onChange={(value) => updateFAQ(index, 'question', value)}
+                />
+
+                <TextareaControl
+                  label="Answer"
+                  value={faq.answer}
+                  onChange={(value) => updateFAQ(index, 'answer', value)}
+                  rows={4}
+                />
+
+                <TextControl
+                  label="Category"
+                  value={faq.category}
+                  onChange={(value) => updateFAQ(index, 'category', value)}
+                  placeholder="e.g., General, Technical, Billing"
+                />
+              </VStack>
+            </CardBody>
+          </Card>
+        ))}
+
+        <Button isPrimary onClick={addFAQ} style={{ width: '100%', marginTop: '16px' }}>
+          ➕ Add FAQ
+        </Button>
+      </div>
+    </UltimateManagementModal>
+  )
+}
+
+// Process Steps Management Modal Component
+export const ProcessStepsManagementModal = ({ 
+  isOpen, 
+  onClose, 
+  steps = [], 
+  onStepsChange 
+}) => {
+  const [localSteps, setLocalSteps] = useState(steps)
+
+  const addStep = () => {
+    const newStep = {
+      id: Date.now(),
+      title: 'Process Step',
+      description: 'Description of this step...',
+      icon: '🔹',
+      number: localSteps.length + 1
+    }
+    const updatedSteps = [...localSteps, newStep]
+    setLocalSteps(updatedSteps)
+    onStepsChange(updatedSteps)
+  }
+
+  const updateStep = (index, field, value) => {
+    const updatedSteps = [...localSteps]
+    updatedSteps[index][field] = value
+    setLocalSteps(updatedSteps)
+    onStepsChange(updatedSteps)
+  }
+
+  const removeStep = (index) => {
+    const updatedSteps = localSteps.filter((_, i) => i !== index)
+    // Renumber steps
+    updatedSteps.forEach((step, i) => {
+      step.number = i + 1
+    })
+    setLocalSteps(updatedSteps)
+    onStepsChange(updatedSteps)
+  }
+
+  return (
+    <UltimateManagementModal
+      isOpen={isOpen}
+      onClose={onClose}
+      title="📝 Process Steps Management"
+      size="large"
+    >
+      <div style={{ maxHeight: '70vh', overflowY: 'auto', padding: '16px' }}>
+        {localSteps.map((step, index) => (
+          <Card key={step.id} style={{ marginBottom: '16px' }}>
+            <CardBody>
+              <VStack spacing={3}>
+                <HStack justify="space-between">
+                  <Text weight="600">Step {index + 1}</Text>
+                  <Button isDestructive isSmall onClick={() => removeStep(index)}>
+                    Remove
+                  </Button>
+                </HStack>
+                
+                <HStack>
+                  <TextControl
+                    label="Icon (Emoji)"
+                    value={step.icon}
+                    onChange={(value) => updateStep(index, 'icon', value)}
+                    style={{ width: '80px' }}
+                  />
+                  <TextControl
+                    label="Step Title"
+                    value={step.title}
+                    onChange={(value) => updateStep(index, 'title', value)}
+                    style={{ flex: 1 }}
+                  />
+                </HStack>
+
+                <TextareaControl
+                  label="Step Description"
+                  value={step.description}
+                  onChange={(value) => updateStep(index, 'description', value)}
+                  rows={3}
+                />
+              </VStack>
+            </CardBody>
+          </Card>
+        ))}
+
+        <Button isPrimary onClick={addStep} style={{ width: '100%', marginTop: '16px' }}>
+          ➕ Add Process Step
+        </Button>
+      </div>
+    </UltimateManagementModal>
+  )
+}
+
+// Videos Management Modal Component
+export const VideosManagementModal = ({ 
+  isOpen, 
+  onClose, 
+  videos = [], 
+  onVideosChange 
+}) => {
+  const [localVideos, setLocalVideos] = useState(videos)
+
+  const addVideo = () => {
+    const newVideo = {
+      id: Date.now(),
+      title: 'Video Title',
+      description: 'Video description...',
+      url: '',
+      thumbnail: null,
+      duration: '',
+      featured: false
+    }
+    const updatedVideos = [...localVideos, newVideo]
+    setLocalVideos(updatedVideos)
+    onVideosChange(updatedVideos)
+  }
+
+  const updateVideo = (index, field, value) => {
+    const updatedVideos = [...localVideos]
+    updatedVideos[index][field] = value
+    setLocalVideos(updatedVideos)
+    onVideosChange(updatedVideos)
+  }
+
+  const removeVideo = (index) => {
+    const updatedVideos = localVideos.filter((_, i) => i !== index)
+    setLocalVideos(updatedVideos)
+    onVideosChange(updatedVideos)
+  }
+
+  return (
+    <UltimateManagementModal
+      isOpen={isOpen}
+      onClose={onClose}
+      title="🎬 Videos Management"
+      size="large"
+    >
+      <div style={{ maxHeight: '70vh', overflowY: 'auto', padding: '16px' }}>
+        {localVideos.map((video, index) => (
+          <Card key={video.id} style={{ marginBottom: '16px' }}>
+            <CardBody>
+              <VStack spacing={3}>
+                <HStack justify="space-between">
+                  <Text weight="600">Video {index + 1}</Text>
+                  <div>
+                    <Button 
+                      isSecondary 
+                      isSmall 
+                      onClick={() => updateVideo(index, 'featured', !video.featured)}
+                      style={{ marginRight: '8px' }}
+                    >
+                      {video.featured ? 'Unfeature' : 'Feature'}
+                    </Button>
+                    <Button isDestructive isSmall onClick={() => removeVideo(index)}>
+                      Remove
+                    </Button>
+                  </div>
+                </HStack>
+                
+                <TextControl
+                  label="Video Title"
+                  value={video.title}
+                  onChange={(value) => updateVideo(index, 'title', value)}
+                />
+
+                <TextControl
+                  label="Video URL"
+                  value={video.url}
+                  onChange={(value) => updateVideo(index, 'url', value)}
+                  placeholder="https://youtube.com/watch?v=..."
+                />
+
+                <HStack>
+                  <TextareaControl
+                    label="Description"
+                    value={video.description}
+                    onChange={(value) => updateVideo(index, 'description', value)}
+                    rows={3}
+                    style={{ flex: 1 }}
+                  />
+                  <TextControl
+                    label="Duration"
+                    value={video.duration}
+                    onChange={(value) => updateVideo(index, 'duration', value)}
+                    placeholder="5:30"
+                    style={{ width: '100px' }}
+                  />
+                </HStack>
+              </VStack>
+            </CardBody>
+          </Card>
+        ))}
+
+        <Button isPrimary onClick={addVideo} style={{ width: '100%', marginTop: '16px' }}>
+          ➕ Add Video
+        </Button>
       </div>
     </UltimateManagementModal>
   )

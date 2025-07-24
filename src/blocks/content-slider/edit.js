@@ -11,7 +11,7 @@ import {
 	TextareaControl,
 	
 } from '@wordpress/components';
-import { UltimateControlTabs, UltimateDeviceSelector, generateAllClasses, generateTailwindClasses } from '../../utils/visual-controls.js';
+import { UltimateControlTabs, UltimateDeviceSelector, generateAllClasses, generateTailwindClasses, SlidesManagementModal } from '../../utils/visual-controls.js';
 import { SimpleInspectorTabs } from '../../components/InspectorTabs.js';
 import { useState } from '@wordpress/element';
 
@@ -44,6 +44,7 @@ export default function Edit({ attributes, setAttributes }) {
 
 	const [editingSlide, setEditingSlide] = useState(null);
 	const [currentSlide, setCurrentSlide] = useState(0);
+	const [isSlidesModalOpen, setIsSlidesModalOpen] = useState(false);
 
 	// Enhanced preset styles for content slider
 	const presets = {
@@ -406,158 +407,35 @@ export default function Edit({ attributes, setAttributes }) {
 					/>
 			</PanelBody>
 
-			<PanelBody title={__('📊 Slides Management', 'tailwind-starter')} initialOpen={false}>
-					<div className="mb-4">
-						<label className="block text-sm font-medium mb-2">Current Slide Preview</label>
-						<div className="flex space-x-2 mb-4">
-							{slides.map((slide, index) => (
-								<div
-									key={slide.id}
-									className={`w-3 h-3 rounded-full cursor-pointer ${
-										index === currentSlide ? 'bg-blue-600' : 'bg-gray-300'
-									}`}
-									onClick={() => setCurrentSlide(index)}
-								/>
-							))}
-						</div>
+			<PanelBody title={__('🎠 Slides Management', 'tailwind-starter')} initialOpen={false}>
+				<div style={{ 
+					textAlign: 'center', 
+					padding: '20px',
+					backgroundColor: '#f8f9fa',
+					borderRadius: '8px',
+					border: '2px dashed #10b981'
+				}}>
+					<div style={{ marginBottom: '12px', fontSize: '24px' }}>🎠</div>
+					<div style={{ marginBottom: '8px', fontWeight: '600', color: '#1e1e1e' }}>
+						{slides.length} Slide{slides.length !== 1 ? 's' : ''} Configured
 					</div>
-
-					{slides.map((slide, index) => (
-						<div key={slide.id} className="mb-6 p-4 border rounded">
-							<div className="flex justify-between items-center mb-2">
-								<strong>Slide {index + 1}</strong>
-								<div className="flex space-x-2">
-									<Button
-										isSecondary
-										isSmall
-										onClick={() => updateSlide(index, 'featured', !slide.featured)}
-									>
-										{slide.featured ? 'Unfeature' : 'Feature'}
-									</Button>
-									<Button
-										isDestructive
-										isSmall
-										onClick={() => removeSlide(index)}
-									>
-										Remove
-									</Button>
-								</div>
-							</div>
-							
-							<TextControl
-								label="Title"
-								value={slide.title}
-								onChange={(value) => updateSlide(index, 'title', value)}
-							/>
-							
-							<TextControl
-								label="Subtitle"
-								value={slide.subtitle}
-								onChange={(value) => updateSlide(index, 'subtitle', value)}
-							/>
-							
-							<TextareaControl
-								label="Description"
-								value={slide.description}
-								onChange={(value) => updateSlide(index, 'description', value)}
-								rows={3}
-							/>
-
-							<div className="flex space-x-2">
-								<TextControl
-									label="Button Text"
-									value={slide.buttonText}
-									onChange={(value) => updateSlide(index, 'buttonText', value)}
-								/>
-								<TextControl
-									label="Button URL"
-									value={slide.buttonUrl}
-									onChange={(value) => updateSlide(index, 'buttonUrl', value)}
-								/>
-							</div>
-
-							<MediaUploadCheck>
-								<MediaUpload
-									onSelect={(media) => {
-										updateSlide(index, 'imageUrl', media.url);
-										updateSlide(index, 'imageAlt', media.alt);
-									}}
-									allowedTypes={['image']}
-									value={slide.imageUrl}
-									render={({ open }) => (
-										<div className="mt-2">
-											<Button onClick={open} isSecondary>
-												{slide.imageUrl ? 'Change Image' : 'Select Image'}
-											</Button>
-											{slide.imageUrl && (
-												<div className="mt-2">
-													<img 
-														src={slide.imageUrl} 
-														alt={slide.imageAlt}
-														className="w-20 h-20 object-cover rounded"
-													/>
-													<Button
-														onClick={() => {
-															updateSlide(index, 'imageUrl', '');
-															updateSlide(index, 'imageAlt', '');
-														}}
-														isDestructive
-														isSmall
-														className="ml-2"
-													>
-														Remove
-													</Button>
-												</div>
-											)}
-										</div>
-									)}
-								/>
-							</MediaUploadCheck>
-
-							<div className="mt-2">
-								<label className="block text-sm font-medium mb-1">Background Color</label>
-								<ColorPicker
-									color={slide.backgroundColor}
-									onChange={(color) => updateSlide(index, 'backgroundColor', color)}
-								/>
-							</div>
-
-							<div className="mt-2">
-								<label className="block text-sm font-medium mb-1">Text Color</label>
-								<ColorPicker
-									color={slide.textColor}
-									onChange={(color) => updateSlide(index, 'textColor', color)}
-								/>
-							</div>
-
-							<SelectControl
-								label="Text Alignment"
-								value={slide.textAlignment}
-								onChange={(value) => updateSlide(index, 'textAlignment', value)}
-								options={[
-									{ label: 'Left', value: 'left' },
-									{ label: 'Center', value: 'center' },
-									{ label: 'Right', value: 'right' }
-								]}
-							/>
-
-							<RangeControl
-								label="Overlay Opacity"
-								value={slide.overlayOpacity}
-								onChange={(value) => updateSlide(index, 'overlayOpacity', value)}
-								min={0}
-								max={1}
-								step={0.1}
-							/>
-						</div>
-					))}
-					
+					<div style={{ marginBottom: '16px', fontSize: '14px', color: '#666' }}>
+						Manage your slider content in an organized modal window
+					</div>
 					<Button
 						isPrimary
-						onClick={addSlide}
+						onClick={() => setIsSlidesModalOpen(true)}
+						style={{
+							background: 'linear-gradient(45deg, #10b981, #059669)',
+							border: 'none',
+							borderRadius: '6px',
+							padding: '8px 16px',
+							fontWeight: '600'
+						}}
 					>
-						Add Slide
+						🚀 Open Slides Manager
 					</Button>
+				</div>
 			</PanelBody>
 		</>
 	)
@@ -731,6 +609,16 @@ export default function Edit({ attributes, setAttributes }) {
 				</div>
 
 			</div>
+
+			{/* Slides Management Modal */}
+			{isSlidesModalOpen && (
+				<SlidesManagementModal
+					isOpen={isSlidesModalOpen}
+					onClose={() => setIsSlidesModalOpen(false)}
+					slides={slides}
+					onSlidesChange={(newSlides) => setAttributes({ slides: newSlides })}
+				/>
+			)}
 		</>
 	);
 } 

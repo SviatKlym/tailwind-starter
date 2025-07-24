@@ -9,7 +9,7 @@ import {
 	TextareaControl,
 	
 } from '@wordpress/components';
-import { UltimateControlTabs, UltimateDeviceSelector, generateAllClasses, generateTailwindClasses } from '../../utils/visual-controls.js';
+import { UltimateControlTabs, UltimateDeviceSelector, generateAllClasses, generateTailwindClasses, FAQManagementModal } from '../../utils/visual-controls.js';
 import { SimpleInspectorTabs } from '../../components/InspectorTabs.js';
 import { useState } from '@wordpress/element';
 

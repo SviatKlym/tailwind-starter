@@ -10,7 +10,7 @@ import {
 	TextareaControl,
 	
 } from '@wordpress/components';
-import { UltimateControlTabs, UltimateDeviceSelector, generateAllClasses, generateTailwindClasses } from '../../utils/visual-controls.js';
+import { UltimateControlTabs, UltimateDeviceSelector, generateAllClasses, generateTailwindClasses, TeamManagementModal } from '../../utils/visual-controls.js';
 import { SimpleInspectorTabs } from '../../components/InspectorTabs.js';
 import { useState } from '@wordpress/element';
 
@@ -41,6 +41,7 @@ export default function Edit({ attributes, setAttributes }) {
 
 	const [editingMember, setEditingMember] = useState(null);
 	const [selectedDepartment, setSelectedDepartment] = useState('all');
+	const [isTeamModalOpen, setIsTeamModalOpen] = useState(false);
 
 	// Enhanced preset styles for team members
 	const presets = {
@@ -437,155 +438,34 @@ export default function Edit({ attributes, setAttributes }) {
 				)}
 
 				<PanelBody title={__('👥 Team Management', 'tailwind-starter')} initialOpen={false}>
-					{members.map((member, index) => (
-						<div key={member.id} className="mb-6 p-4 border rounded">
-							<div className="flex justify-between items-center mb-2">
-								<strong>{member.name}</strong>
-								<div className="flex space-x-2">
-									<Button
-										isSecondary
-										isSmall
-										onClick={() => updateMember(index, 'featured', !member.featured)}
-									>
-										{member.featured ? 'Unfeature' : 'Feature'}
-									</Button>
-									<Button
-										isDestructive
-										isSmall
-										onClick={() => removeMember(index)}
-									>
-										Remove
-									</Button>
-								</div>
-							</div>
-
-							<TextControl
-								label="Name"
-								value={member.name}
-								onChange={(value) => updateMember(index, 'name', value)}
-							/>
-
-							<TextControl
-								label="Title"
-								value={member.title}
-								onChange={(value) => updateMember(index, 'title', value)}
-							/>
-
-							<TextControl
-								label="Department"
-								value={member.department}
-								onChange={(value) => updateMember(index, 'department', value)}
-							/>
-
-							<TextareaControl
-								label="Bio"
-								value={member.bio}
-								onChange={(value) => updateMember(index, 'bio', value)}
-								rows={3}
-							/>
-
-							<MediaUploadCheck>
-								<MediaUpload
-									onSelect={(media) => {
-										updateMember(index, 'imageUrl', media.url);
-										updateMember(index, 'imageAlt', media.alt);
-									}}
-									allowedTypes={['image']}
-									value={member.imageUrl}
-									render={({ open }) => (
-										<div className="mt-2">
-											<Button onClick={open} isSecondary>
-												{member.imageUrl ? 'Change Photo' : 'Select Photo'}
-											</Button>
-											{member.imageUrl && (
-												<div className="mt-2">
-													<img 
-														src={member.imageUrl} 
-														alt={member.imageAlt}
-														className="w-20 h-20 object-cover rounded"
-													/>
-													<Button
-														onClick={() => {
-															updateMember(index, 'imageUrl', '');
-															updateMember(index, 'imageAlt', '');
-														}}
-														isDestructive
-														isSmall
-														className="ml-2"
-													>
-														Remove
-													</Button>
-												</div>
-											)}
-										</div>
-									)}
-								/>
-							</MediaUploadCheck>
-
-							<div className="flex space-x-2">
-								<TextControl
-									label="Email"
-									value={member.email}
-									onChange={(value) => updateMember(index, 'email', value)}
-									type="email"
-								/>
-								<TextControl
-									label="Phone"
-									value={member.phone}
-									onChange={(value) => updateMember(index, 'phone', value)}
-									type="tel"
-								/>
-							</div>
-
-							<TextControl
-								label="Location"
-								value={member.location}
-								onChange={(value) => updateMember(index, 'location', value)}
-							/>
-
-							<div className="mt-2">
-								<label className="block text-sm font-medium mb-1">Social Links</label>
-								<TextControl
-									label="LinkedIn"
-									value={member.socialLinks.linkedin}
-									onChange={(value) => updateMember(index, 'socialLinks.linkedin', value)}
-									placeholder="https://linkedin.com/in/username"
-								/>
-								<TextControl
-									label="Twitter"
-									value={member.socialLinks.twitter}
-									onChange={(value) => updateMember(index, 'socialLinks.twitter', value)}
-									placeholder="https://twitter.com/username"
-								/>
-								<TextControl
-									label="GitHub"
-									value={member.socialLinks.github}
-									onChange={(value) => updateMember(index, 'socialLinks.github', value)}
-									placeholder="https://github.com/username"
-								/>
-								<TextControl
-									label="Website"
-									value={member.socialLinks.website}
-									onChange={(value) => updateMember(index, 'socialLinks.website', value)}
-									placeholder="https://website.com"
-								/>
-							</div>
-
-							<TextControl
-								label="Skills (comma-separated)"
-								value={member.skills.join(', ')}
-								onChange={(value) => updateMember(index, 'skills', value.split(',').map(s => s.trim()).filter(s => s))}
-								placeholder="JavaScript, React, Node.js"
-							/>
+					<div style={{ 
+						textAlign: 'center', 
+						padding: '20px',
+						backgroundColor: '#f8f9fa',
+						borderRadius: '8px',
+						border: '2px dashed #7c3aed'
+					}}>
+						<div style={{ marginBottom: '12px', fontSize: '24px' }}>👥</div>
+						<div style={{ marginBottom: '8px', fontWeight: '600', color: '#1e1e1e' }}>
+							{members.length} Team Member{members.length !== 1 ? 's' : ''} Configured
 						</div>
-					))}
-
-					<Button
-						isPrimary
-						onClick={addMember}
-					>
-						Add Team Member
-					</Button>
+						<div style={{ marginBottom: '16px', fontSize: '14px', color: '#666' }}>
+							Manage your team members in an organized modal window
+						</div>
+						<Button
+							isPrimary
+							onClick={() => setIsTeamModalOpen(true)}
+							style={{
+								background: 'linear-gradient(45deg, #7c3aed, #5b21b6)',
+								border: 'none',
+								borderRadius: '6px',
+								padding: '8px 16px',
+								fontWeight: '600'
+							}}
+						>
+							🚀 Open Team Manager
+						</Button>
+					</div>
 				</PanelBody>
 			</>  
 		);
@@ -717,6 +597,16 @@ export default function Edit({ attributes, setAttributes }) {
 					</div>
 				)}
 			</div>
+
+			{/* Team Management Modal */}
+			{isTeamModalOpen && (
+				<TeamManagementModal
+					isOpen={isTeamModalOpen}
+					onClose={() => setIsTeamModalOpen(false)}
+					members={members}
+					onMembersChange={(newMembers) => setAttributes({ members: newMembers })}
+				/>
+			)}
 		</>
 	);
 } 

@@ -10,7 +10,7 @@ import {
 	TextareaControl,
 	
 } from '@wordpress/components';
-import { UltimateControlTabs, UltimateDeviceSelector, generateAllClasses, generateTailwindClasses } from '../../utils/visual-controls.js';
+import { UltimateControlTabs, UltimateDeviceSelector, generateAllClasses, generateTailwindClasses, TestimonialsManagementModal } from '../../utils/visual-controls.js';
 import { SimpleInspectorTabs } from '../../components/InspectorTabs.js';
 import { useState } from '@wordpress/element';
 
@@ -47,6 +47,7 @@ export default function Edit({ attributes, setAttributes }) {
 
 	const [editingTestimonial, setEditingTestimonial] = useState(null);
 	const [selectedCategory, setSelectedCategory] = useState('all');
+	const [isTestimonialsModalOpen, setIsTestimonialsModalOpen] = useState(false);
 
 	// Enhanced preset styles for testimonials
 	const presets = {
@@ -445,143 +446,34 @@ export default function Edit({ attributes, setAttributes }) {
 				)}
 
 				<PanelBody title={__('💬 Testimonial Management', 'tailwind-starter')} initialOpen={false}>
-					{testimonials.map((testimonial, index) => (
-						<div key={testimonial.id} className="mb-6 p-4 border rounded">
-							<div className="flex justify-between items-center mb-2">
-								<strong>{testimonial.authorName}</strong>
-								<div className="flex space-x-2">
-									<Button
-										isSecondary
-										isSmall
-										onClick={() => updateTestimonial(index, 'featured', !testimonial.featured)}
-									>
-										{testimonial.featured ? 'Unfeature' : 'Feature'}
-									</Button>
-									<Button
-										isDestructive
-										isSmall
-										onClick={() => removeTestimonial(index)}
-									>
-										Remove
-									</Button>
-								</div>
-							</div>
-
-							<TextareaControl
-								label="Testimonial Content"
-								value={testimonial.content}
-								onChange={(value) => updateTestimonial(index, 'content', value)}
-								rows={3}
-							/>
-
-							<TextareaControl
-								label="Excerpt"
-								value={testimonial.excerpt}
-								onChange={(value) => updateTestimonial(index, 'excerpt', value)}
-								rows={2}
-							/>
-
-							<div className="flex space-x-2">
-								<TextControl
-									label="Author Name"
-									value={testimonial.authorName}
-									onChange={(value) => updateTestimonial(index, 'authorName', value)}
-								/>
-								<TextControl
-									label="Title"
-									value={testimonial.authorTitle}
-									onChange={(value) => updateTestimonial(index, 'authorTitle', value)}
-								/>
-							</div>
-
-							<div className="flex space-x-2">
-								<TextControl
-									label="Company"
-									value={testimonial.authorCompany}
-									onChange={(value) => updateTestimonial(index, 'authorCompany', value)}
-								/>
-								<TextControl
-									label="Category"
-									value={testimonial.category}
-									onChange={(value) => updateTestimonial(index, 'category', value)}
-								/>
-							</div>
-
-							<TextControl
-								label="Location"
-								value={testimonial.location}
-								onChange={(value) => updateTestimonial(index, 'location', value)}
-							/>
-
-							<RangeControl
-								label="Rating"
-								value={testimonial.rating}
-								onChange={(value) => updateTestimonial(index, 'rating', value)}
-								min={1}
-								max={5}
-							/>
-
-							<ToggleControl
-								label="Verified"
-								checked={testimonial.verified}
-								onChange={(value) => updateTestimonial(index, 'verified', value)}
-							/>
-
-							<MediaUploadCheck>
-								<MediaUpload
-									onSelect={(media) => {
-										updateTestimonial(index, 'authorImageUrl', media.url);
-										updateTestimonial(index, 'authorImageAlt', media.alt);
-									}}
-									allowedTypes={['image']}
-									value={testimonial.authorImageUrl}
-									render={({ open }) => (
-										<div className="mt-2">
-											<Button onClick={open} isSecondary>
-												{testimonial.authorImageUrl ? 'Change Photo' : 'Select Photo'}
-											</Button>
-											{testimonial.authorImageUrl && (
-												<div className="mt-2">
-													<img 
-														src={testimonial.authorImageUrl} 
-														alt={testimonial.authorImageAlt}
-														className="w-20 h-20 object-cover rounded"
-													/>
-													<Button
-														onClick={() => {
-															updateTestimonial(index, 'authorImageUrl', '');
-															updateTestimonial(index, 'authorImageAlt', '');
-														}}
-														isDestructive
-														isSmall
-														className="ml-2"
-													>
-														Remove
-													</Button>
-												</div>
-											)}
-										</div>
-									)}
-								/>
-							</MediaUploadCheck>
-
-							{enableVideoTestimonials && (
-								<TextControl
-									label="Video URL"
-									value={testimonial.videoUrl}
-									onChange={(value) => updateTestimonial(index, 'videoUrl', value)}
-									placeholder="https://youtube.com/watch?v=..."
-								/>
-							)}
+					<div style={{ 
+						textAlign: 'center', 
+						padding: '20px',
+						backgroundColor: '#f8f9fa',
+						borderRadius: '8px',
+						border: '2px dashed #f59e0b'
+					}}>
+						<div style={{ marginBottom: '12px', fontSize: '24px' }}>💬</div>
+						<div style={{ marginBottom: '8px', fontWeight: '600', color: '#1e1e1e' }}>
+							{testimonials.length} Testimonial{testimonials.length !== 1 ? 's' : ''} Configured
 						</div>
-					))}
-
-					<Button
-						isPrimary
-						onClick={addTestimonial}
-					>
-						Add Testimonial
-					</Button>
+						<div style={{ marginBottom: '16px', fontSize: '14px', color: '#666' }}>
+							Manage your testimonials in an organized modal window
+						</div>
+						<Button
+							isPrimary
+							onClick={() => setIsTestimonialsModalOpen(true)}
+							style={{
+								background: 'linear-gradient(45deg, #f59e0b, #d97706)',
+								border: 'none',
+								borderRadius: '6px',
+								padding: '8px 16px',
+								fontWeight: '600'
+							}}
+						>
+							🚀 Open Testimonials Manager
+						</Button>
+					</div>
 				</PanelBody>
 			</>  
 		);
@@ -723,6 +615,16 @@ export default function Edit({ attributes, setAttributes }) {
 					</div>
 				)}
 			</div>
+
+			{/* Testimonials Management Modal */}
+			{isTestimonialsModalOpen && (
+				<TestimonialsManagementModal
+					isOpen={isTestimonialsModalOpen}
+					onClose={() => setIsTestimonialsModalOpen(false)}
+					testimonials={testimonials}
+					onTestimonialsChange={(newTestimonials) => setAttributes({ testimonials: newTestimonials })}
+				/>
+			)}
 		</>
 	);
 } 

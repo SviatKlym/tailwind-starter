@@ -452,10 +452,28 @@ const withVisualControls = createHigherOrderComponent((BlockEdit) => {
         initialOpen: true,
         className: 'spacer-controls-panel'
       },
-        // Hide the default ToolsPanel component
+        // Hide the default ToolsPanel component with more specific CSS
         createElement('style', null, `
-          .spacer-controls-panel [data-wp-component="ToolsPanel"] {
+          .interface-interface-skeleton__sidebar [data-wp-component="ToolsPanel"],
+          .block-editor-block-inspector [data-wp-component="ToolsPanel"],
+          .spacer-controls-panel + * [data-wp-component="ToolsPanel"],
+          div[data-wp-component="ToolsPanel"] {
             display: none !important;
+          }
+          .spacer-controls-panel {
+            border: 2px solid #0073aa;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-bottom: 16px;
+          }
+          .spacer-height-control {
+            padding: 16px 0;
+          }
+          .spacer-height-control label {
+            font-weight: 600;
+            color: #1e1e1e;
+            margin-bottom: 8px;
+            display: block;
           }
         `),
 
@@ -478,12 +496,16 @@ const withVisualControls = createHigherOrderComponent((BlockEdit) => {
               }
               setAttributes({ responsiveHeight: newHeight })
               
-              // Force update the element height immediately
-              const spacerElement = document.querySelector('.wp-block-spacer')
-              if (spacerElement) {
-                spacerElement.style.height = `${value}px`
-                spacerElement.style.minHeight = `${value}px`
-              }
+              // Force update the element height immediately with better selector
+              setTimeout(() => {
+                const spacerElements = document.querySelectorAll('.wp-block-spacer')
+                spacerElements.forEach(spacerElement => {
+                  if (spacerElement.closest('.block-editor-block-list__block.is-selected')) {
+                    spacerElement.style.setProperty('height', `${value}px`, 'important')
+                    spacerElement.style.setProperty('min-height', `${value}px`, 'important')
+                  }
+                })
+              }, 50)
             },
             min: 10,
             max: 500,
@@ -501,8 +523,16 @@ const withVisualControls = createHigherOrderComponent((BlockEdit) => {
           },
             Object.entries(responsiveHeight).map(([device, height]) =>
               createElement('div', {
-                key: device
-              }, `${device}: ${height}px`)
+                key: device,
+                style: { 
+                  padding: '4px 8px',
+                  backgroundColor: device === activeDevice ? '#0073aa' : '#f0f0f0',
+                  color: device === activeDevice ? 'white' : '#333',
+                  margin: '2px',
+                  borderRadius: '4px',
+                  fontSize: '12px'
+                }
+              }, `${device.toUpperCase()}: ${height}px`)
             )
           )
         )
@@ -664,9 +694,28 @@ function addVisualClasses(BlockListBlock) {
       // Use inline styles for height to ensure they are applied
       const baseHeight = responsiveHeight.base || 50
       spacerInlineStyles = {
-        height: `${baseHeight}px !important`,
-        minHeight: `${baseHeight}px !important`,
-        display: 'block !important'
+        height: `${baseHeight}px`,
+        minHeight: `${baseHeight}px`,
+        display: 'block',
+        backgroundColor: '#f0f0f0',
+        border: '1px dashed #ccc',
+        position: 'relative'
+      }
+      
+      // Add a visual indicator for the spacer
+      if (typeof window !== 'undefined') {
+        spacerInlineStyles['&::after'] = {
+          content: `"Spacer: ${baseHeight}px"`,
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          fontSize: '12px',
+          color: '#666',
+          backgroundColor: 'rgba(255, 255, 255, 0.8)',
+          padding: '2px 6px',
+          borderRadius: '3px'
+        }
       }
       
       // Also add Tailwind classes as backup and responsive styles

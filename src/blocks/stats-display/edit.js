@@ -10,7 +10,7 @@ import {
 	ColorPicker,
 	
 } from '@wordpress/components';
-import { UltimateControlTabs, UltimateDeviceSelector, generateAllClasses, generateTailwindClasses } from '../../utils/visual-controls.js';
+import { UltimateControlTabs, UltimateDeviceSelector, generateAllClasses, generateTailwindClasses, StatsManagementModal } from '../../utils/visual-controls.js';
 import { SimpleInspectorTabs } from '../../components/InspectorTabs.js';
 import { useState, useEffect } from '@wordpress/element';
 
@@ -37,6 +37,7 @@ export default function Edit({ attributes, setAttributes }) {
 
 	const [editingStat, setEditingStat] = useState(null);
 	const [animatedNumbers, setAnimatedNumbers] = useState({});
+	const [isStatsModalOpen, setIsStatsModalOpen] = useState(false);
 
 	// Enhanced preset styles for stats display
 	const presets = {
@@ -351,68 +352,34 @@ export default function Edit({ attributes, setAttributes }) {
 				</PanelBody>
 
 				<PanelBody title={__('📊 Stats Management', 'tailwind-starter')} initialOpen={false}>
-					{stats.map((stat, index) => (
-						<div key={stat.id} className="mb-6 p-4 border rounded">
-							<div className="flex justify-between items-center mb-2">
-								<strong>Stat {index + 1}</strong>
-								<Button
-									isDestructive
-									isSmall
-									onClick={() => removeStat(index)}
-								>
-									Remove
-								</Button>
-							</div>
-							<TextControl
-								label="Number"
-								value={stat.number}
-								onChange={(value) => updateStat(index, 'number', value)}
-								help="Use commas for thousands (e.g., 10,000)"
-							/>
-							<div className="flex space-x-2">
-								<TextControl
-									label="Prefix"
-									value={stat.prefix}
-									onChange={(value) => updateStat(index, 'prefix', value)}
-									placeholder="$"
-								/>
-								<TextControl
-									label="Suffix"
-									value={stat.suffix}
-									onChange={(value) => updateStat(index, 'suffix', value)}
-									placeholder="+"
-								/>
-							</div>
-							<TextControl
-								label="Label"
-								value={stat.label}
-								onChange={(value) => updateStat(index, 'label', value)}
-							/>
-							<TextControl
-								label="Description"
-								value={stat.description}
-								onChange={(value) => updateStat(index, 'description', value)}
-							/>
-							<TextControl
-								label="Icon (Emoji)"
-								value={stat.icon}
-								onChange={(value) => updateStat(index, 'icon', value)}
-							/>
-							<div className="mt-2">
-								<label className="block text-sm font-medium mb-1">Color</label>
-								<ColorPicker
-									color={stat.color}
-									onChange={(color) => updateStat(index, 'color', color)}
-								/>
-							</div>
+					<div style={{ 
+						textAlign: 'center', 
+						padding: '20px',
+						backgroundColor: '#f8f9fa',
+						borderRadius: '8px',
+						border: '2px dashed #0073aa'
+					}}>
+						<div style={{ marginBottom: '12px', fontSize: '24px' }}>📊</div>
+						<div style={{ marginBottom: '8px', fontWeight: '600', color: '#1e1e1e' }}>
+							{stats.length} Stat{stats.length !== 1 ? 's' : ''} Configured
 						</div>
-					))}
-					<Button
-						isPrimary
-						onClick={addStat}
-					>
-						Add Stat
-					</Button>
+						<div style={{ marginBottom: '16px', fontSize: '14px', color: '#666' }}>
+							Manage your statistics data in an organized modal window
+						</div>
+						<Button
+							isPrimary
+							onClick={() => setIsStatsModalOpen(true)}
+							style={{
+								background: 'linear-gradient(45deg, #0073aa, #005177)',
+								border: 'none',
+								borderRadius: '6px',
+								padding: '8px 16px',
+								fontWeight: '600'
+							}}
+						>
+							🚀 Open Stats Manager
+						</Button>
+					</div>
 				</PanelBody>
 			</>
 		);
@@ -540,6 +507,16 @@ export default function Edit({ attributes, setAttributes }) {
 					{stats.map((stat, index) => renderStatPreview(stat, index))}
 				</div>
 			</div>
+
+			{/* Stats Management Modal */}
+			{isStatsModalOpen && (
+				<StatsManagementModal
+					isOpen={isStatsModalOpen}
+					onClose={() => setIsStatsModalOpen(false)}
+					stats={stats}
+					onStatsChange={(newStats) => setAttributes({ stats: newStats })}
+				/>
+			)}
 		</>
 	);
 } 
