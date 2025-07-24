@@ -15,6 +15,7 @@ import {
 
 // Import fixed visual controls
 import { UltimateControlTabs, UltimateDeviceSelector, generateAllClasses, generateTailwindClasses } from '../../utils/visual-controls.js';
+import { SimpleInspectorTabs } from '../../components/InspectorTabs.js';
 import { useState, useEffect, useCallback } from '@wordpress/element';
 
 export default function Edit({ attributes, setAttributes }) {
@@ -57,23 +58,14 @@ export default function Edit({ attributes, setAttributes }) {
 		enableKeyboardShortcuts = true,
 		customControlsColor = '#ffffff',
 		accentColor = '#3b82f6',
-		settings = {
-			spacing: { base: { top: 8, right: 4, bottom: 8, left: 4 } },
-			margins: { base: { top: 0, right: 0, bottom: 0, left: 0 } },
-			typography: { base: { fontSize: 'text-lg', fontWeight: 'font-normal', textAlign: 'text-left' } },
-			backgroundColor: 'bg-white',
-			textColor: 'text-gray-900',
-			gradients: {},
-			layout: {},
-			effects: {}
-		},
+		settings = {},
 		activeDevice = 'base'
 	} = attributes;
 
 	// Safe setters with error handling
 	const updateSettings = useCallback((newSettings) => {
 		if (newSettings && typeof newSettings === 'object') {
-			setAttributes({ settings: { ...settings, ...newSettings } });
+			setAttributes({ settings: { ...(settings || {}), ...newSettings } });
 		}
 	}, [settings, setAttributes]);
 
@@ -83,16 +75,58 @@ export default function Edit({ attributes, setAttributes }) {
 		}
 	}, [setAttributes]);
 
+	// Enhanced preset styles for video section
+	const presets = {
+		modern: {
+			spacing: { base: { top: 10, right: 5, bottom: 10, left: 5 } },
+			margins: { base: { top: 4, right: 0, bottom: 4, left: 0 } },
+			typography: { base: { fontSize: 'text-lg', fontWeight: 'font-medium', textAlign: 'text-center' } },
+			backgroundColor: 'bg-gradient-to-br from-gray-50 to-blue-50',
+			textColor: 'text-gray-900',
+			gradients: {},
+			layout: {},
+			effects: {}
+		},
+		cinematic: {
+			spacing: { base: { top: 12, right: 6, bottom: 12, left: 6 } },
+			margins: { base: { top: 0, right: 0, bottom: 0, left: 0 } },
+			typography: { base: { fontSize: 'text-xl', fontWeight: 'font-bold', textAlign: 'text-center' } },
+			backgroundColor: 'bg-black',
+			textColor: 'text-white',
+			gradients: {},
+			layout: {},
+			effects: {}
+		},
+		minimal: {
+			spacing: { base: { top: 6, right: 3, bottom: 6, left: 3 } },
+			margins: { base: { top: 2, right: 0, bottom: 2, left: 0 } },
+			typography: { base: { fontSize: 'text-base', fontWeight: 'font-normal', textAlign: 'text-left' } },
+			backgroundColor: 'bg-white',
+			textColor: 'text-gray-800',
+			gradients: {},
+			layout: {},
+			effects: {}
+		}
+	};
+
+	const handlePresetApply = (presetName) => {
+		const preset = presets[presetName];
+		if (preset) {
+			setAttributes({ settings: preset });
+		}
+	};
+
 	// Generate classes safely
-	const blockClasses = generateAllClasses(settings);
+	const allClasses = generateAllClasses(settings || {});
+	const previewClasses = generateAllClasses(settings || {});
 	
-	// Layout options
-	const layoutOptions = [
-		{ label: __('Featured Video'), value: 'featured-video' },
-		{ label: __('Video Grid'), value: 'grid' },
-		{ label: __('Video Carousel'), value: 'carousel' },
-		{ label: __('Background Video'), value: 'background-video' },
-		{ label: __('Video Playlist'), value: 'playlist' }
+	// Layout options as preset grid
+	const layoutPresets = [
+		{ key: 'featured-video', icon: '⭐', name: 'Featured Video', desc: 'Single prominent video with details' },
+		{ key: 'grid', icon: '🔲', name: 'Video Grid', desc: 'Multiple videos in grid layout' },
+		{ key: 'carousel', icon: '🎠', name: 'Video Carousel', desc: 'Scrollable video carousel' },
+		{ key: 'background-video', icon: '🎬', name: 'Background Video', desc: 'Full-screen background video' },
+		{ key: 'playlist', icon: '📋', name: 'Video Playlist', desc: 'Sequential video playlist' }
 	];
 
 	const aspectRatioOptions = [
@@ -168,117 +202,314 @@ export default function Edit({ attributes, setAttributes }) {
 	};
 
 	const blockProps = useBlockProps({
-		className: `video-section ${blockClasses}`.trim()
+		className: `video-section video-${layout} ${previewClasses}`,
+		'data-classes': previewClasses,
+		'data-all-classes': allClasses
 	});
+
+	// Block tab controls - content and functionality
+	const blockControls = (
+		<>
+			<PanelBody title={__('📐 Layout Variations', 'tailwind-starter')} initialOpen={true}>
+				<div className="preset-grid">
+					{layoutPresets.map(preset => (
+						<div
+							key={preset.key}
+							className={`preset-button ${layout === preset.key ? 'active' : ''}`}
+							onClick={() => setAttributes({ layout: preset.key })}
+						>
+							<div className="preset-icon">{preset.icon}</div>
+							<div className="preset-name">{preset.name}</div>
+							<div className="preset-desc">{preset.desc}</div>
+						</div>
+					))}
+				</div>
+			</PanelBody>
+
+			<PanelBody title={__('⚙️ Video Settings', 'tailwind-starter')} initialOpen={false}>
+				<ToggleControl
+					label={__('Show Section Header', 'tailwind-starter')}
+					checked={showSectionHeader}
+					onChange={(value) => setAttributes({ showSectionHeader: value })}
+				/>
+
+				<Divider />
+
+				{(layout === 'grid' || layout === 'carousel') && (
+					<RangeControl
+						label={__('Columns', 'tailwind-starter')}
+						value={columns}
+						onChange={(value) => setAttributes({ columns: value })}
+						min={1}
+						max={4}
+						step={1}
+					/>
+				)}
+				
+				<SelectControl
+					label={__('Aspect Ratio', 'tailwind-starter')}
+					value={aspectRatio}
+					options={aspectRatioOptions}
+					onChange={(value) => setAttributes({ aspectRatio: value })}
+				/>
+
+				<SelectControl
+					label={__('Player Style', 'tailwind-starter')}
+					value={playerStyle}
+					options={playerStyleOptions}
+					onChange={(value) => setAttributes({ playerStyle: value })}
+				/>
+
+				<SelectControl
+					label={__('Thumbnail Style', 'tailwind-starter')}
+					value={thumbnailStyle}
+					onChange={(value) => setAttributes({ thumbnailStyle: value })}
+					options={[
+						{ label: 'Rounded', value: 'rounded' },
+						{ label: 'Square', value: 'square' },
+						{ label: 'Circle', value: 'circle' }
+					]}
+				/>
+
+				<SelectControl
+					label={__('Hover Effect', 'tailwind-starter')}
+					value={hoverEffect}
+					onChange={(value) => setAttributes({ hoverEffect: value })}
+					options={[
+						{ label: 'Scale', value: 'scale' },
+						{ label: 'Lift', value: 'lift' },
+						{ label: 'None', value: 'none' }
+					]}
+				/>
+				
+				<ToggleControl
+					label={__('Show Play Button', 'tailwind-starter')}
+					checked={showPlayButton}
+					onChange={(value) => setAttributes({ showPlayButton: value })}
+				/>
+				
+				<ToggleControl
+					label={__('Show Duration', 'tailwind-starter')}
+					checked={showDuration}
+					onChange={(value) => setAttributes({ showDuration: value })}
+				/>
+
+				<ToggleControl
+					label={__('Show Title', 'tailwind-starter')}
+					checked={showTitle}
+					onChange={(value) => setAttributes({ showTitle: value })}
+				/>
+
+				<ToggleControl
+					label={__('Show Description', 'tailwind-starter')}
+					checked={showDescription}
+					onChange={(value) => setAttributes({ showDescription: value })}
+				/>
+				
+				<ToggleControl
+					label={__('Enable Modal', 'tailwind-starter')}
+					checked={enableModal}
+					onChange={(value) => setAttributes({ enableModal: value })}
+				/>
+				
+				<ToggleControl
+					label={__('Enable Lazy Loading', 'tailwind-starter')}
+					checked={enableLazyLoad}
+					onChange={(value) => setAttributes({ enableLazyLoad: value })}
+				/>
+
+				{enableCategories && (
+					<>
+						<Divider />
+						<ToggleControl
+							label={__('Enable Categories', 'tailwind-starter')}
+							checked={enableCategories}
+							onChange={(value) => setAttributes({ enableCategories: value })}
+						/>
+					</>
+				)}
+			</PanelBody>
+
+			<PanelBody title={__('🎬 Videos Management', 'tailwind-starter')} initialOpen={false}>
+				{videos.map((video, index) => (
+					<div key={video.id} className="video-config mb-4 p-4 border rounded">
+						<div className="flex justify-between items-center mb-2">
+							<h4><strong>{video.title || `Video ${index + 1}`}</strong></h4>
+							<Button
+								onClick={() => removeVideo(index)}
+								variant="secondary"
+								isDestructive
+								size="small"
+							>
+								{__('Remove', 'tailwind-starter')}
+							</Button>
+						</div>
+
+						<TextControl
+							label={__('Video Title', 'tailwind-starter')}
+							value={video.title}
+							onChange={(value) => updateVideo(index, { title: value })}
+							placeholder="Enter video title..."
+						/>
+
+						<TextareaControl
+							label={__('Video Description', 'tailwind-starter')}
+							value={video.description}
+							onChange={(value) => updateVideo(index, { description: value })}
+							placeholder="Enter video description..."
+							rows={3}
+						/>
+
+						<TextControl
+							label={__('Video URL', 'tailwind-starter')}
+							value={video.url}
+							onChange={(value) => updateVideo(index, { url: value })}
+							placeholder="Enter video URL or upload..."
+						/>
+
+						<TextControl
+							label={__('Duration', 'tailwind-starter')}
+							value={video.duration}
+							onChange={(value) => updateVideo(index, { duration: value })}
+							placeholder="e.g., 5:30"
+						/>
+
+						<MediaUploadCheck>
+							<MediaUpload
+								onSelect={(media) => updateVideo(index, { 
+									thumbnail: { 
+										url: media.url, 
+										alt: media.alt || video.title,
+										id: media.id 
+									} 
+								})}
+								allowedTypes={['image']}
+								value={video.thumbnail?.id}
+								render={({ open }) => (
+									<div className="mt-2">
+										<Button onClick={open} variant="secondary">
+											{video.thumbnail?.url ? __('Change Thumbnail', 'tailwind-starter') : __('Select Thumbnail', 'tailwind-starter')}
+										</Button>
+										{video.thumbnail?.url && (
+											<div className="mt-2">
+												<img 
+													src={video.thumbnail.url} 
+													alt={video.thumbnail.alt}
+													className="w-20 h-12 object-cover rounded"
+												/>
+											</div>
+										)}
+									</div>
+								)}
+							/>
+						</MediaUploadCheck>
+					</div>
+				))}
+				
+				<Button onClick={addVideo} variant="primary" className="w-full">
+					{__('Add Video', 'tailwind-starter')}
+				</Button>
+			</PanelBody>
+		</>  
+	);
+
+	// Design tab controls - visual styling only  
+	const generalControls = (
+		<>
+			<UltimateDeviceSelector
+				activeDevice={activeDevice}
+				onChange={(device) => setAttributes({ activeDevice: device })}
+			/>
+
+			<PanelBody title={__('🎨 Visual Presets', 'tailwind-starter')} initialOpen={false}>
+				<div className="preset-grid">
+					{Object.keys(presets).map(presetName => (
+						<div
+							key={presetName}
+							className="preset-button"
+							onClick={() => handlePresetApply(presetName)}
+						>
+							<div className="preset-icon">🎨</div>
+							<div className="preset-name">{presetName.charAt(0).toUpperCase() + presetName.slice(1)}</div>
+							<div className="preset-desc">Apply {presetName} styling</div>
+						</div>
+					))}
+				</div>
+			</PanelBody>
+
+			<UltimateControlTabs
+				spacing={settings?.spacing || {}}
+				onSpacingChange={(spacing) => updateSettings({ spacing })}
+				margins={settings?.margins || {}}
+				onMarginsChange={(margins) => updateSettings({ margins })}
+				background={settings?.backgroundColor}
+				onBackgroundChange={(backgroundColor) => updateSettings({ backgroundColor })}
+				textColor={settings?.textColor}
+				onTextColorChange={(textColor) => updateSettings({ textColor })}
+				gradients={settings?.gradients || {}}
+				onGradientsChange={(gradients) => updateSettings({ gradients })}
+				typography={settings?.typography || {}}
+				onTypographyChange={(typography) => updateSettings({ typography })}
+				layout={settings?.layout || {}}
+				onLayoutChange={(layout) => updateSettings({ layout })}
+				effects={settings?.effects || {}}
+				onEffectsChange={(effects) => updateSettings({ effects })}
+				device={activeDevice}
+				presets={{}}
+				onPresetApply={(preset) => {
+					console.log('Applying preset:', preset);
+				}}
+				onResetAll={() => {
+					setAttributes({
+						settings: {
+							spacing: {},
+							margins: {},
+							typography: {},
+							backgroundColor: '',
+							textColor: '',
+							gradients: {},
+							layout: {},
+							effects: {}
+						}
+					});
+				}}
+			/>
+
+			<PanelBody title={__('🛠️ Advanced', 'tailwind-starter')} initialOpen={false}>
+				<div className="generated-classes p-3 bg-gray-100 rounded text-xs">
+					<strong>Preview Classes:</strong> {previewClasses}<br />
+					<strong>All Device Classes:</strong> {allClasses}
+				</div>
+			</PanelBody>
+		</>  
+	);
 
 	return (
 		<>
 			<InspectorControls>
-				{/* Layout Settings */}
-				<PanelBody title={__('Layout Settings')} initialOpen={true}>
-					<SelectControl
-						label={__('Layout Style')}
-						value={layout}
-						options={layoutOptions}
-						onChange={(value) => setAttributes({ layout: value })}
-					/>
-					
-					{(layout === 'grid' || layout === 'carousel') && (
-						<RangeControl
-							label={__('Columns')}
-							value={columns}
-							onChange={(value) => setAttributes({ columns: value })}
-							min={1}
-							max={4}
-							step={1}
-						/>
-					)}
-					
-					<SelectControl
-						label={__('Aspect Ratio')}
-						value={aspectRatio}
-						options={aspectRatioOptions}
-						onChange={(value) => setAttributes({ aspectRatio: value })}
-					/>
-				</PanelBody>
-
-				{/* Video Settings */}
-				<PanelBody title={__('Video Settings')} initialOpen={false}>
-					<SelectControl
-						label={__('Player Style')}
-						value={playerStyle}
-						options={playerStyleOptions}
-						onChange={(value) => setAttributes({ playerStyle: value })}
-					/>
-					
-					<ToggleControl
-						label={__('Enable Modal')}
-						checked={enableModal}
-						onChange={(value) => setAttributes({ enableModal: value })}
-					/>
-					
-					<ToggleControl
-						label={__('Show Play Button')}
-						checked={showPlayButton}
-						onChange={(value) => setAttributes({ showPlayButton: value })}
-					/>
-					
-					<ToggleControl
-						label={__('Show Duration')}
-						checked={showDuration}
-						onChange={(value) => setAttributes({ showDuration: value })}
-					/>
-					
-					<ToggleControl
-						label={__('Enable Lazy Loading')}
-						checked={enableLazyLoad}
-						onChange={(value) => setAttributes({ enableLazyLoad: value })}
-					/>
-				</PanelBody>
-
-				{/* Visual Controls */}
-				<UltimateControlTabs
-					spacing={settings.spacing || {}}
-					onSpacingChange={(spacing) => updateSettings({ spacing })}
-					margins={settings.margins || {}}
-					onMarginsChange={(margins) => updateSettings({ margins })}
-					background={settings.backgroundColor}
-					onBackgroundChange={(backgroundColor) => updateSettings({ backgroundColor })}
-					textColor={settings.textColor}
-					onTextColorChange={(textColor) => updateSettings({ textColor })}
-					gradients={settings.gradients || {}}
-					onGradientsChange={(gradients) => updateSettings({ gradients })}
-					typography={settings.typography || {}}
-					onTypographyChange={(typography) => updateSettings({ typography })}
-					layout={settings.layout || {}}
-					onLayoutChange={(layout) => updateSettings({ layout })}
-					effects={settings.effects || {}}
-					onEffectsChange={(effects) => updateSettings({ effects })}
-					device="base"
-					presets={{}}
-					onPresetApply={(preset) => {
-						console.log('Applying preset:', preset);
-					}}
+				<SimpleInspectorTabs
+					blockControls={blockControls}
+					generalControls={generalControls}
 				/>
 			</InspectorControls>
 
 			<div {...blockProps}>
 				{/* Section Header */}
 				{showSectionHeader && (
-					<div className="block-section-header">
+					<div className="section-header text-center mb-8">
 						<RichText
 							tagName="h2"
-							className="block-section-title"
 							value={sectionTitle}
 							onChange={(value) => setAttributes({ sectionTitle: value })}
-							placeholder={__('Enter section title...')}
+							placeholder="Section Title..."
+							className="text-3xl font-bold mb-2"
 						/>
 						<RichText
 							tagName="p"
-							className="block-section-subtitle"
 							value={sectionSubtitle}
 							onChange={(value) => setAttributes({ sectionSubtitle: value })}
-							placeholder={__('Enter section subtitle...')}
+							placeholder="Section subtitle..."
+							className="text-gray-600 text-lg"
 						/>
 					</div>
 				)}
@@ -402,30 +633,11 @@ export default function Edit({ attributes, setAttributes }) {
 					</div>
 				)}
 
-				{/* Add Video Button */}
-				<div className="mt-6 text-center">
-					<Button
-						isPrimary
-						onClick={addVideo}
-						className="inline-flex items-center"
-					>
-						<svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
-							<path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" />
-						</svg>
-						{__('Add Video')}
-					</Button>
-				</div>
-
 				{/* Editor Helper Text */}
 				{videos.length === 0 && (
-					<div className="block-empty-state">
-						<div className="block-empty-icon">
-							<svg className="w-16 h-16 mx-auto text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-								<path d="M2 6a2 2 0 012-2h6l2 2h6a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM15 9a1 1 0 11-2 0v2.5L11.5 10l-4 4H15V9z" />
-							</svg>
-						</div>
-						<h3 className="block-empty-title">{__('No Videos Added')}</h3>
-						<p className="block-empty-description">{__('Click "Add Video" to get started.')}</p>
+					<div className="empty-state text-center py-8">
+						<div className="text-gray-400 text-lg mb-2">🎬</div>
+						<p className="text-gray-500">No videos added yet. Use the "Videos Management" panel to add videos.</p>
 					</div>
 				)}
 			</div>

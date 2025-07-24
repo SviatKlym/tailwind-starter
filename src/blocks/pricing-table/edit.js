@@ -9,6 +9,7 @@ import {
 	__experimentalDivider as Divider
 } from '@wordpress/components';
 import { UltimateControlTabs, UltimateDeviceSelector, generateAllClasses, generateTailwindClasses } from '../../utils/visual-controls.js';
+import { SimpleInspectorTabs } from '../../components/InspectorTabs.js';
 import { useState } from '@wordpress/element';
 
 export default function Edit({ attributes, setAttributes }) {
@@ -19,7 +20,7 @@ export default function Edit({ attributes, setAttributes }) {
 		toggleLabel2,
 		currentToggle,
 		plans,
-		settings,
+		settings = {},
 		activeDevice
 	} = attributes;
 
@@ -67,7 +68,7 @@ export default function Edit({ attributes, setAttributes }) {
 	};
 
 	// Generate classes for all devices
-	const allClasses = generateAllClasses(settings);
+	const allClasses = generateAllClasses(settings || {});
 
 	// Generate preview classes (just base for editor)
 	const previewClasses = generateAllClasses(settings || {});
@@ -126,17 +127,10 @@ export default function Edit({ attributes, setAttributes }) {
 		return 'month';
 	};
 
-	return (
+	// Block tab controls - content and functionality
+	const blockControls = (
 		<>
-			<InspectorControls>
-				<PanelBody title={__('📱 Responsive Design', 'tailwind-starter')} initialOpen={true}>
-					<UltimateDeviceSelector
-						activeDevice={activeDevice}
-						onChange={(device) => setAttributes({ activeDevice: device })}
-					/>
-				</PanelBody>
-
-				<PanelBody title={__('🎯 Quick Style Presets', 'tailwind-starter')} initialOpen={true}>
+			<PanelBody title={__('🎯 Quick Style Presets', 'tailwind-starter')} initialOpen={true}>
 					<div style={{ marginBottom: '16px' }}>
 						<label style={{ 
 							fontWeight: '600', 
@@ -419,44 +413,70 @@ export default function Edit({ attributes, setAttributes }) {
 						</div>
 					))}
 				</PanelBody>
+			</>
+		);
+
+		// Design tab controls - visual styling only
+		const generalControls = (
+			<>
+				<PanelBody title={__('📱 Responsive Design', 'tailwind-starter')} initialOpen={true}>
+					<UltimateDeviceSelector
+						activeDevice={activeDevice}
+						onChange={(device) => setAttributes({ activeDevice: device })}
+					/>
+				</PanelBody>
 
 				<PanelBody title={__('🎨 Visual Design Studio', 'tailwind-starter')} initialOpen={false}>
 					<UltimateControlTabs
-						spacing={settings.spacing || {}}
+						spacing={settings?.spacing || {}}
 						onSpacingChange={(spacing) => setAttributes({
-							settings: { ...settings, spacing }
+							settings: { ...(settings || {}), spacing }
 						})}
-						margins={settings.margins || {}}
+						margins={settings?.margins || {}}
 						onMarginsChange={(margins) => setAttributes({
-							settings: { ...settings, margins }
+							settings: { ...(settings || {}), margins }
 						})}
-						background={settings.backgroundColor}
+						background={settings?.backgroundColor}
 						onBackgroundChange={(backgroundColor) => setAttributes({
-							settings: { ...settings, backgroundColor }
+							settings: { ...(settings || {}), backgroundColor }
 						})}
-						textColor={settings.textColor}
+						textColor={settings?.textColor}
 						onTextColorChange={(textColor) => setAttributes({
-							settings: { ...settings, textColor }
+							settings: { ...(settings || {}), textColor }
 						})}
-						gradients={settings.gradients || {}}
+						gradients={settings?.gradients || {}}
 						onGradientsChange={(gradients) => setAttributes({
-							settings: { ...settings, gradients }
+							settings: { ...(settings || {}), gradients }
 						})}
-						typography={settings.typography || {}}
+						typography={settings?.typography || {}}
 						onTypographyChange={(typography) => setAttributes({
-							settings: { ...settings, typography }
+							settings: { ...(settings || {}), typography }
 						})}
-						layout={settings.layout || {}}
+						layout={settings?.layout || {}}
 						onLayoutChange={(layout) => setAttributes({
-							settings: { ...settings, layout }
+							settings: { ...(settings || {}), layout }
 						})}
-						effects={settings.effects || {}}
+						effects={settings?.effects || {}}
 						onEffectsChange={(effects) => setAttributes({
-							settings: { ...settings, effects }
+							settings: { ...(settings || {}), effects }
 						})}
 						device={activeDevice}
 						presets={presets}
 						onPresetApply={handlePresetApply}
+						onResetAll={() => {
+							setAttributes({
+								settings: {
+									spacing: {},
+									margins: {},
+									typography: {},
+									backgroundColor: '',
+									textColor: '',
+									gradients: {},
+									layout: {},
+									effects: {}
+								}
+							});
+						}}
 					/>
 				</PanelBody>
 
@@ -476,7 +496,17 @@ export default function Edit({ attributes, setAttributes }) {
 						</code>
 					</div>
 				</PanelBody>
-			</InspectorControls>
+			</>
+		);
+
+		return (
+			<>
+				<InspectorControls>
+					<SimpleInspectorTabs
+						blockControls={blockControls}
+						generalControls={generalControls}
+					/>
+				</InspectorControls>
 
 			<div {...blockProps}>
 				<div 

@@ -11,6 +11,7 @@ import {
 	__experimentalDivider as Divider
 } from '@wordpress/components';
 import { UltimateControlTabs, UltimateDeviceSelector, generateAllClasses, generateTailwindClasses } from '../../utils/visual-controls.js';
+import { SimpleInspectorTabs } from '../../components/InspectorTabs.js';
 import { useState, useEffect } from '@wordpress/element';
 
 export default function Edit({ attributes, setAttributes }) {
@@ -30,7 +31,7 @@ export default function Edit({ attributes, setAttributes }) {
 		showSectionHeader,
 		highlightedStat,
 		cardStyle,
-		settings,
+		settings = {},
 		activeDevice
 	} = attributes;
 
@@ -79,7 +80,7 @@ export default function Edit({ attributes, setAttributes }) {
 	};
 
 	// Generate classes for all devices
-	const allClasses = generateAllClasses(settings);
+	const allClasses = generateAllClasses(settings || {});
 
 	// Generate preview classes (just base for editor)
 	const previewClasses = generateAllClasses(settings || {});
@@ -258,10 +259,10 @@ export default function Edit({ attributes, setAttributes }) {
 		}
 	};
 
-	return (
+	// Block tab controls - content and functionality
+	const blockControls = (
 		<>
-			<InspectorControls>
-				<PanelBody title={__('📐 Layout Variations', 'tailwind-starter')} initialOpen={true}>
+			<PanelBody title={__('📐 Layout Variations', 'tailwind-starter')} initialOpen={true}>
 					<div className="preset-grid">
 						{layoutPresets.map(preset => (
 							<div
@@ -272,22 +273,6 @@ export default function Edit({ attributes, setAttributes }) {
 								<div className="preset-icon">{preset.icon}</div>
 								<div className="preset-name">{preset.name}</div>
 								<div className="preset-desc">{preset.desc}</div>
-							</div>
-						))}
-					</div>
-				</PanelBody>
-
-				<PanelBody title={__('🎨 Visual Presets', 'tailwind-starter')} initialOpen={false}>
-					<div className="preset-grid">
-						{Object.keys(presets).map(presetName => (
-							<div
-								key={presetName}
-								className="preset-button"
-								onClick={() => handlePresetApply(presetName)}
-							>
-								<div className="preset-icon">🎨</div>
-								<div className="preset-name">{presetName.charAt(0).toUpperCase() + presetName.slice(1)}</div>
-								<div className="preset-desc">Apply {presetName} styling</div>
 							</div>
 						))}
 					</div>
@@ -429,52 +414,104 @@ export default function Edit({ attributes, setAttributes }) {
 						Add Stat
 					</Button>
 				</PanelBody>
+			</>
+		);
 
+		// Design tab controls - visual styling only
+		const generalControls = (
+			<>
 				<UltimateDeviceSelector
 					activeDevice={activeDevice}
 					onChange={(device) => setAttributes({ activeDevice: device })}
 				/>
 
+				<PanelBody title={__('🎨 Visual Presets', 'tailwind-starter')} initialOpen={false}>
+					<div className="preset-grid">
+						{Object.keys(presets).map(presetName => (
+							<div
+								key={presetName}
+								className="preset-button"
+								onClick={() => handlePresetApply(presetName)}
+							>
+								<div className="preset-icon">🎨</div>
+								<div className="preset-name">{presetName.charAt(0).toUpperCase() + presetName.slice(1)}</div>
+								<div className="preset-desc">Apply {presetName} styling</div>
+							</div>
+						))}
+					</div>
+				</PanelBody>
+
 				<UltimateControlTabs
-					spacing={settings.spacing || {}}
+					spacing={settings?.spacing || {}}
 					onSpacingChange={(spacing) => setAttributes({
-						settings: { ...settings, spacing }
+						settings: { ...(settings || {}), spacing }
 					})}
-					margins={settings.margins || {}}
+					margins={settings?.margins || {}}
 					onMarginsChange={(margins) => setAttributes({
-						settings: { ...settings, margins }
+						settings: { ...(settings || {}), margins }
 					})}
-					background={settings.backgroundColor || 'bg-gray-50'}
+					background={settings?.backgroundColor || 'bg-gray-50'}
 					onBackgroundChange={(backgroundColor) => setAttributes({
-						settings: { ...settings, backgroundColor }
+						settings: { ...(settings || {}), backgroundColor }
 					})}
-					textColor={settings.textColor || 'text-gray-900'}
+					textColor={settings?.textColor || 'text-gray-900'}
 					onTextColorChange={(textColor) => setAttributes({
-						settings: { ...settings, textColor }
+						settings: { ...(settings || {}), textColor }
 					})}
-					gradients={settings.gradients || {}}
+					gradients={settings?.gradients || {}}
 					onGradientsChange={(gradients) => setAttributes({
-						settings: { ...settings, gradients }
+						settings: { ...(settings || {}), gradients }
 					})}
-					typography={settings.typography || {}}
+					typography={settings?.typography || {}}
 					onTypographyChange={(typography) => setAttributes({
-						settings: { ...settings, typography }
+						settings: { ...(settings || {}), typography }
 					})}
-					layout={settings.layout || {}}
+					layout={settings?.layout || {}}
 					onLayoutChange={(layout) => setAttributes({
-						settings: { ...settings, layout }
+						settings: { ...(settings || {}), layout }
 					})}
-					effects={settings.effects || {}}
+					effects={settings?.effects || {}}
 					onEffectsChange={(effects) => setAttributes({
-						settings: { ...settings, effects }
+						settings: { ...(settings || {}), effects }
 					})}
 					device={activeDevice}
 					presets={{}}
 					onPresetApply={(preset) => {
 						console.log('Applying preset:', preset);
 					}}
+					onResetAll={() => {
+						setAttributes({
+							settings: {
+								spacing: {},
+								margins: {},
+								typography: {},
+								backgroundColor: '',
+								textColor: '',
+								gradients: {},
+								layout: {},
+								effects: {}
+							}
+						});
+					}}
 				/>
-			</InspectorControls>
+
+				<PanelBody title={__('🛠️ Advanced', 'tailwind-starter')} initialOpen={false}>
+					<div className="generated-classes p-3 bg-gray-100 rounded text-xs">
+						<strong>Preview Classes:</strong> {previewClasses}<br />
+						<strong>All Device Classes:</strong> {allClasses}
+					</div>
+				</PanelBody>
+			</>
+		);
+
+		return (
+			<>
+				<InspectorControls>
+					<SimpleInspectorTabs
+						blockControls={blockControls}
+						generalControls={generalControls}
+					/>
+				</InspectorControls>
 
 			<div {...blockProps}>
 				{showSectionHeader && (
@@ -501,11 +538,6 @@ export default function Edit({ attributes, setAttributes }) {
 					alignment === 'right' ? 'text-right' : 'text-center'
 				}`}>
 					{stats.map((stat, index) => renderStatPreview(stat, index))}
-				</div>
-
-				<div className="generated-classes mt-4 p-3 bg-gray-100 rounded text-xs">
-					<strong>Preview Classes:</strong> {previewClasses}<br />
-					<strong>All Device Classes:</strong> {allClasses}
 				</div>
 			</div>
 		</>

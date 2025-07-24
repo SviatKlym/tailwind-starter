@@ -9,6 +9,7 @@ import {
 	__experimentalDivider as Divider
 } from '@wordpress/components';
 import { UltimateControlTabs, UltimateDeviceSelector, generateAllClasses, generateTailwindClasses } from '../../utils/visual-controls.js';
+import { SimpleInspectorTabs } from '../../components/InspectorTabs.js';
 import { useState, useEffect } from '@wordpress/element';
 import { useSelect } from '@wordpress/data';
 
@@ -46,7 +47,7 @@ export default function Edit({ attributes, setAttributes }) {
 		enableLoadMore,
 		enableCategoryFilter,
 		showPostViews,
-		settings,
+		settings = {},
 		activeDevice
 	} = attributes;
 
@@ -94,7 +95,7 @@ export default function Edit({ attributes, setAttributes }) {
 	};
 
 	// Generate classes for all devices
-	const allClasses = generateAllClasses(settings);
+	const allClasses = generateAllClasses(settings || {});
 
 	// Generate preview classes (just base for editor)
 	const previewClasses = generateAllClasses(settings || {});
@@ -350,265 +351,301 @@ export default function Edit({ attributes, setAttributes }) {
 		}
 	};
 
+	// Block tab controls - content and functionality
+	const blockControls = (
+		<>
+			<PanelBody title={__('📐 Layout Variations', 'tailwind-starter')} initialOpen={true}>
+				<div className="preset-grid">
+					{layoutPresets.map(preset => (
+						<div
+							key={preset.key}
+							className={`preset-button ${layout === preset.key ? 'active' : ''}`}
+							onClick={() => setAttributes({ layout: preset.key })}
+						>
+							<div className="preset-icon">{preset.icon}</div>
+							<div className="preset-name">{preset.name}</div>
+							<div className="preset-desc">{preset.desc}</div>
+						</div>
+					))}
+				</div>
+			</PanelBody>
+
+			<PanelBody title={__('📝 Query Settings', 'tailwind-starter')} initialOpen={false}>
+				<RangeControl
+					label={__('Posts Per Page', 'tailwind-starter')}
+					value={postsPerPage}
+					onChange={(value) => setAttributes({ postsPerPage: value })}
+					min={1}
+					max={20}
+				/>
+
+				<SelectControl
+					label={__('Order By', 'tailwind-starter')}
+					value={orderBy}
+					onChange={(value) => setAttributes({ orderBy: value })}
+					options={[
+						{ label: 'Date', value: 'date' },
+						{ label: 'Title', value: 'title' },
+						{ label: 'Menu Order', value: 'menu_order' },
+						{ label: 'Random', value: 'rand' }
+					]}
+				/>
+
+				<SelectControl
+					label={__('Order', 'tailwind-starter')}
+					value={order}
+					onChange={(value) => setAttributes({ order: value })}
+					options={[
+						{ label: 'Descending', value: 'desc' },
+						{ label: 'Ascending', value: 'asc' }
+					]}
+				/>
+
+				{allCategories.length > 0 && (
+					<>
+						<Divider />
+						<p className="text-sm font-medium">Filter by Categories:</p>
+						{allCategories.map(category => (
+							<ToggleControl
+								key={category.id}
+								label={category.name}
+								checked={categories.includes(category.id)}
+								onChange={(checked) => {
+									const newCategories = checked 
+										? [...categories, category.id]
+										: categories.filter(id => id !== category.id);
+									setAttributes({ categories: newCategories });
+								}}
+							/>
+						))}
+					</>
+				)}
+
+				<ToggleControl
+					label={__('Exclude Current Post', 'tailwind-starter')}
+					checked={excludeCurrentPost}
+					onChange={(value) => setAttributes({ excludeCurrentPost: value })}
+				/>
+			</PanelBody>
+
+			<PanelBody title={__('⚙️ Display Settings', 'tailwind-starter')} initialOpen={false}>
+				<ToggleControl
+					label={__('Show Section Header', 'tailwind-starter')}
+					checked={showSectionHeader}
+					onChange={(value) => setAttributes({ showSectionHeader: value })}
+				/>
+
+				<Divider />
+
+				<RangeControl
+					label={__('Columns', 'tailwind-starter')}
+					value={columns}
+					onChange={(value) => setAttributes({ columns: value })}
+					min={1}
+					max={4}
+				/>
+
+				<ToggleControl
+					label={__('Show Featured Image', 'tailwind-starter')}
+					checked={showFeaturedImage}
+					onChange={(value) => setAttributes({ showFeaturedImage: value })}
+				/>
+
+				<ToggleControl
+					label={__('Show Excerpt', 'tailwind-starter')}
+					checked={showExcerpt}
+					onChange={(value) => setAttributes({ showExcerpt: value })}
+				/>
+
+				<ToggleControl
+					label={__('Show Author', 'tailwind-starter')}
+					checked={showAuthor}
+					onChange={(value) => setAttributes({ showAuthor: value })}
+				/>
+
+				<ToggleControl
+					label={__('Show Date', 'tailwind-starter')}
+					checked={showDate}
+					onChange={(value) => setAttributes({ showDate: value })}
+				/>
+
+				<ToggleControl
+					label={__('Show Categories', 'tailwind-starter')}
+					checked={showCategories}
+					onChange={(value) => setAttributes({ showCategories: value })}
+				/>
+
+				<ToggleControl
+					label={__('Show Read Time', 'tailwind-starter')}
+					checked={showReadTime}
+					onChange={(value) => setAttributes({ showReadTime: value })}
+				/>
+
+				<ToggleControl
+					label={__('Show Read More', 'tailwind-starter')}
+					checked={showReadMore}
+					onChange={(value) => setAttributes({ showReadMore: value })}
+				/>
+
+				<SelectControl
+					label={__('Card Style', 'tailwind-starter')}
+					value={cardStyle}
+					onChange={(value) => setAttributes({ cardStyle: value })}
+					options={[
+						{ label: 'Elevated (Shadow)', value: 'elevated' },
+						{ label: 'Bordered', value: 'bordered' },
+						{ label: 'Flat', value: 'flat' }
+					]}
+				/>
+
+				<SelectControl
+					label={__('Hover Effect', 'tailwind-starter')}
+					value={hoverEffect}
+					onChange={(value) => setAttributes({ hoverEffect: value })}
+					options={[
+						{ label: 'Lift', value: 'lift' },
+						{ label: 'Scale', value: 'scale' },
+						{ label: 'Shadow', value: 'shadow' }
+					]}
+				/>
+
+				<SelectControl
+					label={__('Image Aspect Ratio', 'tailwind-starter')}
+					value={imageAspectRatio}
+					onChange={(value) => setAttributes({ imageAspectRatio: value })}
+					options={[
+						{ label: '16:9', value: '16:9' },
+						{ label: '4:3', value: '4:3' },
+						{ label: 'Square', value: 'square' }
+					]}
+				/>
+
+				<SelectControl
+					label={__('Date Format', 'tailwind-starter')}
+					value={dateFormat}
+					onChange={(value) => setAttributes({ dateFormat: value })}
+					options={[
+						{ label: 'Relative (e.g., 2 days ago)', value: 'relative' },
+						{ label: 'Absolute (e.g., Jan 15, 2024)', value: 'absolute' }
+					]}
+				/>
+
+				<RangeControl
+					label={__('Excerpt Length', 'tailwind-starter')}
+					value={excerptLength}
+					onChange={(value) => setAttributes({ excerptLength: value })}
+					min={50}
+					max={300}
+				/>
+
+				<TextControl
+					label={__('Read More Text', 'tailwind-starter')}
+					value={readMoreText}
+					onChange={(value) => setAttributes({ readMoreText: value })}
+				/>
+
+				<TextControl
+					label={__('No Posts Message', 'tailwind-starter')}
+					value={noPostsMessage}
+					onChange={(value) => setAttributes({ noPostsMessage: value })}
+				/>
+			</PanelBody>
+		</>  
+	);
+
+	// Design tab controls - visual styling only  
+	const generalControls = (
+		<>
+			<UltimateDeviceSelector
+				activeDevice={activeDevice}
+				onChange={(device) => setAttributes({ activeDevice: device })}
+			/>
+
+			<PanelBody title={__('🎨 Visual Presets', 'tailwind-starter')} initialOpen={false}>
+				<div className="preset-grid">
+					{Object.keys(presets).map(presetName => (
+						<div
+							key={presetName}
+							className="preset-button"
+							onClick={() => handlePresetApply(presetName)}
+						>
+							<div className="preset-icon">🎨</div>
+							<div className="preset-name">{presetName.charAt(0).toUpperCase() + presetName.slice(1)}</div>
+							<div className="preset-desc">Apply {presetName} styling</div>
+						</div>
+					))}
+				</div>
+			</PanelBody>
+
+			<UltimateControlTabs
+				spacing={settings?.spacing || {}}
+				onSpacingChange={(spacing) => setAttributes({
+					settings: { ...(settings || {}), spacing }
+				})}
+				margins={settings?.margins || {}}
+				onMarginsChange={(margins) => setAttributes({
+					settings: { ...(settings || {}), margins }
+				})}
+				background={settings?.backgroundColor || 'bg-white'}
+				onBackgroundChange={(backgroundColor) => setAttributes({
+					settings: { ...(settings || {}), backgroundColor }
+				})}
+				textColor={settings?.textColor || 'text-gray-900'}
+				onTextColorChange={(textColor) => setAttributes({
+					settings: { ...(settings || {}), textColor }
+				})}
+				gradients={settings?.gradients || {}}
+				onGradientsChange={(gradients) => setAttributes({
+					settings: { ...(settings || {}), gradients }
+				})}
+				typography={settings?.typography || {}}
+				onTypographyChange={(typography) => setAttributes({
+					settings: { ...(settings || {}), typography }
+				})}
+				layout={settings?.layout || {}}
+				onLayoutChange={(layout) => setAttributes({
+					settings: { ...(settings || {}), layout }
+				})}
+				effects={settings?.effects || {}}
+				onEffectsChange={(effects) => setAttributes({
+					settings: { ...(settings || {}), effects }
+				})}
+				device={activeDevice}
+				presets={{}}
+				onPresetApply={(preset) => {
+					console.log('Applying preset:', preset);
+				}}
+				onResetAll={() => {
+					setAttributes({
+						settings: {
+							spacing: {},
+							margins: {},
+							typography: {},
+							backgroundColor: '',
+							textColor: '',
+							gradients: {},
+							layout: {},
+							effects: {}
+						}
+					});
+				}}
+			/>
+
+			<PanelBody title={__('🛠️ Advanced', 'tailwind-starter')} initialOpen={false}>
+				<div className="generated-classes p-3 bg-gray-100 rounded text-xs">
+					<strong>Preview Classes:</strong> {previewClasses}<br />
+					<strong>All Device Classes:</strong> {allClasses}
+				</div>
+			</PanelBody>
+		</>  
+	);
+
 	return (
 		<>
 			<InspectorControls>
-				<PanelBody title={__('📐 Layout Variations', 'tailwind-starter')} initialOpen={true}>
-					<div className="preset-grid">
-						{layoutPresets.map(preset => (
-							<div
-								key={preset.key}
-								className={`preset-button ${layout === preset.key ? 'active' : ''}`}
-								onClick={() => setAttributes({ layout: preset.key })}
-							>
-								<div className="preset-icon">{preset.icon}</div>
-								<div className="preset-name">{preset.name}</div>
-								<div className="preset-desc">{preset.desc}</div>
-							</div>
-						))}
-					</div>
-				</PanelBody>
-
-				<PanelBody title={__('🎨 Visual Presets', 'tailwind-starter')} initialOpen={false}>
-					<div className="preset-grid">
-						{Object.keys(presets).map(presetName => (
-							<div
-								key={presetName}
-								className="preset-button"
-								onClick={() => handlePresetApply(presetName)}
-							>
-								<div className="preset-icon">🎨</div>
-								<div className="preset-name">{presetName.charAt(0).toUpperCase() + presetName.slice(1)}</div>
-								<div className="preset-desc">Apply {presetName} styling</div>
-							</div>
-						))}
-					</div>
-				</PanelBody>
-
-				<PanelBody title={__('📝 Query Settings', 'tailwind-starter')} initialOpen={false}>
-					<RangeControl
-						label={__('Posts Per Page', 'tailwind-starter')}
-						value={postsPerPage}
-						onChange={(value) => setAttributes({ postsPerPage: value })}
-						min={1}
-						max={20}
-					/>
-
-					<SelectControl
-						label={__('Order By', 'tailwind-starter')}
-						value={orderBy}
-						onChange={(value) => setAttributes({ orderBy: value })}
-						options={[
-							{ label: 'Date', value: 'date' },
-							{ label: 'Title', value: 'title' },
-							{ label: 'Menu Order', value: 'menu_order' },
-							{ label: 'Random', value: 'rand' }
-						]}
-					/>
-
-					<SelectControl
-						label={__('Order', 'tailwind-starter')}
-						value={order}
-						onChange={(value) => setAttributes({ order: value })}
-						options={[
-							{ label: 'Descending', value: 'desc' },
-							{ label: 'Ascending', value: 'asc' }
-						]}
-					/>
-
-					{allCategories.length > 0 && (
-						<>
-							<Divider />
-							<p className="text-sm font-medium">Filter by Categories:</p>
-							{allCategories.map(category => (
-								<ToggleControl
-									key={category.id}
-									label={category.name}
-									checked={categories.includes(category.id)}
-									onChange={(checked) => {
-										const newCategories = checked 
-											? [...categories, category.id]
-											: categories.filter(id => id !== category.id);
-										setAttributes({ categories: newCategories });
-									}}
-								/>
-							))}
-						</>
-					)}
-
-					<ToggleControl
-						label={__('Exclude Current Post', 'tailwind-starter')}
-						checked={excludeCurrentPost}
-						onChange={(value) => setAttributes({ excludeCurrentPost: value })}
-					/>
-				</PanelBody>
-
-				<PanelBody title={__('⚙️ Display Settings', 'tailwind-starter')} initialOpen={false}>
-					<ToggleControl
-						label={__('Show Section Header', 'tailwind-starter')}
-						checked={showSectionHeader}
-						onChange={(value) => setAttributes({ showSectionHeader: value })}
-					/>
-
-					<Divider />
-
-					<RangeControl
-						label={__('Columns', 'tailwind-starter')}
-						value={columns}
-						onChange={(value) => setAttributes({ columns: value })}
-						min={1}
-						max={4}
-					/>
-
-					<ToggleControl
-						label={__('Show Featured Image', 'tailwind-starter')}
-						checked={showFeaturedImage}
-						onChange={(value) => setAttributes({ showFeaturedImage: value })}
-					/>
-
-					<ToggleControl
-						label={__('Show Excerpt', 'tailwind-starter')}
-						checked={showExcerpt}
-						onChange={(value) => setAttributes({ showExcerpt: value })}
-					/>
-
-					<ToggleControl
-						label={__('Show Author', 'tailwind-starter')}
-						checked={showAuthor}
-						onChange={(value) => setAttributes({ showAuthor: value })}
-					/>
-
-					<ToggleControl
-						label={__('Show Date', 'tailwind-starter')}
-						checked={showDate}
-						onChange={(value) => setAttributes({ showDate: value })}
-					/>
-
-					<ToggleControl
-						label={__('Show Categories', 'tailwind-starter')}
-						checked={showCategories}
-						onChange={(value) => setAttributes({ showCategories: value })}
-					/>
-
-					<ToggleControl
-						label={__('Show Read Time', 'tailwind-starter')}
-						checked={showReadTime}
-						onChange={(value) => setAttributes({ showReadTime: value })}
-					/>
-
-					<ToggleControl
-						label={__('Show Read More', 'tailwind-starter')}
-						checked={showReadMore}
-						onChange={(value) => setAttributes({ showReadMore: value })}
-					/>
-
-					<SelectControl
-						label={__('Card Style', 'tailwind-starter')}
-						value={cardStyle}
-						onChange={(value) => setAttributes({ cardStyle: value })}
-						options={[
-							{ label: 'Elevated (Shadow)', value: 'elevated' },
-							{ label: 'Bordered', value: 'bordered' },
-							{ label: 'Flat', value: 'flat' }
-						]}
-					/>
-
-					<SelectControl
-						label={__('Hover Effect', 'tailwind-starter')}
-						value={hoverEffect}
-						onChange={(value) => setAttributes({ hoverEffect: value })}
-						options={[
-							{ label: 'Lift', value: 'lift' },
-							{ label: 'Scale', value: 'scale' },
-							{ label: 'Shadow', value: 'shadow' }
-						]}
-					/>
-
-					<SelectControl
-						label={__('Image Aspect Ratio', 'tailwind-starter')}
-						value={imageAspectRatio}
-						onChange={(value) => setAttributes({ imageAspectRatio: value })}
-						options={[
-							{ label: '16:9', value: '16:9' },
-							{ label: '4:3', value: '4:3' },
-							{ label: 'Square', value: 'square' }
-						]}
-					/>
-
-					<SelectControl
-						label={__('Date Format', 'tailwind-starter')}
-						value={dateFormat}
-						onChange={(value) => setAttributes({ dateFormat: value })}
-						options={[
-							{ label: 'Relative (e.g., 2 days ago)', value: 'relative' },
-							{ label: 'Absolute (e.g., Jan 15, 2024)', value: 'absolute' }
-						]}
-					/>
-
-					<RangeControl
-						label={__('Excerpt Length', 'tailwind-starter')}
-						value={excerptLength}
-						onChange={(value) => setAttributes({ excerptLength: value })}
-						min={50}
-						max={300}
-					/>
-
-					<TextControl
-						label={__('Read More Text', 'tailwind-starter')}
-						value={readMoreText}
-						onChange={(value) => setAttributes({ readMoreText: value })}
-					/>
-
-					<TextControl
-						label={__('No Posts Message', 'tailwind-starter')}
-						value={noPostsMessage}
-						onChange={(value) => setAttributes({ noPostsMessage: value })}
-					/>
-				</PanelBody>
-
-				<UltimateDeviceSelector
-					activeDevice={activeDevice}
-					onChange={(device) => setAttributes({ activeDevice: device })}
-				/>
-
-				<UltimateControlTabs
-					spacing={settings.spacing || {}}
-					onSpacingChange={(spacing) => setAttributes({
-						settings: { ...settings, spacing }
-					})}
-					margins={settings.margins || {}}
-					onMarginsChange={(margins) => setAttributes({
-						settings: { ...settings, margins }
-					})}
-					background={settings.backgroundColor || 'bg-white'}
-					onBackgroundChange={(backgroundColor) => setAttributes({
-						settings: { ...settings, backgroundColor }
-					})}
-					textColor={settings.textColor || 'text-gray-900'}
-					onTextColorChange={(textColor) => setAttributes({
-						settings: { ...settings, textColor }
-					})}
-					gradients={settings.gradients || {}}
-					onGradientsChange={(gradients) => setAttributes({
-						settings: { ...settings, gradients }
-					})}
-					typography={settings.typography || {}}
-					onTypographyChange={(typography) => setAttributes({
-						settings: { ...settings, typography }
-					})}
-					layout={settings.layout || {}}
-					onLayoutChange={(layout) => setAttributes({
-						settings: { ...settings, layout }
-					})}
-					effects={settings.effects || {}}
-					onEffectsChange={(effects) => setAttributes({
-						settings: { ...settings, effects }
-					})}
-					device={activeDevice}
-					presets={{}}
-					onPresetApply={(preset) => {
-						console.log('Applying preset:', preset);
-					}}
+				<SimpleInspectorTabs
+					blockControls={blockControls}
+					generalControls={generalControls}
 				/>
 			</InspectorControls>
 
@@ -633,11 +670,6 @@ export default function Edit({ attributes, setAttributes }) {
 				)}
 
 				{renderPosts()}
-
-				<div className="generated-classes mt-4 p-3 bg-gray-100 rounded text-xs">
-					<strong>Preview Classes:</strong> {previewClasses}<br />
-					<strong>All Device Classes:</strong> {allClasses}
-				</div>
 			</div>
 		</>
 	);
