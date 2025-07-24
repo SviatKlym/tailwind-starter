@@ -1,6 +1,6 @@
 <?php
 /**
- * Stats Display Block - Server-side render template
+ * Stats Display Block - Enhanced Server-side render template
  * 
  * @param array    $attributes Block attributes
  * @param string   $content    Block default content
@@ -14,55 +14,39 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-// Helper function to format numbers with animation data
-if (!function_exists('format_stat_number')) {
-    function format_stat_number($stat, $enable_animations) {
-        $number = $stat['number'] ?? '0';
-        $prefix = $stat['prefix'] ?? '';
-        $suffix = $stat['suffix'] ?? '';
-        
-        // Extract numeric value for animation
-        $numeric_value = preg_replace('/[^0-9.]/', '', $number);
-        
-        $data_attrs = '';
-        if ($enable_animations) {
-            $data_attrs = sprintf(
-                'data-animate="true" data-target="%s" data-duration="%d"',
-                esc_attr($numeric_value),
-                esc_attr($stat['animationDuration'] ?? 2000)
-            );
-        }
-        
-        return sprintf(
-            '<span class="stat-number-wrapper" %s>%s<span class="stat-number-value">%s</span>%s</span>',
-            $data_attrs,
-            esc_html($prefix),
-            esc_html($number),
-            esc_html($suffix)
-        );
-    }
-}
+// Include render helpers
+require_once get_template_directory() . '/inc/utils/render-helpers.php';
 
-// Extract and set default values
+// Ensure attributes is an array
+$attributes = is_array($attributes) ? $attributes : [];
+
+// Sanitize attributes
+$attributes = sanitize_block_attributes($attributes);
+
+// Extract and set default values with type checking
 $layout = $attributes['layout'] ?? 'counter-animation';
-$stats = $attributes['stats'] ?? [];
-$columns = $attributes['columns'] ?? 4;
-$show_icons = $attributes['showIcons'] ?? true;
-$show_descriptions = $attributes['showDescriptions'] ?? true;
-$enable_animations = $attributes['enableAnimations'] ?? true;
+$stats = isset($attributes['stats']) && is_array($attributes['stats']) ? $attributes['stats'] : [];
+$columns = intval($attributes['columns'] ?? 4);
+$show_icons = (bool) ($attributes['showIcons'] ?? true);
+$show_descriptions = (bool) ($attributes['showDescriptions'] ?? true);
+$enable_animations = (bool) ($attributes['enableAnimations'] ?? true);
 $animation_trigger = $attributes['animationTrigger'] ?? 'scroll';
 $number_size = $attributes['numberSize'] ?? 'large';
 $alignment = $attributes['alignment'] ?? 'center';
-$section_title = $attributes['sectionTitle'] ?? 'Trusted by Industry Leaders';
-$section_subtitle = $attributes['sectionSubtitle'] ?? 'Our platform delivers exceptional results that speak for themselves';
-$show_section_header = $attributes['showSectionHeader'] ?? true;
+$section_title = $attributes['sectionTitle'] ?? '';
+$section_subtitle = $attributes['sectionSubtitle'] ?? '';
+$show_section_header = (bool) ($attributes['showSectionHeader'] ?? false);
 $highlighted_stat = $attributes['highlightedStat'] ?? '';
 $card_style = $attributes['cardStyle'] ?? 'clean';
-$settings = $attributes['settings'] ?? [];
 
 // Enhanced stats with real-time data integration
 $enhanced_stats = [];
 foreach ($stats as $stat) {
+    // Ensure each stat is an array
+    if (!is_array($stat)) {
+        continue;
+    }
+    
     $enhanced_stat = $stat;
     
     // Check if this is a dynamic stat that should pull from real-time data
@@ -72,16 +56,14 @@ foreach ($stats as $stat) {
         case 'user-count':
         case 'total-users':
         case 'registered-users':
-            // Get real user count from WordPress
             $user_count = count_users();
-            $enhanced_stat['number'] = number_format($user_count['total_users']);
+            $enhanced_stat['number'] = number_format($user_count['total_users'] ?? 0);
             $enhanced_stat['realtime'] = true;
             break;
             
         case 'post-count':
         case 'total-posts':
         case 'published-posts':
-            // Get published post count
             $post_count = wp_count_posts('post');
             $enhanced_stat['number'] = number_format($post_count->publish ?? 0);
             $enhanced_stat['realtime'] = true;
@@ -89,7 +71,6 @@ foreach ($stats as $stat) {
             
         case 'comment-count':
         case 'total-comments':
-            // Get approved comment count
             $comment_count = wp_count_comments();
             $enhanced_stat['number'] = number_format($comment_count->approved ?? 0);
             $enhanced_stat['realtime'] = true;
@@ -97,7 +78,6 @@ foreach ($stats as $stat) {
             
         case 'page-views':
         case 'total-views':
-            // This would integrate with analytics plugins
             $page_views = get_option('site_total_views', 0);
             if ($page_views > 0) {
                 $enhanced_stat['number'] = number_format($page_views);
@@ -105,19 +85,7 @@ foreach ($stats as $stat) {
             }
             break;
             
-        case 'newsletter-subscribers':
-        case 'email-subscribers':
-            // Get newsletter subscriber count
-            $subscribers = get_option('newsletter_subscribers', []);
-            $active_subscribers = array_filter($subscribers, function($sub) {
-                return ($sub['status'] ?? 'active') === 'active';
-            });
-            $enhanced_stat['number'] = number_format(count($active_subscribers));
-            $enhanced_stat['realtime'] = true;
-            break;
-            
         default:
-            // Use static value from attributes
             $enhanced_stat['realtime'] = false;
             break;
     }
@@ -133,14 +101,8 @@ if (empty($enhanced_stats)) {
     return;
 }
 
-// Generate CSS classes from settings
-$wrapper_classes = ['stats-display-block', 'layout-' . esc_attr($layout), 'text-' . esc_attr($alignment)];
-if (isset($settings['backgroundColor'])) {
-    $wrapper_classes[] = esc_attr($settings['backgroundColor']);
-}
-if (isset($settings['textColor'])) {
-    $wrapper_classes[] = esc_attr($settings['textColor']);
-}
+// Prepare block wrapper with visual controls integration
+$wrapper_data = prepare_block_wrapper($attributes, 'stats-display-block layout-' . esc_attr($layout) . ' text-' . esc_attr($alignment));
 
 // Determine grid columns classes
 $grid_classes = 'grid gap-8 ';
@@ -185,7 +147,9 @@ switch ($number_size) {
 
 ?>
 
-<div class="<?php echo esc_attr(implode(' ', $wrapper_classes)); ?>">
+<div class="<?php echo esc_attr($wrapper_data['classes']); ?>" 
+     <?php echo $wrapper_data['styles'] ? 'style="' . esc_attr($wrapper_data['styles']) . '"' : ''; ?>>
+    
     <?php if ($show_section_header && ($section_title || $section_subtitle)): ?>
         <div class="section-header text-center mb-12">
             <?php if ($section_title): ?>
@@ -207,24 +171,52 @@ switch ($number_size) {
             $is_highlighted = ($highlighted_stat === ($stat['id'] ?? ''));
             $card_classes = 'stat-card transition-all duration-300 ';
             
-            if ($card_style === 'elevated') {
-                $card_classes .= 'bg-white rounded-lg shadow-lg hover:shadow-xl p-6';
-            } elseif ($card_style === 'bordered') {
-                $card_classes .= 'bg-white rounded-lg border-2 border-gray-200 hover:border-blue-300 p-6';
-            } elseif ($card_style === 'minimal') {
-                $card_classes .= 'p-6';
-            } else {
-                $card_classes .= 'bg-white rounded-lg p-6';
+            // Apply card styling
+            switch ($card_style) {
+                case 'elevated':
+                    $card_classes .= 'bg-white rounded-lg shadow-lg hover:shadow-xl p-6';
+                    break;
+                case 'bordered':
+                    $card_classes .= 'bg-white rounded-lg border-2 border-gray-200 hover:border-blue-300 p-6';
+                    break;
+                case 'minimal':
+                    $card_classes .= 'p-6';
+                    break;
+                case 'gradient':
+                    $card_classes .= 'bg-gradient-to-br from-white to-gray-50 rounded-lg shadow-md hover:shadow-lg p-6';
+                    break;
+                default:
+                    $card_classes .= 'bg-white rounded-lg p-6';
             }
             
             if ($is_highlighted) {
-                $card_classes .= ' ring-2 ring-blue-500 bg-blue-50';
+                $card_classes .= ' ring-2 ring-blue-500 bg-blue-50 relative overflow-hidden';
             }
+            
+            // Apply color theme
+            $color_theme = $stat['color'] ?? 'blue';
+            $color_classes = [
+                'blue' => 'text-blue-600',
+                'green' => 'text-green-600',
+                'purple' => 'text-purple-600',
+                'red' => 'text-red-600',
+                'orange' => 'text-orange-600',
+                'gray' => 'text-gray-600'
+            ];
+            $stat_color_class = $color_classes[$color_theme] ?? $color_classes['blue'];
             ?>
             
             <div class="<?php echo esc_attr($card_classes); ?>" 
                  data-stat-id="<?php echo esc_attr($stat['id'] ?? ''); ?>"
                  data-realtime="<?php echo ($stat['realtime'] ?? false) ? 'true' : 'false'; ?>">
+                
+                <?php if ($is_highlighted): ?>
+                    <div class="absolute top-0 right-0 w-16 h-16 opacity-10">
+                        <svg class="w-full h-full" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
+                    </div>
+                <?php endif; ?>
                 
                 <?php if ($show_icons && !empty($stat['icon'])): ?>
                     <div class="stat-icon mb-4 flex justify-center">
@@ -233,7 +225,7 @@ switch ($number_size) {
                                  alt="<?php echo esc_attr($stat['label'] ?? ''); ?>" 
                                  class="w-12 h-12 object-contain">
                         <?php else: ?>
-                            <div class="icon-emoji text-4xl" style="color: <?php echo esc_attr($stat['color'] ?? '#3b82f6'); ?>">
+                            <div class="icon-emoji text-4xl <?php echo esc_attr($stat_color_class); ?>">
                                 <?php echo esc_html($stat['icon']); ?>
                             </div>
                         <?php endif; ?>
@@ -241,9 +233,8 @@ switch ($number_size) {
                 <?php endif; ?>
                 
                 <div class="stat-content text-center">
-                    <div class="<?php echo esc_attr($number_classes); ?>" 
-                         style="color: <?php echo esc_attr($stat['color'] ?? '#1f2937'); ?>">
-                        <?php echo format_stat_number($stat, $enable_animations); ?>
+                    <div class="<?php echo esc_attr($number_classes . ' ' . $stat_color_class); ?>">
+                        <?php echo format_animated_number($stat, $enable_animations); ?>
                     </div>
                     
                     <div class="stat-label text-lg font-semibold text-gray-900 mt-2 mb-2">
@@ -271,7 +262,6 @@ switch ($number_size) {
     
     <?php if ($enable_animations): ?>
         <script>
-        // Counter animation functionality
         document.addEventListener('DOMContentLoaded', function() {
             const animateCounters = function() {
                 const counters = document.querySelectorAll('[data-animate="true"]');
@@ -286,7 +276,7 @@ switch ($number_size) {
                         if (entry.isIntersecting && !entry.target.classList.contains('animated')) {
                             const target = parseFloat(entry.target.dataset.target);
                             const duration = parseInt(entry.target.dataset.duration) || 2000;
-                            const numberElement = entry.target.querySelector('.stat-number-value');
+                            const numberElement = entry.target.querySelector('.animated-number-value');
                             
                             if (numberElement) {
                                 animateValue(numberElement, 0, target, duration);
@@ -310,7 +300,7 @@ switch ($number_size) {
                     const elapsed = currentTime - startTime;
                     const progress = Math.min(elapsed / duration, 1);
                     
-                    // Easing function (ease-out)
+                    // Easing function (ease-out cubic)
                     const easeOut = 1 - Math.pow(1 - progress, 3);
                     const current = start + (end - start) * easeOut;
                     
@@ -323,7 +313,7 @@ switch ($number_size) {
                     if (progress < 1) {
                         requestAnimationFrame(animate);
                     } else {
-                        element.textContent = originalText; // Restore original formatting
+                        element.textContent = originalText;
                     }
                 };
                 
@@ -333,7 +323,6 @@ switch ($number_size) {
             <?php if ($animation_trigger === 'scroll'): ?>
             animateCounters();
             <?php else: ?>
-            // Trigger animations immediately
             setTimeout(animateCounters, 500);
             <?php endif; ?>
         });

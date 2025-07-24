@@ -1,11 +1,6 @@
-import { registerBlockType } from '@wordpress/blocks'
-import Edit from './edit.js'
-import Save from './save.js'
-import metadata from './block.json'
-import './style.scss'
+import { createDynamicBlock } from '../../utils/block-factory.js';
+import Edit from './edit.js';
+import metadata from './block.json';
+import './style.scss';
 
-registerBlockType(metadata.name, {
-  ...metadata,
-  edit: Edit,
-  save: Save,
-})
+createDynamicBlock(metadata.name, Edit, metadata);

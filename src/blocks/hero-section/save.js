@@ -1,5 +1,6 @@
 import { useBlockProps, RichText } from '@wordpress/block-editor'
 import { generatePerformanceConfig, generateDataAttributes } from '../../utils/block-config-generator.js'
+import { generateAllClasses } from '../../utils/visual-controls.js'
 
 export default function save({ attributes }) {
   const {
@@ -49,8 +50,13 @@ export default function save({ attributes }) {
     }
   })
 
+  // Generate the same classes as the editor
+  const allClasses = generateAllClasses(settings || {})
+  
   const blockProps = useBlockProps.save({
-    className: `hero-section layout-${layout || 'centered'} ${backgroundColor || 'bg-white'}`,
+    className: `hero-section hero-section--${layout || 'centered'} ${backgroundColor || 'bg-white'} ${textColor || 'text-gray-900'} ${allClasses}`,
+    'data-classes': allClasses,
+    'data-all-classes': allClasses,
     ...generateDataAttributes(performanceConfig)
   })
 

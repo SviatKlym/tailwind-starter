@@ -103,6 +103,13 @@ function addVisualAttributes(settings, name) {
             lg: { top: 0, right: 0, bottom: 0, left: 0 },
             xl: { top: 0, right: 0, bottom: 0, left: 0 }
           },
+          blockSpacing: {
+            base: { variation: '' },
+            sm: { variation: '' },
+            md: { variation: '' },
+            lg: { variation: '' },
+            xl: { variation: '' }
+          },
           typography: {
             base: {
               fontSize: '', fontWeight: '', textAlign: '',
@@ -442,8 +449,16 @@ const withVisualControls = createHigherOrderComponent((BlockEdit) => {
       // Spacer-specific enhancements  
       name === 'core/spacer' && createElement(PanelBody, {
         title: __('📐 Responsive Spacing Controls', 'tailwind-starter'),
-        initialOpen: true
+        initialOpen: true,
+        className: 'spacer-controls-panel'
       },
+        // Hide the default ToolsPanel component
+        createElement('style', null, `
+          .spacer-controls-panel [data-wp-component="ToolsPanel"] {
+            display: none !important;
+          }
+        `),
+
         createElement(UltimateDeviceSelector, {
           activeDevice: activeDevice,
           onChange: (device) => setAttributes({ activeDevice: device })
@@ -456,12 +471,20 @@ const withVisualControls = createHigherOrderComponent((BlockEdit) => {
 
           createElement(RangeControl, {
             value: responsiveHeight[activeDevice] || 50,
-            onChange: (value) => setAttributes({
-              responsiveHeight: {
+            onChange: (value) => {
+              const newHeight = {
                 ...responsiveHeight,
                 [activeDevice]: value
               }
-            }),
+              setAttributes({ responsiveHeight: newHeight })
+              
+              // Force update the element height immediately
+              const spacerElement = document.querySelector('.wp-block-spacer')
+              if (spacerElement) {
+                spacerElement.style.height = `${value}px`
+                spacerElement.style.minHeight = `${value}px`
+              }
+            },
             min: 10,
             max: 500,
             step: 5,
@@ -486,7 +509,7 @@ const withVisualControls = createHigherOrderComponent((BlockEdit) => {
       )
     )
 
-    // Design controls (for Design tab) - Using visual-controls.js system
+    // Design controls (for Design tab) - Fully integrated with visual-controls.js system
     const designControls = createElement(Fragment, null,
       createElement(PanelBody, {
         title: __('📱 Visual Design Controls', 'tailwind-starter'),
@@ -502,7 +525,7 @@ const withVisualControls = createHigherOrderComponent((BlockEdit) => {
           className: 'visual-controls-tip'
         },
           createElement('strong', null, '💡 Pro Tip: '),
-          'Use these controls to add professional styling to this block!'
+          'Use these responsive controls to add professional styling!'
         ),
 
         createElement(LazyControlWrapper, {
@@ -517,6 +540,10 @@ const withVisualControls = createHigherOrderComponent((BlockEdit) => {
             margins: visualSettings.margins || {},
             onMarginsChange: (margins) => setAttributes({
               visualSettings: { ...visualSettings, margins }
+            }),
+            blockSpacing: visualSettings.blockSpacing || {},
+            onBlockSpacingChange: (blockSpacing) => setAttributes({
+              visualSettings: { ...visualSettings, blockSpacing }
             }),
             background: visualSettings.backgroundColor,
             onBackgroundChange: (backgroundColor) => setAttributes({
@@ -562,6 +589,7 @@ const withVisualControls = createHigherOrderComponent((BlockEdit) => {
                     lg: { top: 0, right: 0, bottom: 0, left: 0 },
                     xl: { top: 0, right: 0, bottom: 0, left: 0 }
                   },
+                  blockSpacing: {},
                   typography: {},
                   layout: {},
                   effects: {},
@@ -636,15 +664,16 @@ function addVisualClasses(BlockListBlock) {
       // Use inline styles for height to ensure they are applied
       const baseHeight = responsiveHeight.base || 50
       spacerInlineStyles = {
-        height: `${baseHeight}px`,
-        minHeight: `${baseHeight}px`
+        height: `${baseHeight}px !important`,
+        minHeight: `${baseHeight}px !important`,
+        display: 'block !important'
       }
       
-      // Also add Tailwind classes as backup
+      // Also add Tailwind classes as backup and responsive styles
       const spacerClasses = Object.entries(responsiveHeight)
         .map(([device, height]) => {
           const prefix = device === 'base' ? '' : `${device}:`
-          return `${prefix}h-[${height}px]`
+          return `${prefix}h-[${height}px] ${prefix}min-h-[${height}px]`
         })
         .join(' ')
       additionalClasses = spacerClasses
@@ -687,15 +716,16 @@ function addVisualClassesToSave(element, blockType, attributes) {
     // Use inline styles for height to ensure they are applied
     const baseHeight = responsiveHeight.base || 50
     spacerInlineStyles = {
-      height: `${baseHeight}px`,
-      minHeight: `${baseHeight}px`
+      height: `${baseHeight}px !important`,
+      minHeight: `${baseHeight}px !important`,
+      display: 'block !important'
     }
     
-    // Also add Tailwind classes as backup
+    // Also add Tailwind classes as backup and responsive styles
     const spacerClasses = Object.entries(responsiveHeight)
       .map(([device, height]) => {
         const prefix = device === 'base' ? '' : `${device}:`
-        return `${prefix}h-[${height}px]`
+        return `${prefix}h-[${height}px] ${prefix}min-h-[${height}px]`
       })
       .join(' ')
     additionalClasses = spacerClasses

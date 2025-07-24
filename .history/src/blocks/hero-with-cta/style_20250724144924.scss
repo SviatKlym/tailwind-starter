@@ -1,0 +1,356 @@
+/**
+ * Frontend styles for the hero-with-cta block - Conversion Optimized
+ */
+
+/* Critical styles for immediate rendering */
+.wp-block-tailwind-starter-hero-with-cta {
+  position: relative;
+  contain: layout style paint;
+  will-change: auto;
+  display: flex;
+  align-items: center;
+}
+
+/* Background optimization */
+.hero-background,
+.video-background {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.hero-background img,
+.video-background video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transform: scale(1.02);
+  transition: transform 0.3s ease-out;
+}
+
+.hero-background.loaded img {
+  transform: scale(1);
+}
+
+/* High-Performance CTA Button Styles */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  font-weight: 600;
+  border-radius: 0.5rem;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
+  transform: translateX(-100%);
+  transition: transform 0.6s;
+}
+
+.btn:hover::before {
+  transform: translateX(100%);
+}
+
+.btn-lg {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  padding: 1rem 2rem;
+  min-height: 3.5rem;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  color: white;
+  border: none;
+  box-shadow: 0 4px 14px 0 rgba(59, 130, 246, 0.25);
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  box-shadow: 0 6px 20px 0 rgba(59, 130, 246, 0.4);
+  transform: translateY(-2px) scale(1.02);
+}
+
+.btn-primary:active {
+  transform: translateY(0) scale(0.98);
+  box-shadow: 0 2px 8px 0 rgba(59, 130, 246, 0.3);
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--primary-500);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(10px);
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: translateY(-2px) scale(1.02);
+}
+
+/* Conversion-focused elements */
+.urgency-message {
+  animation: pulse-glow 2s infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 5px rgba(239, 68, 68, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(239, 68, 68, 0.6);
+  }
+}
+
+.trust-signals {
+  backdrop-filter: blur(5px);
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 1rem;
+  padding: 1rem 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.trust-signal {
+  transition: transform 0.2s ease;
+}
+
+.trust-signal:hover {
+  transform: scale(1.05);
+}
+
+/* Animation performance optimizations */
+[data-animate] {
+  opacity: 0;
+  transform: translateY(40px);
+  will-change: opacity, transform;
+}
+
+[data-animate="headline"] {
+  transform: translateY(30px) scale(0.95);
+}
+
+[data-animate="subheadline"] {
+  transform: translateY(25px);
+}
+
+[data-animate="description"] {
+  transform: translateY(20px);
+}
+
+[data-animate="cta-buttons"] {
+  transform: translateY(15px);
+}
+
+[data-animate="urgency"] {
+  transform: translateY(10px) scale(0.9);
+}
+
+[data-animate="trust-signals"] {
+  transform: translateY(20px);
+}
+
+[data-animate="visual-content"] {
+  transform: translateY(40px) scale(0.9);
+}
+
+/* Hero content optimization */
+.hero-content {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  padding: 2rem 1rem;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Form styling for conversion */
+.hero-content input[type="email"] {
+  transition: all 0.3s ease;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  color: white;
+}
+
+.hero-content input[type="email"]:focus {
+  border-color: #3b82f6;
+  background: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+}
+
+.hero-content input[type="email"]::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* Responsive optimizations - Mobile First */
+@media (max-width: 640px) {
+  .wp-block-tailwind-starter-hero-with-cta {
+    min-height: 100vh;
+    padding: 1rem 0;
+  }
+  
+  .hero-content {
+    padding: 1rem;
+  }
+  
+  .btn-lg {
+    width: 100%;
+    text-align: center;
+    min-width: unset;
+    font-size: 1rem;
+    padding: 0.875rem 1.5rem;
+  }
+  
+  .trust-signals {
+    margin-top: 1.5rem;
+    padding: 0.75rem 1rem;
+  }
+  
+  .trust-signal {
+    font-size: 0.875rem;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 768px) {
+  .btn-lg {
+    min-width: 200px;
+  }
+}
+
+@media (min-width: 769px) {
+  .btn-lg {
+    min-width: 220px;
+  }
+  
+  .btn:hover {
+    transform: translateY(-3px) scale(1.03);
+  }
+}
+
+/* Performance optimizations for reduced paint */
+.hero-content-wrapper {
+  position: relative;
+  overflow: hidden;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Prefers reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  [data-animate] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  
+  .btn:hover {
+    transform: none !important;
+  }
+}
+
+/* Focus indicators for accessibility */
+.btn:focus-visible {
+  outline: 3px solid currentColor;
+  outline-offset: 2px;
+}
+
+/* Loading states */
+.hero-background:not(.loaded)::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: loading-shimmer 1.5s infinite;
+}
+
+@keyframes loading-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .btn-primary {
+    background: #000;
+    border: 2px solid #fff;
+  }
+  
+  .btn-secondary {
+    background: #fff;
+    color: #000;
+    border: 2px solid #000;
+  }
+}
+
+/* Print styles */
+@media print {
+  .wp-block-tailwind-starter-hero-with-cta {
+    min-height: auto;
+    break-inside: avoid;
+  }
+  
+  .hero-background,
+  .video-background {
+    display: none;
+  }
+  
+  .btn {
+    border: 2px solid #000;
+    background: transparent !important;
+    color: #000 !important;
+  }
+  
+  [data-animate] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* Dark mode considerations */
+@media (prefers-color-scheme: dark) {
+  .urgency-message {
+    background: rgba(239, 68, 68, 0.1);
+    border-color: rgba(239, 68, 68, 0.3);
+  }
+}
+
+/* Performance: GPU acceleration hints */
+.btn,
+.hero-background img,
+.video-background video,
+[data-animate] {
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+/* Completed animation state */
+[data-animate].animated {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  will-change: auto;
+}

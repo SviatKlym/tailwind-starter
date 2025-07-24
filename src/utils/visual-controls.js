@@ -9,6 +9,7 @@ import {
   TabPanel,
   Tooltip,
   TextControl,
+  Modal,
   __experimentalHStack as HStack,
   __experimentalVStack as VStack,
   __experimentalText as Text,
@@ -2241,4 +2242,478 @@ export const generateAllClasses = (settings) => {
     
     return allClasses.join(' ').trim()
   })
+}
+
+// Enhanced Modal for Managing Complex Controls
+export const UltimateManagementModal = ({ 
+  isOpen, 
+  onClose, 
+  title, 
+  children,
+  size = 'medium' // small, medium, large
+}) => {
+  if (!isOpen) return null
+
+  const getSizeStyles = () => {
+    switch (size) {
+      case 'small':
+        return { maxWidth: '400px', maxHeight: '500px' }
+      case 'large':
+        return { maxWidth: '800px', maxHeight: '90vh' }
+      default:
+        return { maxWidth: '600px', maxHeight: '70vh' }
+    }
+  }
+
+  return (
+    <Modal
+      title={title}
+      onRequestClose={onClose}
+      className="ultimate-management-modal"
+      style={getSizeStyles()}
+    >
+      <div style={{
+        padding: '20px',
+        maxHeight: '60vh',
+        overflowY: 'auto'
+      }}>
+        {children}
+      </div>
+    </Modal>
+  )
+}
+
+// Stats Management Modal Component
+export const StatsManagementModal = ({ 
+  isOpen, 
+  onClose, 
+  stats = [], 
+  onStatsChange 
+}) => {
+  const [editingIndex, setEditingIndex] = useState(null)
+  const [localStats, setLocalStats] = useState(stats)
+
+  const addStat = () => {
+    const newStat = {
+      id: Date.now(),
+      number: '0',
+      label: 'New Stat',
+      description: '',
+      icon: '',
+      color: 'blue',
+      highlighted: false
+    }
+    const updated = [...localStats, newStat]
+    setLocalStats(updated)
+    onStatsChange(updated)
+  }
+
+  const updateStat = (index, field, value) => {
+    const updated = localStats.map((stat, i) => 
+      i === index ? { ...stat, [field]: value } : stat
+    )
+    setLocalStats(updated)
+    onStatsChange(updated)
+  }
+
+  const removeStat = (index) => {
+    const updated = localStats.filter((_, i) => i !== index)
+    setLocalStats(updated)
+    onStatsChange(updated)
+  }
+
+  const duplicateStat = (index) => {
+    const statToDuplicate = { ...localStats[index], id: Date.now() }
+    const updated = [...localStats, statToDuplicate]
+    setLocalStats(updated)
+    onStatsChange(updated)
+  }
+
+  return (
+    <UltimateManagementModal
+      isOpen={isOpen}
+      onClose={onClose}
+      title={__('📊 Stats Management', 'tailwind-starter')}
+      size="large"
+    >
+      <div className="stats-management-modal">
+        <div style={{ marginBottom: '20px', textAlign: 'center' }}>
+          <Button
+            isPrimary
+            onClick={addStat}
+            style={{
+              background: '#0073aa',
+              borderColor: '#0073aa',
+              boxShadow: '0 2px 4px rgba(0,115,170,0.3)',
+              fontWeight: '600'
+            }}
+          >
+            ➕ Add New Stat
+          </Button>
+        </div>
+
+        {localStats.length === 0 && (
+          <div style={{
+            textAlign: 'center',
+            padding: '40px 20px',
+            color: '#666',
+            background: '#f8f9fa',
+            borderRadius: '8px',
+            border: '1px dashed #ddd'
+          }}>
+            <div style={{ fontSize: '48px', marginBottom: '16px' }}>📊</div>
+            <p style={{ margin: '0 0 16px 0', fontSize: '16px', fontWeight: '500' }}>
+              No stats added yet
+            </p>
+            <p style={{ margin: '0', fontSize: '14px' }}>
+              Click "Add New Stat" to create your first statistic
+            </p>
+          </div>
+        )}
+
+        <div className="stats-list" style={{ display: 'grid', gap: '16px' }}>
+          {localStats.map((stat, index) => (
+            <Card key={stat.id} style={{ border: '1px solid #e2e8f0' }}>
+              <CardBody>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                  <Text size="16px" weight="600">
+                    📈 Stat #{index + 1}
+                  </Text>
+                  <div style={{ display: 'flex', gap: '8px' }}>
+                    <Button
+                      isSmall
+                      onClick={() => duplicateStat(index)}
+                      title="Duplicate Stat"
+                      style={{ background: '#f0f9ff', color: '#0369a1', border: '1px solid #0369a1' }}
+                    >
+                      📋
+                    </Button>
+                    <Button
+                      isSmall
+                      isDestructive
+                      onClick={() => removeStat(index)}
+                      title="Remove Stat"
+                    >
+                      🗑️
+                    </Button>
+                  </div>
+                </div>
+
+                <VStack spacing={3}>
+                  <HStack spacing={3}>
+                    <TextControl
+                      label="Number/Value"
+                      value={stat.number}
+                      onChange={(value) => updateStat(index, 'number', value)}
+                      placeholder="e.g., 100, 50K, 95%"
+                      style={{ flex: 1 }}
+                    />
+                    <TextControl
+                      label="Icon/Emoji"
+                      value={stat.icon}
+                      onChange={(value) => updateStat(index, 'icon', value)}
+                      placeholder="📊"
+                      style={{ flex: '0 0 80px' }}
+                    />
+                  </HStack>
+
+                  <TextControl
+                    label="Label"
+                    value={stat.label}
+                    onChange={(value) => updateStat(index, 'label', value)}
+                    placeholder="e.g., Happy Customers"
+                  />
+
+                  <TextControl
+                    label="Description (Optional)"
+                    value={stat.description}
+                    onChange={(value) => updateStat(index, 'description', value)}
+                    placeholder="Additional details about this statistic"
+                  />
+
+                  <HStack spacing={3}>
+                    <SelectControl
+                      label="Color Theme"
+                      value={stat.color}
+                      onChange={(value) => updateStat(index, 'color', value)}
+                      options={[
+                        { label: 'Blue', value: 'blue' },
+                        { label: 'Green', value: 'green' },
+                        { label: 'Purple', value: 'purple' },
+                        { label: 'Red', value: 'red' },
+                        { label: 'Orange', value: 'orange' },
+                        { label: 'Gray', value: 'gray' }
+                      ]}
+                      style={{ flex: 1 }}
+                    />
+                    <div style={{ flex: 1 }}>
+                      <ToggleControl
+                        label="Highlight This Stat"
+                        checked={stat.highlighted}
+                        onChange={(value) => updateStat(index, 'highlighted', value)}
+                        help={stat.highlighted ? "This stat will stand out" : "Regular appearance"}
+                      />
+                    </div>
+                  </HStack>
+                </VStack>
+              </CardBody>
+            </Card>
+          ))}
+        </div>
+
+        <div style={{ 
+          marginTop: '24px', 
+          padding: '16px', 
+          background: '#f0f9ff', 
+          borderRadius: '8px',
+          border: '1px solid #0369a1'
+        }}>
+          <Text size="14px" weight="600" style={{ color: '#0369a1', marginBottom: '8px' }}>
+            💡 Stats Management Tips:
+          </Text>
+          <ul style={{ margin: '0', paddingLeft: '16px', color: '#1e40af', fontSize: '13px' }}>
+            <li>Use emojis or icons to make stats more engaging</li>
+            <li>Keep labels short and descriptive</li>
+            <li>Highlight your most important statistic</li>
+            <li>Use consistent number formatting (e.g., 100K, 95%)</li>
+          </ul>
+        </div>
+      </div>
+    </UltimateManagementModal>
+  )
+}
+
+// Slides Management Modal Component
+export const SlidesManagementModal = ({ 
+  isOpen, 
+  onClose, 
+  slides = [], 
+  onSlidesChange 
+}) => {
+  const [editingIndex, setEditingIndex] = useState(null)
+  const [localSlides, setLocalSlides] = useState(slides)
+
+  const addSlide = () => {
+    const newSlide = {
+      id: Date.now(),
+      title: 'New Slide',
+      content: 'Slide content goes here...',
+      image: null,
+      buttonText: '',
+      buttonUrl: '',
+      backgroundColor: 'bg-white',
+      textColor: 'text-gray-900',
+      alignment: 'center'
+    }
+    const updated = [...localSlides, newSlide]
+    setLocalSlides(updated)
+    onSlidesChange(updated)
+  }
+
+  const updateSlide = (index, field, value) => {
+    const updated = localSlides.map((slide, i) => 
+      i === index ? { ...slide, [field]: value } : slide
+    )
+    setLocalSlides(updated)
+    onSlidesChange(updated)
+  }
+
+  const removeSlide = (index) => {
+    const updated = localSlides.filter((_, i) => i !== index)
+    setLocalSlides(updated)
+    onSlidesChange(updated)
+  }
+
+  const duplicateSlide = (index) => {
+    const slideToDuplicate = { ...localSlides[index], id: Date.now() }
+    const updated = [...localSlides, slideToDuplicate]
+    setLocalSlides(updated)
+    onSlidesChange(updated)
+  }
+
+  const moveSlide = (index, direction) => {
+    const newIndex = direction === 'up' ? index - 1 : index + 1
+    if (newIndex < 0 || newIndex >= localSlides.length) return
+
+    const updated = [...localSlides]
+    const [moved] = updated.splice(index, 1)
+    updated.splice(newIndex, 0, moved)
+    setLocalSlides(updated)
+    onSlidesChange(updated)
+  }
+
+  return (
+    <UltimateManagementModal
+      isOpen={isOpen}
+      onClose={onClose}
+      title={__('🎯 Slides Management', 'tailwind-starter')}
+      size="large"
+    >
+      <div className="slides-management-modal">
+        <div style={{ marginBottom: '20px', textAlign: 'center' }}>
+          <Button
+            isPrimary
+            onClick={addSlide}
+            style={{
+              background: '#059669',
+              borderColor: '#059669',
+              boxShadow: '0 2px 4px rgba(5,150,105,0.3)',
+              fontWeight: '600'
+            }}
+          >
+            ➕ Add New Slide
+          </Button>
+        </div>
+
+        {localSlides.length === 0 && (
+          <div style={{
+            textAlign: 'center',
+            padding: '40px 20px',
+            color: '#666',
+            background: '#f8f9fa',
+            borderRadius: '8px',
+            border: '1px dashed #ddd'
+          }}>
+            <div style={{ fontSize: '48px', marginBottom: '16px' }}>🎯</div>
+            <p style={{ margin: '0 0 16px 0', fontSize: '16px', fontWeight: '500' }}>
+              No slides added yet
+            </p>
+            <p style={{ margin: '0', fontSize: '14px' }}>
+              Click "Add New Slide" to create your first slide
+            </p>
+          </div>
+        )}
+
+        <div className="slides-list" style={{ display: 'grid', gap: '16px' }}>
+          {localSlides.map((slide, index) => (
+            <Card key={slide.id} style={{ border: '1px solid #e2e8f0' }}>
+              <CardBody>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                  <Text size="16px" weight="600">
+                    🎯 Slide #{index + 1}
+                  </Text>
+                  <div style={{ display: 'flex', gap: '8px' }}>
+                    <Button
+                      isSmall
+                      onClick={() => moveSlide(index, 'up')}
+                      disabled={index === 0}
+                      title="Move Up"
+                      style={{ background: '#f3f4f6', color: '#374151' }}
+                    >
+                      ⬆️
+                    </Button>
+                    <Button
+                      isSmall
+                      onClick={() => moveSlide(index, 'down')}
+                      disabled={index === localSlides.length - 1}
+                      title="Move Down"
+                      style={{ background: '#f3f4f6', color: '#374151' }}
+                    >
+                      ⬇️
+                    </Button>
+                    <Button
+                      isSmall
+                      onClick={() => duplicateSlide(index)}
+                      title="Duplicate Slide"
+                      style={{ background: '#f0f9ff', color: '#0369a1', border: '1px solid #0369a1' }}
+                    >
+                      📋
+                    </Button>
+                    <Button
+                      isSmall
+                      isDestructive
+                      onClick={() => removeSlide(index)}
+                      title="Remove Slide"
+                    >
+                      🗑️
+                    </Button>
+                  </div>
+                </div>
+
+                <VStack spacing={3}>
+                  <TextControl
+                    label="Slide Title"
+                    value={slide.title}
+                    onChange={(value) => updateSlide(index, 'title', value)}
+                    placeholder="Enter slide title"
+                  />
+
+                  <TextControl
+                    label="Slide Content"
+                    value={slide.content}
+                    onChange={(value) => updateSlide(index, 'content', value)}
+                    placeholder="Enter slide content"
+                    help="You can use HTML tags for formatting"
+                  />
+
+                  <HStack spacing={3}>
+                    <TextControl
+                      label="Button Text (Optional)"
+                      value={slide.buttonText}
+                      onChange={(value) => updateSlide(index, 'buttonText', value)}
+                      placeholder="e.g., Learn More"
+                      style={{ flex: 1 }}
+                    />
+                    <TextControl
+                      label="Button URL (Optional)"
+                      value={slide.buttonUrl}
+                      onChange={(value) => updateSlide(index, 'buttonUrl', value)}
+                      placeholder="https://example.com"
+                      style={{ flex: 1 }}
+                    />
+                  </HStack>
+
+                  <HStack spacing={3}>
+                    <SelectControl
+                      label="Background Color"
+                      value={slide.backgroundColor}
+                      onChange={(value) => updateSlide(index, 'backgroundColor', value)}
+                      options={[
+                        { label: 'White', value: 'bg-white' },
+                        { label: 'Gray 50', value: 'bg-gray-50' },
+                        { label: 'Blue 50', value: 'bg-blue-50' },
+                        { label: 'Green 50', value: 'bg-green-50' },
+                        { label: 'Purple 50', value: 'bg-purple-50' },
+                        { label: 'Dark', value: 'bg-gray-900' }
+                      ]}
+                      style={{ flex: 1 }}
+                    />
+                    <SelectControl
+                      label="Text Alignment"
+                      value={slide.alignment}
+                      onChange={(value) => updateSlide(index, 'alignment', value)}
+                      options={[
+                        { label: 'Left', value: 'left' },
+                        { label: 'Center', value: 'center' },
+                        { label: 'Right', value: 'right' }
+                      ]}
+                      style={{ flex: 1 }}
+                    />
+                  </HStack>
+                </VStack>
+              </CardBody>
+            </Card>
+          ))}
+        </div>
+
+        <div style={{ 
+          marginTop: '24px', 
+          padding: '16px', 
+          background: '#f0fdf4', 
+          borderRadius: '8px',
+          border: '1px solid #059669'
+        }}>
+          <Text size="14px" weight="600" style={{ color: '#059669', marginBottom: '8px' }}>
+            💡 Slides Management Tips:
+          </Text>
+          <ul style={{ margin: '0', paddingLeft: '16px', color: '#047857', fontSize: '13px' }}>
+            <li>Use the arrow buttons to reorder slides</li>
+            <li>Keep slide content concise and engaging</li>
+            <li>Add call-to-action buttons to improve engagement</li>
+            <li>Use consistent styling across all slides</li>
+          </ul>
+        </div>
+      </div>
+    </UltimateManagementModal>
+  )
 }

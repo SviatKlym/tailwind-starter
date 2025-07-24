@@ -38,7 +38,8 @@
       "Bash(echo \"Fixing: $file\")",
       "Bash(if grep -q \"\\.\\.\\.settings\" \"$file\")",
       "Bash(echo:*)",
-      "Bash(if grep -q \"settings: { ...settings,\" \"$file\")"
+      "Bash(if grep -q \"settings: { ...settings,\" \"$file\")",
+      "Bash(chmod:*)"
     ],
     "deny": []
   }
