@@ -123,13 +123,13 @@
         },
         "typography": {
           "base": {
-            "fontSize": "text-lg",
+            "fontSize": "text-base",
             "fontWeight": "font-normal",
-            "textAlign": "text-center"
+            "textAlign": "text-left"
           }
         },
-        "backgroundColor": "bg-white",
-        "textColor": "text-gray-900",
+        "backgroundColor": "",
+        "textColor": "",
         "gradients": {},
         "layout": {},
         "effects": {}

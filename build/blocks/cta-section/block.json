@@ -16,6 +16,7 @@
       "full"
     ]
   },
+  "render": "file:./render.php",
   "attributes": {
     "layout": {
       "type": "string",
@@ -86,6 +87,43 @@
     "visualSettings": {
       "type": "object",
       "default": {}
+    },
+    "settings": {
+      "type": "object",
+      "default": {
+        "spacing": {
+          "base": {
+            "top": 8,
+            "right": 4,
+            "bottom": 8,
+            "left": 4
+          }
+        },
+        "margins": {
+          "base": {
+            "top": 0,
+            "right": 0,
+            "bottom": 0,
+            "left": 0
+          }
+        },
+        "typography": {
+          "base": {
+            "fontSize": "text-base",
+            "fontWeight": "font-normal",
+            "textAlign": "text-left"
+          }
+        },
+        "backgroundColor": "",
+        "textColor": "",
+        "gradients": {},
+        "layout": {},
+        "effects": {}
+      }
+    },
+    "activeDevice": {
+      "type": "string",
+      "default": "base"
     }
   },
   "textdomain": "tailwind-starter",

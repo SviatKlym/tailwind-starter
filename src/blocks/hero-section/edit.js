@@ -390,23 +390,10 @@ export default function Edit({ attributes, setAttributes }) {
   // General visual controls
   const generalControls = (
     <>
-      <PanelBody title={__('📱 Responsive Design', 'tailwind-starter')} initialOpen={true}>
-        <UltimateDeviceSelector
-          activeDevice={activeDevice}
-          onChange={(device) => setAttributes({ activeDevice: device })}
-        />
-        <div style={{ 
-          background: '#f0f9ff', 
-          border: '1px solid #bae6fd', 
-          borderRadius: '8px', 
-          padding: '12px', 
-          margin: '12px 0',
-          fontSize: '12px',
-          color: '#1e40af'
-        }}>
-          <strong>💡 Pro Tip:</strong> Start with "All" devices for your base design, then customize for mobile/tablet as needed!
-        </div>
-      </PanelBody>
+      <UltimateDeviceSelector
+        activeDevice={activeDevice}
+        onChange={(device) => setAttributes({ activeDevice: device })}
+      />
 
       <UltimateControlTabs
         spacing={settings?.spacing || {}}

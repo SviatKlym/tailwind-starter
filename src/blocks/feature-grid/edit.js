@@ -117,7 +117,7 @@ export default function Edit({ attributes, setAttributes }) {
   const previewClasses = generateAllClasses(settings || {})
 
   const blockProps = useBlockProps({
-    className: `feature-grid ${backgroundColor} ${previewClasses}`,
+    className: `feature-grid feature-grid--${layout} ${previewClasses}`,
     'data-classes': previewClasses,
     'data-all-classes': allClasses
   })

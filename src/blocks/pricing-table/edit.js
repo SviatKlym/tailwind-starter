@@ -26,46 +26,6 @@ export default function Edit({ attributes, setAttributes }) {
 
 	const [editingPlan, setEditingPlan] = useState(null);
 
-	// Enhanced preset styles for pricing tables
-	const presets = {
-		standard: {
-			spacing: { base: { top: 8, right: 4, bottom: 8, left: 4 } },
-			margins: { base: { top: 0, right: 0, bottom: 0, left: 0 } },
-			typography: { base: { fontSize: 'text-lg', fontWeight: 'font-normal', textAlign: 'text-center' } },
-			backgroundColor: 'bg-white',
-			textColor: 'text-gray-900',
-			gradients: {},
-			layout: {},
-			effects: {}
-		},
-		modern: {
-			spacing: { base: { top: 12, right: 6, bottom: 12, left: 6 } },
-			margins: { base: { top: 4, right: 0, bottom: 4, left: 0 } },
-			typography: { base: { fontSize: 'text-xl', fontWeight: 'font-semibold', textAlign: 'text-center' } },
-			backgroundColor: 'bg-gradient-to-br from-blue-50 to-indigo-100',
-			textColor: 'text-gray-800',
-			gradients: {},
-			layout: {},
-			effects: {}
-		},
-		minimal: {
-			spacing: { base: { top: 6, right: 2, bottom: 6, left: 2 } },
-			margins: { base: { top: 2, right: 0, bottom: 2, left: 0 } },
-			typography: { base: { fontSize: 'text-base', fontWeight: 'font-light', textAlign: 'text-left' } },
-			backgroundColor: 'bg-gray-50',
-			textColor: 'text-gray-700',
-			gradients: {},
-			layout: {},
-			effects: {}
-		}
-	};
-
-	const handlePresetApply = (presetName) => {
-		const preset = presets[presetName];
-		if (preset) {
-			setAttributes({ settings: preset });
-		}
-	};
 
 	// Generate classes for all devices
 	const allClasses = generateAllClasses(settings || {});
@@ -74,16 +34,15 @@ export default function Edit({ attributes, setAttributes }) {
 	const previewClasses = generateAllClasses(settings || {});
 
 	const blockProps = useBlockProps({
-		className: `pricing-table pricing-${layout} ${previewClasses}`,
+		className: `pricing-table pricing-table--${layout} ${previewClasses}`,
 		'data-classes': previewClasses,
 		'data-all-classes': allClasses
 	});
 
 	const layoutPresets = [
 		{ key: 'three-tier', icon: '📊', name: 'Three Tier', desc: 'Standard 3-column layout' },
-		{ key: 'comparison', icon: '📋', name: 'Comparison', desc: 'Feature comparison table' },
 		{ key: 'simple', icon: '🃏', name: 'Simple Cards', desc: 'Clean card design' },
-		{ key: 'toggle', icon: '🔄', name: 'Toggle Pricing', desc: 'Monthly/Annual switch' }
+		{ key: 'comparison', icon: '📋', name: 'Comparison', desc: 'Feature comparison table' }
 	];
 
 	const updatePlan = (planIndex, field, value) => {
@@ -419,66 +378,50 @@ export default function Edit({ attributes, setAttributes }) {
 		// Design tab controls - visual styling only
 		const generalControls = (
 			<>
-				<PanelBody title={__('📱 Responsive Design', 'tailwind-starter')} initialOpen={true}>
-					<UltimateDeviceSelector
-						activeDevice={activeDevice}
-						onChange={(device) => setAttributes({ activeDevice: device })}
-					/>
-				</PanelBody>
+				<UltimateDeviceSelector
+					activeDevice={activeDevice}
+					onChange={(device) => setAttributes({ activeDevice: device })}
+				/>
 
-				<PanelBody title={__('🎨 Visual Design Studio', 'tailwind-starter')} initialOpen={false}>
-					<UltimateControlTabs
-						spacing={settings?.spacing || {}}
-						onSpacingChange={(spacing) => setAttributes({
-							settings: { ...(settings || {}), spacing }
-						})}
-						margins={settings?.margins || {}}
-						onMarginsChange={(margins) => setAttributes({
-							settings: { ...(settings || {}), margins }
-						})}
-						background={settings?.backgroundColor}
-						onBackgroundChange={(backgroundColor) => setAttributes({
-							settings: { ...(settings || {}), backgroundColor }
-						})}
-						textColor={settings?.textColor}
-						onTextColorChange={(textColor) => setAttributes({
-							settings: { ...(settings || {}), textColor }
-						})}
-						gradients={settings?.gradients || {}}
-						onGradientsChange={(gradients) => setAttributes({
-							settings: { ...(settings || {}), gradients }
-						})}
-						typography={settings?.typography || {}}
-						onTypographyChange={(typography) => setAttributes({
-							settings: { ...(settings || {}), typography }
-						})}
-						layout={settings?.layout || {}}
-						onLayoutChange={(layout) => setAttributes({
-							settings: { ...(settings || {}), layout }
-						})}
-						effects={settings?.effects || {}}
-						onEffectsChange={(effects) => setAttributes({
-							settings: { ...(settings || {}), effects }
-						})}
-						device={activeDevice}
-						presets={presets}
-						onPresetApply={handlePresetApply}
-						onResetAll={() => {
-							setAttributes({
-								settings: {
-									spacing: {},
-									margins: {},
-									typography: {},
-									backgroundColor: '',
-									textColor: '',
-									gradients: {},
-									layout: {},
-									effects: {}
-								}
-							});
-						}}
-					/>
-				</PanelBody>
+				<UltimateControlTabs
+					spacing={settings?.spacing || {}}
+					onSpacingChange={(spacing) => setAttributes({
+						settings: { ...(settings || {}), spacing }
+					})}
+					margins={settings?.margins || {}}
+					onMarginsChange={(margins) => setAttributes({
+						settings: { ...(settings || {}), margins }
+					})}
+					blockSpacing={settings?.blockSpacing || {}}
+					onBlockSpacingChange={(blockSpacing) => setAttributes({
+						settings: { ...(settings || {}), blockSpacing }
+					})}
+					background={settings?.backgroundColor}
+					onBackgroundChange={(backgroundColor) => setAttributes({
+						settings: { ...(settings || {}), backgroundColor }
+					})}
+					textColor={settings?.textColor}
+					onTextColorChange={(textColor) => setAttributes({
+						settings: { ...(settings || {}), textColor }
+					})}
+					gradients={settings?.gradients || {}}
+					onGradientsChange={(gradients) => setAttributes({
+						settings: { ...(settings || {}), gradients }
+					})}
+					typography={settings?.typography || {}}
+					onTypographyChange={(typography) => setAttributes({
+						settings: { ...(settings || {}), typography }
+					})}
+					layout={settings?.layout || {}}
+					onLayoutChange={(layout) => setAttributes({
+						settings: { ...(settings || {}), layout }
+					})}
+					effects={settings?.effects || {}}
+					onEffectsChange={(effects) => setAttributes({
+						settings: { ...(settings || {}), effects }
+					})}
+					device={activeDevice}
+				/>
 
 				{/* Advanced Info */}
 				<PanelBody title={__('🚀 Advanced', 'tailwind-starter')} initialOpen={false}>

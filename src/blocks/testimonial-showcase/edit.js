@@ -49,46 +49,6 @@ export default function Edit({ attributes, setAttributes }) {
 	const [selectedCategory, setSelectedCategory] = useState('all');
 	const [isTestimonialsModalOpen, setIsTestimonialsModalOpen] = useState(false);
 
-	// Enhanced preset styles for testimonials
-	const presets = {
-		professional: {
-			spacing: { base: { top: 8, right: 4, bottom: 8, left: 4 } },
-			margins: { base: { top: 0, right: 0, bottom: 0, left: 0 } },
-			typography: { base: { fontSize: 'text-lg', fontWeight: 'font-normal', textAlign: 'text-center' } },
-			backgroundColor: 'bg-gray-50',
-			textColor: 'text-gray-900',
-			gradients: {},
-			layout: {},
-			effects: {}
-		},
-		modern: {
-			spacing: { base: { top: 12, right: 6, bottom: 12, left: 6 } },
-			margins: { base: { top: 4, right: 0, bottom: 4, left: 0 } },
-			typography: { base: { fontSize: 'text-xl', fontWeight: 'font-medium', textAlign: 'text-center' } },
-			backgroundColor: 'bg-gradient-to-br from-blue-50 to-indigo-100',
-			textColor: 'text-gray-800',
-			gradients: {},
-			layout: {},
-			effects: {}
-		},
-		minimal: {
-			spacing: { base: { top: 6, right: 2, bottom: 6, left: 2 } },
-			margins: { base: { top: 2, right: 0, bottom: 2, left: 0 } },
-			typography: { base: { fontSize: 'text-base', fontWeight: 'font-light', textAlign: 'text-left' } },
-			backgroundColor: 'bg-white',
-			textColor: 'text-gray-700',
-			gradients: {},
-			layout: {},
-			effects: {}
-		}
-	};
-
-	const handlePresetApply = (presetName) => {
-		const preset = presets[presetName];
-		if (preset) {
-			setAttributes({ settings: preset });
-		}
-	};
 
 	// Generate classes for all devices
 	const allClasses = generateAllClasses(settings || {});
@@ -97,18 +57,15 @@ export default function Edit({ attributes, setAttributes }) {
 	const previewClasses = generateAllClasses(settings || {});
 
 	const blockProps = useBlockProps({
-		className: `testimonial-showcase testimonial-${layout} ${previewClasses}`,
+		className: `testimonial-showcase testimonial-showcase--${layout} ${previewClasses}`,
 		'data-classes': previewClasses,
 		'data-all-classes': allClasses
 	});
 
 	const layoutPresets = [
-		{ key: 'cards-grid', icon: '📝', name: 'Cards Grid', desc: 'Card-style testimonials in grid' },
-		{ key: 'quotes-carousel', icon: '💬', name: 'Quotes Carousel', desc: 'Rotating large quotes' },
-		{ key: 'masonry-layout', icon: '🧱', name: 'Masonry Layout', desc: 'Pinterest-style layout' },
-		{ key: 'single-featured', icon: '⭐', name: 'Single Featured', desc: 'One large testimonial' },
-		{ key: 'split-content', icon: '📐', name: 'Split Content', desc: 'Content and testimonials side by side' },
-		{ key: 'video-testimonials', icon: '🎥', name: 'Video Testimonials', desc: 'Video-focused layout' }
+		{ key: 'grid', icon: '📝', name: 'Grid Layout', desc: 'Standard testimonials grid' },
+		{ key: 'carousel', icon: '💬', name: 'Carousel', desc: 'Sliding testimonials' },
+		{ key: 'masonry', icon: '🧱', name: 'Masonry', desc: 'Staggered layout' }
 	];
 
 	const updateTestimonial = (testimonialIndex, field, value) => {
@@ -173,9 +130,13 @@ export default function Edit({ attributes, setAttributes }) {
 	};
 
 	const renderTestimonialCard = (testimonial, index) => {
-		const cardClasses = `testimonial-card ${cardStyle === 'elevated' ? 'bg-white shadow-lg' : 
-			cardStyle === 'bordered' ? 'bg-white border border-gray-200' : 'bg-transparent'} 
-			rounded-lg p-6 transition-all duration-300 hover:shadow-xl`;
+		const cardClasses = `testimonial-card transition-all duration-300 ${
+			cardStyle === 'elevated' ? 'testimonial-card-elevated rounded-lg shadow-lg hover:shadow-xl p-6' :
+			cardStyle === 'bordered' ? 'testimonial-card-bordered rounded-lg border-2 p-6' :
+			cardStyle === 'minimal' ? 'p-6' :
+			cardStyle === 'gradient' ? 'testimonial-card-gradient rounded-lg shadow-md hover:shadow-lg p-6' :
+			'rounded-lg shadow-md hover:shadow-lg p-6'
+		}`;
 
 		return (
 			<div key={testimonial.id} className={cardClasses}>
@@ -189,20 +150,27 @@ export default function Edit({ attributes, setAttributes }) {
 					<div className="quote-mark text-6xl text-gray-200 leading-none mb-4">"</div>
 				)}
 
-				<div className={`testimonial-content mb-6 text-${textAlignment}`}>
-					{showRatings && (
-						<div className="rating mb-4 flex justify-center">
+				{showRatings && (
+					<div className="testimonial-rating mb-4">
+						<div className="star-rating flex items-center">
 							{renderStars(testimonial.rating)}
 						</div>
+					</div>
+				)}
+				
+				<div className="testimonial-content mb-6">
+					{quoteStyle === 'blockquote' ? (
+						<blockquote className="text-lg italic leading-relaxed opacity-85">
+							"{useExcerpts ? testimonial.excerpt : testimonial.content}"
+						</blockquote>
+					) : (
+						<div className="text-lg leading-relaxed opacity-85">
+							"{useExcerpts ? testimonial.excerpt : testimonial.content}"
+						</div>
 					)}
-
-					<blockquote className="text-gray-700 italic text-lg leading-relaxed">
-						{useExcerpts ? testimonial.excerpt : testimonial.content}
-					</blockquote>
 				</div>
 
-				<div className={`author-info flex items-center ${textAlignment === 'center' ? 'justify-center' : 
-					textAlignment === 'right' ? 'justify-end' : 'justify-start'}`}>
+				<div className="testimonial-author flex items-center">
 					{showAuthorImages && (
 						<div className="author-image mr-4">
 							{testimonial.authorImageUrl ? (
@@ -220,26 +188,32 @@ export default function Edit({ attributes, setAttributes }) {
 					)}
 
 					<div className="author-details">
-						<div className="author-name font-semibold text-gray-900">{testimonial.authorName}</div>
-						<div className="author-title text-sm text-gray-600">{testimonial.authorTitle}</div>
+						<div className="author-name font-semibold flex items-center">
+							{testimonial.authorName}
+							{showVerifiedBadge && testimonial.verified && (
+								<span className="ml-2" title="Verified Customer" style={{color: 'currentColor', opacity: 0.8}}>
+									<svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+										<path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+									</svg>
+								</span>
+							)}
+						</div>
+						<div className="author-title text-sm opacity-75">{testimonial.authorTitle}</div>
 						{showCompany && (
-							<div className="author-company text-sm text-blue-600">{testimonial.authorCompany}</div>
+							<div className="author-company text-sm opacity-75">{testimonial.authorCompany}</div>
 						)}
 						{showLocation && (
-							<div className="author-location text-xs text-gray-500">{testimonial.location}</div>
+							<div className="author-location text-sm opacity-60">
+								📍 {testimonial.location}
+							</div>
 						)}
 						{showDate && (
-							<div className="testimonial-date text-xs text-gray-500">
+							<div className="testimonial-date text-sm opacity-60">
 								{new Date(testimonial.date).toLocaleDateString()}
 							</div>
 						)}
 					</div>
 
-					{showVerifiedBadge && testimonial.verified && (
-						<div className="verified-badge ml-auto">
-							<span className="text-green-500 text-sm">✓ Verified</span>
-						</div>
-					)}
 				</div>
 
 				{enableVideoTestimonials && testimonial.videoUrl && (
@@ -486,21 +460,6 @@ export default function Edit({ attributes, setAttributes }) {
 					onChange={(device) => setAttributes({ activeDevice: device })}
 				/>
 
-				<PanelBody title={__('🎨 Visual Presets', 'tailwind-starter')} initialOpen={false}>
-					<div className="preset-grid">
-						{Object.keys(presets).map(presetName => (
-							<div
-								key={presetName}
-								className="preset-button"
-								onClick={() => handlePresetApply(presetName)}
-							>
-								<div className="preset-icon">🎨</div>
-								<div className="preset-name">{presetName.charAt(0).toUpperCase() + presetName.slice(1)}</div>
-								<div className="preset-desc">Apply {presetName} styling</div>
-							</div>
-						))}
-					</div>
-				</PanelBody>
 
 				<UltimateControlTabs
 					spacing={settings?.spacing || {}}
@@ -511,11 +470,15 @@ export default function Edit({ attributes, setAttributes }) {
 					onMarginsChange={(margins) => setAttributes({
 						settings: { ...(settings || {}), margins }
 					})}
-					background={settings?.backgroundColor || 'bg-gray-50'}
+					blockSpacing={settings?.blockSpacing || {}}
+					onBlockSpacingChange={(blockSpacing) => setAttributes({
+						settings: { ...(settings || {}), blockSpacing }
+					})}
+					background={settings?.backgroundColor}
 					onBackgroundChange={(backgroundColor) => setAttributes({
 						settings: { ...(settings || {}), backgroundColor }
 					})}
-					textColor={settings?.textColor || 'text-gray-900'}
+					textColor={settings?.textColor}
 					onTextColorChange={(textColor) => setAttributes({
 						settings: { ...(settings || {}), textColor }
 					})}
@@ -535,25 +498,7 @@ export default function Edit({ attributes, setAttributes }) {
 					onEffectsChange={(effects) => setAttributes({
 						settings: { ...(settings || {}), effects }
 					})}
-					activeDevice={activeDevice}
-					presets={{}}
-					onPresetApply={(preset) => {
-						console.log('Applying preset:', preset);
-					}}
-					onResetAll={() => {
-						setAttributes({
-							settings: {
-								spacing: {},
-								margins: {},
-								typography: {},
-								backgroundColor: '',
-								textColor: '',
-								gradients: {},
-								layout: {},
-								effects: {}
-							}
-						});
-					}}
+					device={activeDevice}
 				/>
 
 				<PanelBody title={__('🛠️ Advanced', 'tailwind-starter')} initialOpen={false}>
@@ -576,20 +521,20 @@ export default function Edit({ attributes, setAttributes }) {
 
 			<div {...blockProps}>
 				{showSectionHeader && (
-					<div className="section-header text-center mb-8">
+					<div className="section-header text-center mb-12">
 						<RichText
 							tagName="h2"
 							value={sectionTitle}
 							onChange={(value) => setAttributes({ sectionTitle: value })}
 							placeholder="Section Title..."
-							className="text-3xl font-bold mb-2"
+							className="text-3xl font-bold mb-4"
 						/>
 						<RichText
 							tagName="p"
 							value={sectionSubtitle}
 							onChange={(value) => setAttributes({ sectionSubtitle: value })}
 							placeholder="Section subtitle..."
-							className="text-gray-600 text-lg"
+							className="text-lg opacity-75 max-w-3xl mx-auto"
 						/>
 
 						{showAverageRating && (

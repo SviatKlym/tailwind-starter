@@ -121,7 +121,8 @@ export const UltimateSpacingControl = ({ value = {}, onChange, device = 'base' }
               min={0}
               max={spacingValues.length - 1}
               step={1}
-              withInputField={false}
+              withInputField={true}
+              style={{ zIndex: 10, position: 'relative' }}
             />
             <div className="spacing-value-display">
               <div className="spacing-pixels">{spacingValues[currentSpacing[side]]}px</div>
@@ -374,7 +375,8 @@ export const UltimateMarginControl = ({ value = {}, onChange, device = 'base' })
               min={0}
               max={spacingValues.length - 1}
               step={1}
-              withInputField={false}
+              withInputField={true}
+              style={{ zIndex: 10, position: 'relative' }}
             />
             <div className="spacing-value-display">
               <div className="spacing-pixels">{spacingValues[currentMargin[side]]}px</div>

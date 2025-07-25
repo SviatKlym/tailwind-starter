@@ -20,6 +20,7 @@
       "full"
     ]
   },
+  "render": "file:./render.php",
   "attributes": {
     "features": {
       "type": "array",
@@ -85,21 +86,32 @@
       "default": {
         "spacing": {
           "base": {
-            "top": 6,
-            "right": 6,
-            "bottom": 6,
-            "left": 6
+            "top": 8,
+            "right": 4,
+            "bottom": 8,
+            "left": 4
+          }
+        },
+        "margins": {
+          "base": {
+            "top": 0,
+            "right": 0,
+            "bottom": 0,
+            "left": 0
           }
         },
         "typography": {
           "base": {
-            "fontSize": "text-lg",
-            "fontWeight": "font-medium",
-            "textAlign": "text-center"
+            "fontSize": "text-base",
+            "fontWeight": "font-normal",
+            "textAlign": "text-left"
           }
         },
-        "backgroundColor": "bg-white",
-        "textColor": "text-gray-900"
+        "backgroundColor": "",
+        "textColor": "",
+        "gradients": {},
+        "layout": {},
+        "effects": {}
       }
     },
     "activeDevice": {

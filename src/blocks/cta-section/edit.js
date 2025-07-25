@@ -52,62 +52,21 @@ export default function Edit({ attributes, setAttributes }) {
 		activeDevice
 	} = attributes;
 
-	// Enhanced preset styles for CTA section
-	const presets = {
-		professional: {
-			spacing: { base: { top: 12, right: 6, bottom: 12, left: 6 } },
-			margins: { base: { top: 0, right: 0, bottom: 0, left: 0 } },
-			typography: { base: { fontSize: 'text-xl', fontWeight: 'font-semibold', textAlign: 'text-center' } },
-			backgroundColor: 'bg-blue-600',
-			textColor: 'text-white',
-			gradients: {},
-			layout: {},
-			effects: {}
-		},
-		modern: {
-			spacing: { base: { top: 16, right: 8, bottom: 16, left: 8 } },
-			margins: { base: { top: 4, right: 0, bottom: 4, left: 0 } },
-			typography: { base: { fontSize: 'text-2xl', fontWeight: 'font-bold', textAlign: 'text-center' } },
-			backgroundColor: 'bg-gradient-to-r from-purple-600 to-blue-600',
-			textColor: 'text-white',
-			gradients: {},
-			layout: {},
-			effects: {}
-		},
-		minimal: {
-			spacing: { base: { top: 8, right: 4, bottom: 8, left: 4 } },
-			margins: { base: { top: 2, right: 0, bottom: 2, left: 0 } },
-			typography: { base: { fontSize: 'text-lg', fontWeight: 'font-normal', textAlign: 'text-left' } },
-			backgroundColor: 'bg-gray-100',
-			textColor: 'text-gray-900',
-			gradients: {},
-			layout: {},
-			effects: {}
-		}
-	};
-
-	const handlePresetApply = (presetName) => {
-		const preset = presets[presetName];
-		if (preset) {
-			setAttributes({ settings: preset });
-		}
-	};
 
 	// Generate classes for all devices
 	const allClasses = generateAllClasses(settings || {});
 	const previewClasses = generateAllClasses(settings || {});
 
 	const blockProps = useBlockProps({
-		className: `cta-section cta-${layout} ${previewClasses}`,
+		className: `cta-section cta-section--${layout} ${previewClasses}`,
 		'data-classes': previewClasses,
 		'data-all-classes': allClasses
 	});
 
 	const layoutPresets = [
-		{ key: 'centered', icon: '🎯', name: 'Centered CTA', desc: 'Center-aligned call to action' },
-		{ key: 'split', icon: '↔️', name: 'Split CTA', desc: 'Two-column layout with visual' },
-		{ key: 'banner', icon: '📢', name: 'Banner Style', desc: 'Full-width banner format' },
-		{ key: 'button-group', icon: '🔘', name: 'Button Group', desc: 'Focus on multiple buttons' }
+		{ key: 'centered', icon: '🎯', name: 'Centered', desc: 'Center-aligned layout' },
+		{ key: 'split', icon: '↔️', name: 'Split', desc: 'Two-column layout' },
+		{ key: 'banner', icon: '📢', name: 'Banner', desc: 'Full-width banner' }
 	];
 
 	const alignmentOptions = [
@@ -410,22 +369,6 @@ export default function Edit({ attributes, setAttributes }) {
 				onChange={(device) => setAttributes({ activeDevice: device })}
 			/>
 
-			<PanelBody title={__('🎨 Visual Presets', 'tailwind-starter')} initialOpen={false}>
-				<div className="preset-grid">
-					{Object.keys(presets).map(presetName => (
-						<div
-							key={presetName}
-							className="preset-button"
-							onClick={() => handlePresetApply(presetName)}
-						>
-							<div className="preset-icon">🎨</div>
-							<div className="preset-name">{presetName.charAt(0).toUpperCase() + presetName.slice(1)}</div>
-							<div className="preset-desc">Apply {presetName} styling</div>
-						</div>
-					))}
-				</div>
-			</PanelBody>
-
 			<UltimateControlTabs
 				spacing={settings?.spacing || {}}
 				onSpacingChange={(spacing) => setAttributes({
@@ -435,11 +378,15 @@ export default function Edit({ attributes, setAttributes }) {
 				onMarginsChange={(margins) => setAttributes({
 					settings: { ...(settings || {}), margins }
 				})}
-				background={settings?.backgroundColor || 'bg-blue-600'}
+				blockSpacing={settings?.blockSpacing || {}}
+				onBlockSpacingChange={(blockSpacing) => setAttributes({
+					settings: { ...(settings || {}), blockSpacing }
+				})}
+				background={settings?.backgroundColor}
 				onBackgroundChange={(backgroundColor) => setAttributes({
 					settings: { ...(settings || {}), backgroundColor }
 				})}
-				textColor={settings?.textColor || 'text-white'}
+				textColor={settings?.textColor}
 				onTextColorChange={(textColor) => setAttributes({
 					settings: { ...(settings || {}), textColor }
 				})}
@@ -460,24 +407,6 @@ export default function Edit({ attributes, setAttributes }) {
 					settings: { ...(settings || {}), effects }
 				})}
 				device={activeDevice}
-				presets={{}}
-				onPresetApply={(preset) => {
-					console.log('Applying preset:', preset);
-				}}
-				onResetAll={() => {
-					setAttributes({
-						settings: {
-							spacing: {},
-							margins: {},
-							typography: {},
-							backgroundColor: '',
-							textColor: '',
-							gradients: {},
-							layout: {},
-							effects: {}
-						}
-					});
-				}}
 			/>
 
 			<PanelBody title={__('🛠️ Advanced', 'tailwind-starter')} initialOpen={false}>

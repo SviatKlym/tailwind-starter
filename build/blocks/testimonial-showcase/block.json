@@ -19,7 +19,7 @@
   "attributes": {
     "layout": {
       "type": "string",
-      "default": "cards-grid"
+      "default": "grid"
     },
     "testimonials": {
       "type": "array",
@@ -190,13 +190,13 @@
         },
         "typography": {
           "base": {
-            "fontSize": "text-lg",
+            "fontSize": "text-base",
             "fontWeight": "font-normal",
-            "textAlign": "text-center"
+            "textAlign": "text-left"
           }
         },
-        "backgroundColor": "bg-gray-50",
-        "textColor": "text-gray-900",
+        "backgroundColor": "",
+        "textColor": "",
         "gradients": {},
         "layout": {},
         "effects": {}

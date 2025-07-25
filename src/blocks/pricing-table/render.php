@@ -14,8 +14,13 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-// Include render helpers
-require_once get_template_directory() . '/inc/utils/render-helpers.php';
+// Include the block class generator and render helpers
+if (!function_exists('generate_all_classes')) {
+    require_once get_template_directory() . '/inc/utils/block-class-generator.php';
+}
+if (!function_exists('generate_visual_classes')) {
+    require_once get_template_directory() . '/inc/utils/render-helpers.php';
+}
 
 // Ensure attributes is an array
 $attributes = is_array($attributes) ? $attributes : [];
@@ -23,29 +28,82 @@ $attributes = is_array($attributes) ? $attributes : [];
 // Sanitize attributes
 $attributes = sanitize_block_attributes($attributes);
 
-// Prepare block wrapper with visual controls integration
-$wrapper_data = prepare_block_wrapper($attributes, 'pricing-table-block');
+// Generate all classes using the full visual controls system
+$visual_settings = $attributes['visualSettings'] ?? [];
+$settings = $attributes['settings'] ?? [];
+
+// Use the enhanced block wrapper for perfect class generation
+$wrapper_data = prepare_enhanced_block_wrapper($attributes, 'pricing-table');
+$all_classes = $wrapper_data['classes'];
+$inline_styles = $wrapper_data['styles'];
+
+// Extract typography classes for text elements
+$typography_classes = '';
+$text_color_class = '';
+$text_align_class = '';
+
+if (!empty($settings)) {
+    // Extract typography settings for base device
+    if (isset($settings['typography']['base'])) {
+        $typography = $settings['typography']['base'];
+        if (!empty($typography['fontSize'])) $typography_classes .= ' ' . $typography['fontSize'];
+        if (!empty($typography['fontWeight'])) $typography_classes .= ' ' . $typography['fontWeight'];
+        if (!empty($typography['lineHeight'])) $typography_classes .= ' ' . $typography['lineHeight'];
+        if (!empty($typography['letterSpacing'])) $typography_classes .= ' ' . $typography['letterSpacing'];
+        if (!empty($typography['textTransform'])) $typography_classes .= ' ' . $typography['textTransform'];
+        if (!empty($typography['textAlign'])) $text_align_class = $typography['textAlign'];
+    }
+    
+    // Extract text color
+    if (!empty($settings['textColor'])) {
+        $text_color_class = $settings['textColor'];
+    }
+}
+
+// Extract layout classes for content containers
+$layout_classes = '';
+if (!empty($settings)) {
+    if (isset($settings['layout']['base'])) {
+        $layout = $settings['layout']['base'];
+        if (!empty($layout['display'])) $layout_classes .= ' ' . $layout['display'];
+        if (!empty($layout['gap'])) $layout_classes .= ' ' . $layout['gap'];
+        if (!empty($layout['justifyContent'])) $layout_classes .= ' ' . $layout['justifyContent'];
+        if (!empty($layout['alignItems'])) $layout_classes .= ' ' . $layout['alignItems'];
+        if (!empty($layout['gridCols'])) $layout_classes .= ' ' . $layout['gridCols'];
+        if (!empty($layout['gridRows'])) $layout_classes .= ' ' . $layout['gridRows'];
+    }
+}
+
+$layout_classes = trim($layout_classes);
+
+// Generate dynamic classes for text elements only when visual controls are applied
+$heading_classes = trim("text-3xl font-bold mb-4" . (!empty($typography_classes) || !empty($text_color_class) || !empty($text_align_class) ? " {$typography_classes} {$text_color_class} {$text_align_class}" : ""));
+$paragraph_classes = trim("text-lg opacity-75 max-w-3xl mx-auto" . (!empty($text_color_class) || !empty($text_align_class) ? " {$text_color_class} {$text_align_class}" : ""));
 
 // Extract block-specific attributes
-$layout = $attributes['layout'] ?? 'default';
+$layout = is_string($attributes['layout'] ?? '') ? $attributes['layout'] : 'three-tier';
 $show_section_header = $attributes['showSectionHeader'] ?? false;
 $section_title = $attributes['sectionTitle'] ?? '';
 $section_subtitle = $attributes['sectionSubtitle'] ?? '';
 
+// Combine base classes with visual control classes
+$base_classes = "pricing-table pricing-table--{$layout}";
+$block_classes = trim("{$base_classes} {$all_classes}");
+
 ?>
 
-<div class="<?php echo esc_attr($wrapper_data['classes']); ?>" 
-     <?php echo $wrapper_data['styles'] ? 'style="' . esc_attr($wrapper_data['styles']) . '"' : ''; ?>>
+<div class="<?php echo esc_attr(trim($block_classes)); ?>" 
+     <?php echo $inline_styles ? 'style="' . esc_attr($inline_styles) . '"' : ''; ?>>
     
     <?php if ($show_section_header && ($section_title || $section_subtitle)): ?>
         <div class="section-header text-center mb-12">
             <?php if ($section_title): ?>
-                <h2 class="section-title text-3xl font-bold mb-4">
+                <h2 class="<?php echo esc_attr($heading_classes); ?>">
                     <?php echo esc_html($section_title); ?>
                 </h2>
             <?php endif; ?>
             <?php if ($section_subtitle): ?>
-                <p class="section-subtitle text-lg max-w-3xl mx-auto">
+                <p class="<?php echo esc_attr($paragraph_classes); ?>">
                     <?php echo esc_html($section_subtitle); ?>
                 </p>
             <?php endif; ?>
@@ -97,7 +155,7 @@ $section_subtitle = $attributes['sectionSubtitle'] ?? '';
                 </div>
             <?php endif; ?>
 
-            <div class="<?php echo esc_attr($grid_classes); ?>">
+            <div class="<?php echo esc_attr($grid_classes . ' ' . $layout_classes); ?>">
                 <?php foreach ($plans as $plan) : 
                     if (!is_array($plan)) continue;
                     
