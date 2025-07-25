@@ -296,3 +296,70 @@ function sanitize_block_attributes($attributes) {
     
     return $sanitized;
 }
+
+/**
+ * Generate performance configuration for blocks
+ * 
+ * @param string $block_name Block name identifier
+ * @param array $config Configuration options
+ * @return array Performance configuration
+ */
+function generate_performance_config($block_name, $config = []) {
+    $defaults = [
+        'lazyLoading' => [
+            'enabled' => false,
+            'rootMargin' => '100px'
+        ],
+        'scrollAnimations' => [
+            'enabled' => false,
+            'type' => 'fadeIn',
+            'duration' => '0.5s'
+        ],
+        'analytics' => [
+            'enabled' => false,
+            'trackViews' => false,
+            'trackClicks' => false,
+            'viewData' => []
+        ]
+    ];
+    
+    return wp_parse_args($config, $defaults);
+}
+
+/**
+ * Generate data attributes from performance config
+ * 
+ * @param array $performance_config Performance configuration
+ * @return string HTML data attributes
+ */
+function generate_data_attributes($performance_config) {
+    $attributes = [];
+    
+    // Lazy loading attributes
+    if (!empty($performance_config['lazyLoading']['enabled'])) {
+        $attributes[] = 'data-lazy-load="true"';
+        $attributes[] = 'data-lazy-margin="' . esc_attr($performance_config['lazyLoading']['rootMargin']) . '"';
+    }
+    
+    // Scroll animation attributes
+    if (!empty($performance_config['scrollAnimations']['enabled'])) {
+        $attributes[] = 'data-scroll-animate="true"';
+        $attributes[] = 'data-animation-type="' . esc_attr($performance_config['scrollAnimations']['type']) . '"';
+        $attributes[] = 'data-animation-duration="' . esc_attr($performance_config['scrollAnimations']['duration']) . '"';
+    }
+    
+    // Analytics attributes
+    if (!empty($performance_config['analytics']['enabled'])) {
+        if (!empty($performance_config['analytics']['trackViews'])) {
+            $attributes[] = 'data-track-views="true"';
+        }
+        if (!empty($performance_config['analytics']['trackClicks'])) {
+            $attributes[] = 'data-track-clicks="true"';
+        }
+        if (!empty($performance_config['analytics']['viewData'])) {
+            $attributes[] = 'data-view-data=\'' . json_encode($performance_config['analytics']['viewData']) . '\'';
+        }
+    }
+    
+    return implode(' ', $attributes);
+}

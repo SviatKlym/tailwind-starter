@@ -5,8 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "wp-scripts start",
-    "build": "npm run blocks:build && npm run theme:build",
+    "build": "npm run blocks:build && npm run copy:php && npm run theme:build",
     "blocks:build": "wp-scripts build",
+    "copy:php": "node -e \"const fs=require('fs');const path=require('path');fs.readdirSync('src/blocks').forEach(d=>{const src=path.join('src/blocks',d,'render.php');const dest=path.join('build/blocks',d,'render.php');if(fs.existsSync(src)){fs.mkdirSync(path.dirname(dest),{recursive:true});fs.copyFileSync(src,dest);}});console.log('PHP files copied');\"",
     "theme:build": "tailwindcss -i src/style.css -o build/main.css --minify",
     "clean": "rimraf build"
   },

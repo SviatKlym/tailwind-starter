@@ -89,12 +89,6 @@ export default function save({ attributes }) {
       {backgroundImage?.url && (
         <div className="hero-background absolute inset-0 overflow-hidden">
           {renderOptimizedImage(backgroundImage, '')}
-          {overlayOpacity && (
-            <div 
-              className="hero-overlay absolute inset-0 bg-black" 
-              style={{ opacity: overlayOpacity / 100 }}
-            />
-          )}
         </div>
       )}
 

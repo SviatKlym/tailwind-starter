@@ -76,7 +76,7 @@ class AssetController {
             $render_callback = function( $attributes, $content, $block ) use ( $render_file_found ) {
                 // Only include the render file when the block is actually being rendered
                 ob_start();
-                require_once $render_file_found;
+                require $render_file_found;
                 return ob_get_clean();
             };
         }
