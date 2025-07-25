@@ -1253,12 +1253,29 @@ export const UltimateColorsControl = ({
         </button>
       </div>
       
-      <UltimateColorPicker
-        label={__('Solid Background Color', 'tailwind-starter')}
-        value={background}
-        onChange={onBackgroundChange}
-        type="background"
-      />
+      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+        <UltimateColorPicker
+          label={__('Solid Background Color', 'tailwind-starter')}
+          value={background}
+          onChange={onBackgroundChange}
+          type="background"
+        />
+        <button
+          onClick={() => onBackgroundChange('')}
+          style={{
+            padding: '4px 8px',
+            backgroundColor: '#f3f4f6',
+            border: '1px solid #d1d5db',
+            borderRadius: '4px',
+            fontSize: '12px',
+            cursor: 'pointer',
+            color: '#6b7280'
+          }}
+          title="Reset Background Color"
+        >
+          🔄
+        </button>
+      </div>
 
       {/* Gradient Backgrounds */}
       <div className="section-header" style={{ marginTop: '32px' }}>
@@ -1329,12 +1346,29 @@ export const UltimateColorsControl = ({
         ))}
       </div>
       
-      <UltimateColorPicker
-        label={__('Text Color', 'tailwind-starter')}
-        value={textColor}
-        onChange={onTextColorChange}
-        type="text"
-      />
+      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+        <UltimateColorPicker
+          label={__('Text Color', 'tailwind-starter')}
+          value={textColor}
+          onChange={onTextColorChange}
+          type="text"
+        />
+        <button
+          onClick={() => onTextColorChange('')}
+          style={{
+            padding: '4px 8px',
+            backgroundColor: '#f3f4f6',
+            border: '1px solid #d1d5db',
+            borderRadius: '4px',
+            fontSize: '12px',
+            cursor: 'pointer',
+            color: '#6b7280'
+          }}
+          title="Reset Text Color"
+        >
+          🔄
+        </button>
+      </div>
     </div>
   )
 }
@@ -1817,17 +1851,9 @@ export const UltimateControlTabs = ({
   effects,
   onEffectsChange,
   device,
-  presets,
-  onPresetApply,
   onResetAll
 }) => {
   const tabs = [
-    {
-      name: 'presets',
-      title: '⚡',
-      label: 'Quick',
-      className: 'tab-presets'
-    },
     {
       name: 'spacing', 
       title: '📏',
@@ -1858,15 +1884,6 @@ export const UltimateControlTabs = ({
       label: 'Effects',
       className: 'tab-effects'
     }
-  ]
-
-  const presetData = [
-    { key: 'card', icon: '🃏', name: 'Card', desc: 'Clean card layout' },
-    { key: 'hero', icon: '🏆', name: 'Hero', desc: 'Bold hero section' },
-    { key: 'minimal', icon: '✨', name: 'Minimal', desc: 'Clean & subtle' },
-    { key: 'bold', icon: '💪', name: 'Bold', desc: 'High contrast' },
-    { key: 'feature', icon: '⭐', name: 'Feature', desc: 'Highlighted content' },
-    { key: 'quote', icon: '💬', name: 'Quote', desc: 'Testimonial style' }
   ]
 
   // Global reset function
@@ -1938,34 +1955,11 @@ export const UltimateControlTabs = ({
         className="ultimate-control-tabs-panel"
         activeClass="is-active"
         orientation="horizontal"
-        initialTabName="presets"
+        initialTabName="spacing"
         tabs={tabs}
       >
         {(tab) => {
           switch (tab.name) {
-            case 'presets':
-              return (
-                <div className="animate-slide-in">
-                  <div className="section-header">
-                    <span className="section-header-icon">⚡</span>
-                    {__('Quick Style Presets', 'tailwind-starter')}
-                  </div>
-                  <div className="preset-grid">
-                    {presetData.map(preset => (
-                      <button 
-                        key={preset.key}
-                        className="preset-button"
-                        onClick={() => onPresetApply(preset.key)}
-                        title={preset.desc}
-                      >
-                        <div className="preset-button-icon">{preset.icon}</div>
-                        <div className="preset-button-label">{preset.name}</div>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )
-            
             case 'spacing':
               return (
                 <div className="animate-slide-in">

@@ -47,24 +47,66 @@ $animation_duration = $attributes['animationDuration'] ?? 'duration-200';
 $hover_effects = $attributes['hoverEffects'] ?? true;
 $settings = $attributes['settings'] ?? [];
 
-// Generate classes from settings (simplified)
-$settings_classes = '';
+// Include the block class generator and render helpers
+if (!function_exists('generate_all_classes')) {
+    require_once get_template_directory() . '/inc/utils/block-class-generator.php';
+}
+if (!function_exists('generate_visual_classes')) {
+    require_once get_template_directory() . '/inc/utils/render-helpers.php';
+}
+
+// Generate all classes using the full visual controls system
+$visual_settings = $attributes['visualSettings'] ?? [];
+
+// Use the enhanced block wrapper for perfect class generation
+$wrapper_data = prepare_enhanced_block_wrapper($attributes, 'hero-section');
+$all_classes = $wrapper_data['classes'];
+$inline_styles = $wrapper_data['styles'];
+
+$block_classes = "hero-section--{$layout} {$all_classes}";
+
+// Extract typography classes for text elements
+$typography_classes = '';
+$text_color_class = '';
+$text_align_class = '';
+
 if (!empty($settings)) {
-    // Basic classes from settings
-    $settings_classes = $settings['backgroundColor'] ?? '';
-    $settings_classes .= ' ' . ($settings['textColor'] ?? '');
+    // Extract typography settings for base device
+    if (isset($settings['typography']['base'])) {
+        $typography = $settings['typography']['base'];
+        if (!empty($typography['fontSize'])) $typography_classes .= ' ' . $typography['fontSize'];
+        if (!empty($typography['fontWeight'])) $typography_classes .= ' ' . $typography['fontWeight'];
+        if (!empty($typography['lineHeight'])) $typography_classes .= ' ' . $typography['lineHeight'];
+        if (!empty($typography['letterSpacing'])) $typography_classes .= ' ' . $typography['letterSpacing'];
+        if (!empty($typography['textTransform'])) $typography_classes .= ' ' . $typography['textTransform'];
+        if (!empty($typography['textAlign'])) $text_align_class = $typography['textAlign'];
+    }
     
-    // Add spacing if available
-    if (isset($settings['spacing']['base'])) {
-        $spacing = $settings['spacing']['base'];
-        if (!empty($spacing['top'])) $settings_classes .= ' pt-' . $spacing['top'];
-        if (!empty($spacing['right'])) $settings_classes .= ' pr-' . $spacing['right'];
-        if (!empty($spacing['bottom'])) $settings_classes .= ' pb-' . $spacing['bottom'];
-        if (!empty($spacing['left'])) $settings_classes .= ' pl-' . $spacing['left'];
+    // Extract text color
+    if (!empty($settings['textColor'])) {
+        $text_color_class = $settings['textColor'];
     }
 }
 
-$block_classes = "hero-section hero-section--{$layout} {$settings_classes}";
+// Generate classes for headings and paragraphs
+$heading_classes = trim("text-4xl sm:text-5xl font-bold mb-6 leading-tight {$typography_classes} {$text_color_class} {$text_align_class}");
+$paragraph_classes = trim("text-lg mb-8 leading-relaxed {$text_color_class} {$text_align_class}");
+
+// Extract layout classes for content containers
+$layout_classes = '';
+if (!empty($settings)) {
+    if (isset($settings['layout']['base'])) {
+        $layout = $settings['layout']['base'];
+        if (!empty($layout['display'])) $layout_classes .= ' ' . $layout['display'];
+        if (!empty($layout['gap'])) $layout_classes .= ' ' . $layout['gap'];
+        if (!empty($layout['justifyContent'])) $layout_classes .= ' ' . $layout['justifyContent'];
+        if (!empty($layout['alignItems'])) $layout_classes .= ' ' . $layout['alignItems'];
+        if (!empty($layout['gridCols'])) $layout_classes .= ' ' . $layout['gridCols'];
+        if (!empty($layout['gridRows'])) $layout_classes .= ' ' . $layout['gridRows'];
+    }
+}
+
+$layout_classes = trim($layout_classes);
 
 // Render optimized image helper
 if (!function_exists('render_hero_image')) {
@@ -87,19 +129,19 @@ if (!function_exists('render_hero_image')) {
 switch ($layout) {
     case 'split':
         ?>
-        <section class="<?php echo esc_attr(trim($block_classes)); ?>">
+        <section class="<?php echo esc_attr(trim($block_classes)); ?>" <?php if ($inline_styles): ?>style="<?php echo esc_attr($inline_styles); ?>"<?php endif; ?>>
             <div class="<?php echo esc_attr($content_padding); ?> relative">
                 <div class="container mx-auto px-4">
-                    <div class="grid lg:grid-cols-2 gap-12 items-center">
+                    <div class="grid lg:grid-cols-2 gap-12 items-center <?php echo esc_attr($layout_classes); ?>">
                         <div>
                             <?php if (!empty($headline)): ?>
-                                <h1 class="text-4xl sm:text-5xl font-bold mb-6 leading-tight">
+                                <h1 class="<?php echo esc_attr($heading_classes); ?>">
                                     <?php echo wp_kses_post($headline); ?>
                                 </h1>
                             <?php endif; ?>
 
                             <?php if (!empty($subheadline)): ?>
-                                <p class="text-lg text-gray-600 mb-8 leading-relaxed">
+                                <p class="<?php echo esc_attr($paragraph_classes); ?>">
                                     <?php echo wp_kses_post($subheadline); ?>
                                 </p>
                             <?php endif; ?>
@@ -140,18 +182,18 @@ switch ($layout) {
 
     case 'minimal':
         ?>
-        <section class="<?php echo esc_attr(trim($block_classes)); ?>">
+        <section class="<?php echo esc_attr(trim($block_classes)); ?>" <?php if ($inline_styles): ?>style="<?php echo esc_attr($inline_styles); ?>"<?php endif; ?>>
             <div class="<?php echo esc_attr($content_padding); ?> text-center">
                 <div class="container mx-auto px-4">
-                    <div class="max-w-2xl mx-auto">
+                    <div class="max-w-2xl mx-auto <?php echo esc_attr($layout_classes); ?>">
                         <?php if (!empty($headline)): ?>
-                            <h1 class="text-3xl sm:text-4xl font-bold mb-4">
+                            <h1 class="<?php echo esc_attr(str_replace(['text-4xl sm:text-5xl'], ['text-3xl sm:text-4xl'], $heading_classes)); ?>">
                                 <?php echo wp_kses_post($headline); ?>
                             </h1>
                         <?php endif; ?>
 
                         <?php if (!empty($subheadline)): ?>
-                            <p class="text-lg text-gray-600 mb-6">
+                            <p class="<?php echo esc_attr(str_replace('mb-8', 'mb-6', $paragraph_classes)); ?>">
                                 <?php echo wp_kses_post($subheadline); ?>
                             </p>
                         <?php endif; ?>
@@ -171,7 +213,7 @@ switch ($layout) {
 
     default: // centered layout
         ?>
-        <section class="<?php echo esc_attr(trim($block_classes)); ?>">
+        <section class="<?php echo esc_attr(trim($block_classes)); ?>" <?php if ($inline_styles): ?>style="<?php echo esc_attr($inline_styles); ?>"<?php endif; ?>>
             <div class="<?php echo esc_attr($content_padding); ?> relative">
                 <?php if (!empty($background_image['url'])): ?>
                     <div class="absolute inset-0 bg-cover bg-center bg-no-repeat" 
@@ -179,15 +221,15 @@ switch ($layout) {
                 <?php endif; ?>
                 
                 <div class="relative container mx-auto px-4 text-center">
-                    <div class="max-w-4xl mx-auto">
+                    <div class="max-w-4xl mx-auto <?php echo esc_attr($layout_classes); ?>">
                         <?php if (!empty($headline)): ?>
-                            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+                            <h1 class="<?php echo esc_attr(str_replace(['text-4xl sm:text-5xl'], ['text-4xl sm:text-5xl lg:text-6xl'], $heading_classes)); ?>">
                                 <?php echo wp_kses_post($headline); ?>
                             </h1>
                         <?php endif; ?>
 
                         <?php if (!empty($subheadline)): ?>
-                            <p class="text-lg sm:text-xl opacity-75 mb-8 leading-relaxed max-w-3xl mx-auto">
+                            <p class="<?php echo esc_attr($paragraph_classes . ' sm:text-xl opacity-75 max-w-3xl mx-auto'); ?>">
                                 <?php echo wp_kses_post($subheadline); ?>
                             </p>
                         <?php endif; ?>

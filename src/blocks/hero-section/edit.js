@@ -57,52 +57,6 @@ export default function Edit({ attributes, setAttributes }) {
     activeDevice
   } = attributes
 
-  // Enhanced preset styles for hero sections
-  const presets = {
-    classic: {
-      spacing: { base: { top: 8, right: 4, bottom: 8, left: 4 } },
-      typography: { base: { fontSize: 'text-2xl', fontWeight: 'font-bold', textAlign: 'text-center' } },
-      backgroundColor: 'bg-white',
-      textColor: 'text-gray-900'
-    },
-    modern: {
-      spacing: { base: { top: 12, right: 6, bottom: 12, left: 6 } },
-      typography: { base: { fontSize: 'text-3xl', fontWeight: 'font-bold', textAlign: 'text-center' } },
-      backgroundColor: 'bg-blue-600',
-      textColor: 'text-white'
-    },
-    minimal: {
-      spacing: { base: { top: 6, right: 4, bottom: 6, left: 4 } },
-      typography: { base: { fontSize: 'text-2xl', fontWeight: 'font-normal', textAlign: 'text-left' } },
-      backgroundColor: 'bg-gray-50',
-      textColor: 'text-gray-900'
-    },
-    bold: {
-      spacing: { base: { top: 16, right: 8, bottom: 16, left: 8 } },
-      typography: { base: { fontSize: 'text-4xl', fontWeight: 'font-bold', textAlign: 'text-center' } },
-      backgroundColor: 'bg-black',
-      textColor: 'text-white'
-    },
-    gradient: {
-      spacing: { base: { top: 12, right: 6, bottom: 12, left: 6 } },
-      typography: { base: { fontSize: 'text-3xl', fontWeight: 'font-bold', textAlign: 'text-center' } },
-      backgroundColor: 'bg-gradient-to-r from-purple-600 to-blue-600',
-      textColor: 'text-white'
-    },
-    soft: {
-      spacing: { base: { top: 8, right: 6, bottom: 8, left: 6 } },
-      typography: { base: { fontSize: 'text-2xl', fontWeight: 'font-medium', textAlign: 'text-center' } },
-      backgroundColor: 'bg-blue-50',
-      textColor: 'text-blue-900'
-    }
-  }
-
-  const handlePresetApply = (presetName) => {
-    const preset = presets[presetName]
-    if (preset) {
-      setAttributes({ settings: preset })
-    }
-  }
 
   // Generate classes for all devices
   const allClasses = generateAllClasses(settings)
@@ -492,8 +446,6 @@ export default function Edit({ attributes, setAttributes }) {
           settings: { ...(settings || {}), effects }
         })}
         device={activeDevice}
-        presets={presets}
-        onPresetApply={handlePresetApply}
       />
 
       <PanelBody title={__('🚀 Advanced', 'tailwind-starter')} initialOpen={false}>
