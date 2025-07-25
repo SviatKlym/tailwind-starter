@@ -48,7 +48,9 @@
       "Bash(cmd.exe /C \"npx tailwindcss -i src\\style.css -o build\\main.css --minify\")",
       "Bash(do if [ -f \"src/blocks/$block/index.js\" ])",
       "Bash(then cp \"src/blocks/$block/index.js\" \"build/blocks/$block/index.js\")",
-      "Bash(true)"
+      "Bash(true)",
+      "Bash(npx update-browserslist-db:*)",
+      "Bash(npx tailwindcss:*)"
     ],
     "deny": []
   }

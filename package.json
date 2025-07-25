@@ -7,16 +7,16 @@
     "dev": "wp-scripts start",
     "build": "npm run blocks:build && npm run theme:build",
     "blocks:build": "wp-scripts build",
-    "theme:build": "tailwindcss -i src/style.css -o build/main.css --minify && cp src/editor.css build/editor.css && cp src/editor-alignment-fix.css build/editor-alignment-fix.css",
+    "theme:build": "tailwindcss -i src/style.css -o build/main.css --minify",
     "clean": "rimraf build"
   },
   "devDependencies": {
-    "@tailwindcss/cli": "^4.1.11",
     "@wordpress/scripts": "^30.19.0",
-    "rimraf": "^5.0.1",
-    "tailwindcss": "^4.1.11"
+    "rimraf": "^5.0.1"
   },
   "dependencies": {
+    "@tailwindcss/cli": "^4.1.11",
+    "@tailwindcss/oxide": "^4.1.11",
     "@wordpress/block-editor": "^14.4.0",
     "@wordpress/blocks": "^13.9.0",
     "@wordpress/components": "^28.9.0",
@@ -28,6 +28,7 @@
     "lightningcss": "^1.30.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-refresh": "^0.17.0"
+    "react-refresh": "^0.17.0",
+    "tailwindcss": "^4.1.11"
   }
 }
