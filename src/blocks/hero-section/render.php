@@ -15,6 +15,7 @@ $primary_cta = $attributes['primaryCTA'] ?? ['text' => 'Get Started Free', 'url'
 $secondary_cta = $attributes['secondaryCTA'] ?? ['text' => 'Watch Demo', 'url' => '#', 'style' => 'secondary'];
 $show_secondary_cta = $attributes['showSecondaryCTA'] ?? true;
 $background_image = $attributes['backgroundImage'] ?? null;
+$hero_image = $attributes['heroImage'] ?? null;
 $layout = $attributes['layout'] ?? 'centered';
 $title_font_size = $attributes['titleFontSize'] ?? 'text-4xl md:text-6xl';
 $title_font_weight = $attributes['titleFontWeight'] ?? 'font-bold';
@@ -23,7 +24,22 @@ $title_margin_bottom = $attributes['titleMarginBottom'] ?? 'mb-6';
 $subtitle_margin_bottom = $attributes['subtitleMarginBottom'] ?? 'mb-8';
 $content_max_width = $attributes['contentMaxWidth'] ?? 'max-w-3xl';
 $content_alignment = $attributes['contentAlignment'] ?? 'text-center';
-$content_padding = $attributes['contentPadding'] ?? 'px-4 py-24';
+$padding = $attributes['padding'] ?? ['top' => 'large', 'bottom' => 'large'];
+
+// Generate padding class like the editor
+if (!function_exists('get_padding_class')) {
+    function get_padding_class($size) {
+        $padding_map = [
+            'small' => 'py-8 sm:py-12',
+            'medium' => 'py-12 sm:py-16', 
+            'large' => 'py-16 sm:py-24',
+            'xlarge' => 'py-24 sm:py-32'
+        ];
+        return $padding_map[$size] ?? $padding_map['large'];
+    }
+}
+
+$content_padding = get_padding_class($padding['top']);
 $button_spacing = $attributes['buttonSpacing'] ?? 'space-x-4';
 $primary_button_style = $attributes['primaryButtonStyle'] ?? [];
 $secondary_button_style = $attributes['secondaryButtonStyle'] ?? [];
@@ -72,61 +88,48 @@ switch ($layout) {
     case 'split':
         ?>
         <section class="<?php echo esc_attr(trim($block_classes)); ?>">
-            <?php if (!empty($background_image['url'])): ?>
-                <div class="hero-background absolute inset-0 overflow-hidden">
-                    <?php echo render_hero_image($background_image); ?>
-                </div>
-            <?php endif; ?>
-            
-            <div class="hero-content relative z-10 container mx-auto <?php echo esc_attr($content_padding); ?>">
-                <div class="grid md:grid-cols-2 gap-8 items-center">
-                    <!-- Content Column -->
-                    <div>
-                        <?php if (!empty($headline)): ?>
-                            <h1 class="hero-title <?php echo esc_attr($title_font_size); ?> <?php echo esc_attr($title_font_weight); ?> <?php echo esc_attr($title_margin_bottom); ?>"
-                                data-animate="title">
-                                <?php echo wp_kses_post($headline); ?>
-                            </h1>
-                        <?php endif; ?>
-
-                        <?php if (!empty($subheadline)): ?>
-                            <h2 class="hero-subtitle <?php echo esc_attr($subtitle_font_size); ?> <?php echo esc_attr($subtitle_margin_bottom); ?> opacity-75"
-                                data-animate="subtitle"
-                                data-animate-delay="200">
-                                <?php echo wp_kses_post($subheadline); ?>
-                            </h2>
-                        <?php endif; ?>
-
-                        <div class="hero-ctas <?php echo esc_attr($button_spacing); ?>">
-                            <?php if (!empty($primary_cta['text']) && !empty($primary_cta['url'])): ?>
-                                <a href="<?php echo esc_url($primary_cta['url']); ?>"
-                                   class="hero-cta-primary btn-primary inline-flex items-center <?php echo esc_attr($primary_button_style['padding'] ?? 'px-8 py-4'); ?> <?php echo esc_attr($primary_button_style['fontSize'] ?? 'text-lg'); ?> <?php echo esc_attr($primary_button_style['fontWeight'] ?? 'font-semibold'); ?> <?php echo esc_attr($primary_button_style['borderRadius'] ?? 'rounded-lg'); ?> transition-all <?php echo esc_attr($animation_duration); ?> <?php echo $hover_effects ? 'hover:scale-105' : ''; ?> focus:outline-none focus:ring-4 focus:ring-opacity-50"
-                                   data-animate="cta"
-                                   data-animate-delay="400"
-                                   data-track-click="primary-cta">
-                                    <span><?php echo esc_html($primary_cta['text']); ?></span>
-                                    <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                                    </svg>
-                                </a>
+            <div class="<?php echo esc_attr($content_padding); ?> relative">
+                <div class="container mx-auto px-4">
+                    <div class="grid lg:grid-cols-2 gap-12 items-center">
+                        <div>
+                            <?php if (!empty($headline)): ?>
+                                <h1 class="text-4xl sm:text-5xl font-bold mb-6 leading-tight">
+                                    <?php echo wp_kses_post($headline); ?>
+                                </h1>
                             <?php endif; ?>
 
-                            <?php if ($show_secondary_cta && !empty($secondary_cta['text']) && !empty($secondary_cta['url'])): ?>
-                                <a href="<?php echo esc_url($secondary_cta['url']); ?>"
-                                   class="hero-cta-secondary btn-outline inline-flex items-center <?php echo esc_attr($secondary_button_style['padding'] ?? 'px-8 py-4'); ?> <?php echo esc_attr($secondary_button_style['fontSize'] ?? 'text-lg'); ?> <?php echo esc_attr($secondary_button_style['fontWeight'] ?? 'font-semibold'); ?> <?php echo esc_attr($secondary_button_style['borderRadius'] ?? 'rounded-lg'); ?> transition-all <?php echo esc_attr($animation_duration); ?> focus:outline-none focus:ring-4 focus:ring-opacity-50"
-                                   data-animate="cta"
-                                   data-animate-delay="500"
-                                   data-track-click="secondary-cta">
-                                    <span><?php echo esc_html($secondary_cta['text']); ?></span>
-                                </a>
+                            <?php if (!empty($subheadline)): ?>
+                                <p class="text-lg text-gray-600 mb-8 leading-relaxed">
+                                    <?php echo wp_kses_post($subheadline); ?>
+                                </p>
                             <?php endif; ?>
+
+                            <div class="flex flex-col sm:flex-row gap-4">
+                                <?php if (!empty($primary_cta['text']) && !empty($primary_cta['url'])): ?>
+                                    <a href="<?php echo esc_url($primary_cta['url']); ?>"
+                                       class="btn btn-primary btn-lg px-8 py-4">
+                                        <?php echo esc_html($primary_cta['text']); ?>
+                                    </a>
+                                <?php endif; ?>
+
+                                <?php if ($show_secondary_cta && !empty($secondary_cta['text']) && !empty($secondary_cta['url'])): ?>
+                                    <a href="<?php echo esc_url($secondary_cta['url']); ?>"
+                                       class="btn btn-outline btn-lg px-8 py-4">
+                                        <?php echo esc_html($secondary_cta['text']); ?>
+                                    </a>
+                                <?php endif; ?>
+                            </div>
                         </div>
-                    </div>
-                    
-                    <!-- Image Column -->
-                    <div class="relative">
-                        <div class="aspect-video bg-gray-100 rounded-lg flex items-center justify-center">
-                            <span class="text-gray-500">Hero Image Placeholder</span>
+                        <div class="lg:text-right">
+                            <?php if (!empty($hero_image['url'])): ?>
+                                <img src="<?php echo esc_url($hero_image['url']); ?>" 
+                                     alt="<?php echo esc_attr($hero_image['alt'] ?? ''); ?>" 
+                                     class="w-full max-w-lg ml-auto rounded-lg shadow-2xl" />
+                            <?php else: ?>
+                                <div class="bg-gray-200 rounded-lg h-96 flex items-center justify-center">
+                                    <span class="text-gray-500">Hero Image Placeholder</span>
+                                </div>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
@@ -138,36 +141,24 @@ switch ($layout) {
     case 'minimal':
         ?>
         <section class="<?php echo esc_attr(trim($block_classes)); ?>">
-            <?php if (!empty($background_image['url'])): ?>
-                <div class="hero-background absolute inset-0 overflow-hidden">
-                    <?php echo render_hero_image($background_image); ?>
-                </div>
-            <?php endif; ?>
-            
             <div class="<?php echo esc_attr($content_padding); ?> text-center">
                 <div class="container mx-auto px-4">
                     <div class="max-w-2xl mx-auto">
                         <?php if (!empty($headline)): ?>
-                            <h1 class="text-3xl sm:text-4xl font-bold mb-4"
-                                data-animate="title">
+                            <h1 class="text-3xl sm:text-4xl font-bold mb-4">
                                 <?php echo wp_kses_post($headline); ?>
                             </h1>
                         <?php endif; ?>
 
                         <?php if (!empty($subheadline)): ?>
-                            <p class="text-lg text-gray-600 mb-6"
-                               data-animate="subtitle"
-                               data-animate-delay="200">
+                            <p class="text-lg text-gray-600 mb-6">
                                 <?php echo wp_kses_post($subheadline); ?>
                             </p>
                         <?php endif; ?>
 
                         <?php if (!empty($primary_cta['text']) && !empty($primary_cta['url'])): ?>
                             <a href="<?php echo esc_url($primary_cta['url']); ?>"
-                               class="btn btn-primary px-6 py-3"
-                               data-animate="cta"
-                               data-animate-delay="400"
-                               data-track-click="primary-cta">
+                               class="btn btn-primary px-6 py-3">
                                 <?php echo esc_html($primary_cta['text']); ?>
                             </a>
                         <?php endif; ?>
@@ -181,54 +172,42 @@ switch ($layout) {
     default: // centered layout
         ?>
         <section class="<?php echo esc_attr(trim($block_classes)); ?>">
-            
-            <?php if (!empty($background_image['url'])): ?>
-                <div class="hero-background absolute inset-0 overflow-hidden">
-                    <?php echo render_hero_image($background_image); ?>
-                </div>
-            <?php endif; ?>
-
-            <!-- Content -->
-            <div class="hero-content relative z-10 container mx-auto <?php echo esc_attr($content_padding); ?> <?php echo esc_attr($content_alignment); ?>">
+            <div class="<?php echo esc_attr($content_padding); ?> relative">
+                <?php if (!empty($background_image['url'])): ?>
+                    <div class="absolute inset-0 bg-cover bg-center bg-no-repeat" 
+                         style="background-image: url(<?php echo esc_url($background_image['url']); ?>); opacity: 0.1;"></div>
+                <?php endif; ?>
                 
-                <?php if (!empty($headline)): ?>
-                    <h1 class="hero-title <?php echo esc_attr($title_font_size); ?> <?php echo esc_attr($title_font_weight); ?> <?php echo esc_attr($title_margin_bottom); ?>"
-                        data-animate="title">
-                        <?php echo wp_kses_post($headline); ?>
-                    </h1>
-                <?php endif; ?>
+                <div class="relative container mx-auto px-4 text-center">
+                    <div class="max-w-4xl mx-auto">
+                        <?php if (!empty($headline)): ?>
+                            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+                                <?php echo wp_kses_post($headline); ?>
+                            </h1>
+                        <?php endif; ?>
 
-                <?php if (!empty($subheadline)): ?>
-                    <h2 class="hero-subtitle <?php echo esc_attr($subtitle_font_size); ?> <?php echo esc_attr($subtitle_margin_bottom); ?> <?php echo esc_attr($content_max_width); ?> mx-auto opacity-75"
-                        data-animate="subtitle"
-                        data-animate-delay="200">
-                        <?php echo wp_kses_post($subheadline); ?>
-                    </h2>
-                <?php endif; ?>
+                        <?php if (!empty($subheadline)): ?>
+                            <p class="text-lg sm:text-xl opacity-75 mb-8 leading-relaxed max-w-3xl mx-auto">
+                                <?php echo wp_kses_post($subheadline); ?>
+                            </p>
+                        <?php endif; ?>
 
-                <div class="hero-ctas <?php echo esc_attr($button_spacing); ?>">
-                    <?php if (!empty($primary_cta['text']) && !empty($primary_cta['url'])): ?>
-                        <a href="<?php echo esc_url($primary_cta['url']); ?>"
-                           class="hero-cta-primary btn-primary inline-flex items-center <?php echo esc_attr($primary_button_style['padding'] ?? 'px-8 py-4'); ?> <?php echo esc_attr($primary_button_style['fontSize'] ?? 'text-lg'); ?> <?php echo esc_attr($primary_button_style['fontWeight'] ?? 'font-semibold'); ?> <?php echo esc_attr($primary_button_style['borderRadius'] ?? 'rounded-lg'); ?> transition-all <?php echo esc_attr($animation_duration); ?> <?php echo $hover_effects ? 'hover:scale-105' : ''; ?> focus:outline-none focus:ring-4 focus:ring-opacity-50"
-                           data-animate="cta"
-                           data-animate-delay="400"
-                           data-track-click="primary-cta">
-                            <span><?php echo esc_html($primary_cta['text']); ?></span>
-                            <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                            </svg>
-                        </a>
-                    <?php endif; ?>
+                        <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                            <?php if (!empty($primary_cta['text']) && !empty($primary_cta['url'])): ?>
+                                <a href="<?php echo esc_url($primary_cta['url']); ?>"
+                                   class="btn-primary px-8 py-4 rounded-lg text-lg font-semibold inline-flex items-center">
+                                    <?php echo esc_html($primary_cta['text']); ?>
+                                </a>
+                            <?php endif; ?>
 
-                    <?php if ($show_secondary_cta && !empty($secondary_cta['text']) && !empty($secondary_cta['url'])): ?>
-                        <a href="<?php echo esc_url($secondary_cta['url']); ?>"
-                           class="hero-cta-secondary btn-outline inline-flex items-center <?php echo esc_attr($secondary_button_style['padding'] ?? 'px-8 py-4'); ?> <?php echo esc_attr($secondary_button_style['fontSize'] ?? 'text-lg'); ?> <?php echo esc_attr($secondary_button_style['fontWeight'] ?? 'font-semibold'); ?> <?php echo esc_attr($secondary_button_style['borderRadius'] ?? 'rounded-lg'); ?> transition-all <?php echo esc_attr($animation_duration); ?> focus:outline-none focus:ring-4 focus:ring-opacity-50"
-                           data-animate="cta"
-                           data-animate-delay="500"
-                           data-track-click="secondary-cta">
-                            <span><?php echo esc_html($secondary_cta['text']); ?></span>
-                        </a>
-                    <?php endif; ?>
+                            <?php if ($show_secondary_cta && !empty($secondary_cta['text']) && !empty($secondary_cta['url'])): ?>
+                                <a href="<?php echo esc_url($secondary_cta['url']); ?>"
+                                   class="btn-outline px-8 py-4 rounded-lg text-lg font-semibold inline-flex items-center">
+                                    <?php echo esc_html($secondary_cta['text']); ?>
+                                </a>
+                            <?php endif; ?>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
